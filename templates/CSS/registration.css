@@ -1,0 +1,36 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-registration {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-check {
+  width: min-content;
+  align-self: left;
+}
+
+.form-floating {
+  margin-bottom: 10px;
+}
+
+.form-registration {
+  font-weight: 400;
+}
+
+.form-registration .form-floating:focus-within {
+  z-index: 2;
+}

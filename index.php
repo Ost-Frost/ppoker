@@ -1,16 +1,19 @@
 <?php
 
     $pages = [
-
+        "Login",
+        "Home",
+        "Game",
+        "Register"
     ];
 
     function renderPage($page) {
         require("controller/" . $page . "Controller.php");
-        require("model/" . $page . "Model.php");
-        require("view/" . $page . ".php");
+        require("models/" . $page . "Model.php");
+        require("views/" . $page . ".php");
 
-        $controller = new $page . "Controller";
-        $model = new $page . "Model";
+        $controller = new ($page . "Controller");
+        $model = new ($page . "Model");
         $view = new $page($controller, $model);
         return $view->render();
     }
@@ -21,4 +24,5 @@
         }
     }
 
+    echo "hi";
 ?>

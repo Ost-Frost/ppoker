@@ -1,6 +1,6 @@
 <?php
 
-    class ViewBasis() {
+    class ViewBasis {
         protected $model;
         protected $controller;
 

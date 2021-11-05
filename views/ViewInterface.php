@@ -1,8 +1,8 @@
 <?php
 
-    class ViewInterface {
+    interface ViewInterface {
 
-        public function render() : string
+        public function render() : string;
 
     }
 
