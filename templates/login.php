@@ -9,10 +9,11 @@
         <label for="floatingUserName">Username</label>
     </div>
     <div class="form-floating">
-        <input type="text" class="form-control" id="floatingPassword">
+        <input type="password" class="form-control" id="floatingPassword">
         <label for="floatingPassword">Passwort</label>
     </div>
 
     <p class="my-1 text-start text-danger" id="invalidFeedbackField"></p>
     <button id="submitButton" class="w-100 btn btn-lg btn-primary my-2" type="submit">Anmelden</button>
+    <p><a href="Register">oder hier registrieren</a></p>
 </form>
