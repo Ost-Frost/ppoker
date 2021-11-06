@@ -18,6 +18,10 @@
         return $view->render();
     }
 
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = htmlspecialchars($value, ENT_QUOTES);
+    }
+
     foreach ($pages as $testpage) {
         if (strtolower($testpage) == strtolower($_REQUEST["page"])) {
             echo renderPage($testpage);
