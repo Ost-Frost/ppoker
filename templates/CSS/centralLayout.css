@@ -11,26 +11,21 @@ body {
   background-color: #f5f5f5;
 }
 
-.form-registration {
+.centralLayout {
   width: 100%;
   max-width: 330px;
   padding: 15px;
   margin: auto;
 }
 
-.form-check {
-  width: min-content;
-  align-self: left;
-}
-
 .form-floating {
   margin-bottom: 10px;
 }
 
-.form-registration {
+.centralLayout {
   font-weight: 400;
 }
 
-.form-registration .form-floating:focus-within {
+.centralLayout .form-floating:focus-within {
   z-index: 2;
 }

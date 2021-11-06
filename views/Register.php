@@ -7,12 +7,19 @@
 
         public function render() : string {
 
+            if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                if ($this->controller->validateData()) {
+                    $this->model->addUser();
+                } else {
 
-            ob_start();
-            require "templates/register.php";
-            $html=ob_get_contents();
-            ob_end_clean();
-            return $html;
+                }
+            } else if ($_SERVER["REQUEST_METHOD"] === "GET") {
+                $templateProperties = [];
+                $templateProperties["header"] = "";
+                $templateProperties["content"] = $this->openTemplate("templates/register.php", []);
+                $templateProperties["script"] = "<script src='JS/registrierung.js'></script>";
+                return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
+            }
         }
 
     }
