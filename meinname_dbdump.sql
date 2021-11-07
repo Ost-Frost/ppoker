@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 05. Nov 2021 um 18:58
+-- Erstellungszeit: 07. Nov 2021 um 14:51
 -- Server-Version: 10.4.21-MariaDB
 -- PHP-Version: 8.0.11
 
@@ -70,6 +70,7 @@ INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`) VALUES
 
 CREATE TABLE `user` (
   `UserID` int(11) NOT NULL,
+  `Username` text NOT NULL,
   `Vorname` text NOT NULL,
   `Nachname` text NOT NULL,
   `Mail` text NOT NULL,
@@ -81,8 +82,8 @@ CREATE TABLE `user` (
 -- Daten für Tabelle `user`
 --
 
-INSERT INTO `user` (`UserID`, `Vorname`, `Nachname`, `Mail`, `Passwort`, `Registrierungsdatum`) VALUES
-(123, 'Peter', 'Popelkopf', 'Peter.Popel@gmail.com', '123', '2021-11-01');
+INSERT INTO `user` (`UserID`, `Username`, `Vorname`, `Nachname`, `Mail`, `Passwort`, `Registrierungsdatum`) VALUES
+(123, 'PetersPopel69', 'Peter', 'Popelkopf', 'Peter.Popel@gmail.com', '123', '2021-11-01');
 
 --
 -- Indizes der exportierten Tabellen
