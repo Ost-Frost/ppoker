@@ -8,6 +8,7 @@
     class CreateGameModel extends ModelBasis {
 
         public function createGame() :array {
+
             $task = $_POST["task"];
             $description = $_POST["description"];
             $date = date("Y-m-d");
@@ -20,8 +21,10 @@
             $sqlQuery2 = "INSERT INTO `spielkarte` (`SpielID`, `UserID`)";
             $sqlQuery2 .= "VALUE ('$gameID', '$userID') ";
             $this->dbConnect();
-            $response = $this->dbSQLQuery($sqlQuery);
+            $responseGame[0] = $this->dbSQLQuery($sqlQuery);
+            $responseCard[1] = $this->dbSQLQuery($sqlQuery2);
             $this->dbClose();
+            $response = [$responseGame, $responseCard];
             return $response;
         }
 

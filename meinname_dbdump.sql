@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 07. Nov 2021 um 16:14
+-- Erstellungszeit: 07. Nov 2021 um 16:29
 -- Server-Version: 10.4.21-MariaDB
 -- PHP-Version: 8.0.11
 
@@ -53,7 +53,7 @@ INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`) VA
 
 CREATE TABLE `spielkarte` (
   `SpielID` varchar(11) NOT NULL,
-  `UserID` int(11) NOT NULL,
+  `UserID` varchar(11) NOT NULL,
   `Karte` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -62,7 +62,7 @@ CREATE TABLE `spielkarte` (
 --
 
 INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`) VALUES
-('12', 123, 8);
+('12', '123', 8);
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`) VALUES
 --
 
 CREATE TABLE `user` (
-  `UserID` int(11) NOT NULL,
+  `UserID` varchar(11) NOT NULL,
   `Username` text NOT NULL,
   `Vorname` text NOT NULL,
   `Nachname` text NOT NULL,
@@ -85,8 +85,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`UserID`, `Username`, `Vorname`, `Nachname`, `Mail`, `Passwort`, `Registrierungsdatum`) VALUES
-(123, 'PetersPopel69', 'Peter', 'Popelkopf', 'Peter.Popel@gmail.com', '123', '2021-11-01'),
-(3456, 'tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt', 'Ole \"fucking\"', 'Reimers', 'ole.reimers@fujitsu.com', 'ole123', '2021-11-07');
+('123', 'PetersPopel69', 'Peter', 'Popelkopf', 'Peter.Popel@gmail.com', '123', '2021-11-01'),
+('3456', 'tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt', 'Ole \"fucking\"', 'Reimers', 'ole.reimers@fujitsu.com', 'ole123', '2021-11-07');
 
 --
 -- Indizes der exportierten Tabellen
@@ -112,16 +112,6 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`UserID`);
 
 --
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `user`
---
-ALTER TABLE `user`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3457;
-
---
 -- Constraints der exportierten Tabellen
 --
 
@@ -129,8 +119,8 @@ ALTER TABLE `user`
 -- Constraints der Tabelle `spielkarte`
 --
 ALTER TABLE `spielkarte`
-  ADD CONSTRAINT `spielkarte_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
-  ADD CONSTRAINT `spielkarte_ibfk_3` FOREIGN KEY (`SpielID`) REFERENCES `spiele` (`SpielID`);
+  ADD CONSTRAINT `spielkarte_ibfk_4` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
+  ADD CONSTRAINT `spielkarte_ibfk_5` FOREIGN KEY (`SpielID`) REFERENCES `spiele` (`SpielID`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
