@@ -51,7 +51,7 @@
      *
      * @return string rendered html string
      */
-    function renderPage($page) {
+    function renderPage($page) : string {
         require("controller/" . $page . "Controller.php");
         require("models/" . $page . "Model.php");
         require("views/" . $page . ".php");
@@ -63,13 +63,34 @@
     }
 
     /**
+     * checks if the request is an API call
+     *
+     * @return bool true if the request is an API Call, false otherwise
+     */
+    function isAPICall() : bool {
+        if (isset($_REQUEST["action"]) && $_REQUEST["action"] !== "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * redirects the user to another page and ends the script
+     * if the call was an API call response with 404 and empty JSON
      *
      * @param string the page the user should be redirectd to
      */
     function redirect($page) {
-        header("Location: " . $page);
-        exit;
+
+        if (isAPICall()) {
+            http_response_code(404);
+            echo "{}";
+            exit;
+        } else {
+            header("Location: " . $page);
+            exit;
+        }
     }
 
     // remove special chars in POST requests to prevent cross side scripting and sql injection
@@ -77,7 +98,8 @@
         $_POST[$key] = htmlspecialchars($value, ENT_QUOTES);
     }
 
-    // check if the requested page is valid. if not redirect the user to the corresponding standard page
+    // check if the requested page is valid.
+    // If not redirect the user to the corresponding standard page or send 404 if the request is an apiCall.
     $renderPage = "";
     foreach ($pages as $testpage => $needsValidation) {
         if (strtolower($testpage) == strtolower($_REQUEST["page"])) {
@@ -104,7 +126,27 @@
         }
     }
 
-    // render the valid page
-    echo renderPage($renderPage);
+    // handle API calls
+    if (isAPICall()) {
+        require("controller/" . $renderPage . "Controller.php");
+        require("models/" . $renderPage . "Model.php");
+
+        $controller = new ($renderPage . "Controller");
+        $model = new ($renderPage . "Model");
+
+        $response = $controller->apiCall($_REQUEST["action"], $model);
+        if ($response) {
+            echo $response;
+        } else {
+            http_response_code(404);
+            echo "{}";
+        }
+
+    // handle page requests
+    } else {
+
+        // render the valid page
+        echo renderPage($renderPage);
+    }
 
 ?>
