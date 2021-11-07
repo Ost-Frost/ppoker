@@ -9,11 +9,10 @@
     class Home extends ViewBasis implements ViewInterface {
         public function render() : string {
             $templateProperties = [];
-            $this->controller->logOut();
             $templateProperties["header"] = "";
             $templateProperties["content"] = $this->openTemplate("templates/home/home.php");
             $templateProperties["script"] = "";
-            return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
+            return $this->openTemplate("templates/navBarTemplate.php", $templateProperties);
         }
 
     }
