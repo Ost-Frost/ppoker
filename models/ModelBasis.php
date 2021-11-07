@@ -8,7 +8,7 @@
         /**
          * link to the connected database
          */
-        protected mysqli $dbLink;
+        protected $dbLink;
 
         /**
          * builds up a connection to the database
@@ -24,7 +24,7 @@
          */
         function dbClose() {
             if (!is_null($this->dbLink)) {
-                mysqli_cose($this->dbLink);
+                mysqli_close($this->dbLink);
                 $this->dbLink = null;
             }
         }
