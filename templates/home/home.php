@@ -1,3 +1,4 @@
+<!--- angepasst von:https: https://getbootstrap.com/docs/4.0/examples/carousel/ --->
 <div class="bg-light" style="margin-bottom: 5%; ">
   <div class="container align-center" style=" padding-top:5%; padding-bottom: 5%; ">
     <h1>Planing Poker</h1>
