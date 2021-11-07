@@ -16,7 +16,8 @@
          */
         public function render() : string {
             $templateProperties = [];
-            $templateProperties["header"] = "<meta http-equiv = 'refresh' content = '5; url = #' />";
+            $this->controller->logOut();
+            $templateProperties["header"] = "<meta http-equiv = 'refresh' content = '5; url = Login' />";
             $templateProperties["content"] = $this->openTemplate("templates/logout/logout.php");
             $templateProperties["script"] = "";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);

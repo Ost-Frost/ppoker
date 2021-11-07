@@ -14,7 +14,7 @@
      */
     $pages = [
         "Login" => false,
-        "Logout" => false,
+        "Logout" => true,
         "Home" => true,
         "Game" => true,
         "Register" => false
