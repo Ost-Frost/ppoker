@@ -43,7 +43,7 @@
             $templateProperties = [];
             $templateProperties["header"] = "";
             $registerTemplateProperties = $this->controller->getRegisterTemplateProperties();
-            $templateProperties["content"] = $this->openTemplate("templates/register.php", $registerTemplateProperties);
+            $templateProperties["content"] = $this->openTemplate("templates/register/register.php", $registerTemplateProperties);
             $templateProperties["script"] = "<script src='JS/registrierung.js'></script>";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
@@ -56,7 +56,7 @@
         private function renderPOSTSuccess() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $this->openTemplate("templates/registerSuccess.php", []);
+            $templateProperties["content"] = $this->openTemplate("templates/register/registerSuccess.php", []);
             $templateProperties["script"] = "";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
@@ -70,7 +70,7 @@
             $templateProperties = [];
             $templateProperties["header"] = "";
             $registerTemplateProperties = $this->controller->getRegisterTemplateProperties();
-            $templateProperties["content"] = $this->openTemplate("templates/register.php", $registerTemplateProperties);
+            $templateProperties["content"] = $this->openTemplate("templates/register/register.php", $registerTemplateProperties);
             $templateProperties["script"] =  "<script src='JS/registrierung.js'></script>";
             $templateProperties["script"] .= "<script>";
             $templateProperties["script"] .= "    document.addEventListener('DOMContentLoaded', () => {";
@@ -88,7 +88,7 @@
         private function renderPOSTUnknownFailure() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $this->openTemplate("templates/registerFailure.php", []);
+            $templateProperties["content"] = $this->openTemplate("templates/register/registerFailure.php", []);
             $templateProperties["script"] = "";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }

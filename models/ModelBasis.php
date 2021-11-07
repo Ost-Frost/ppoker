@@ -13,7 +13,7 @@
         /**
          * builds up a connection to the database
          */
-        function dbConnect() {
+        public function dbConnect() {
             if (is_null($this->dbLink)) {
                 $this->dbLink = mysqli_connect("localhost", "root", "", "ppoker") or die("database connection failed");
             }
@@ -22,8 +22,8 @@
         /**
          * closes an existing connection to the database
          */
-        function dbClose() {
-            if (!is_null($this->dbLink)) {
+        public function dbClose() {
+            if ($this->dbCheckConnection()) {
                 mysqli_close($this->dbLink);
                 $this->dbLink = null;
             }
@@ -36,11 +36,26 @@
          *
          * @return array resolved query
          */
-        function dbSQLQuery(string $sql) {
-            if (!is_null($this->dbLink)) {
+        public function dbSQLQuery(string $sql) {
+            if ($this->dbCheckConnection()) {
                 return mysqli_query($this->dbLink, $sql);
             } else {
-                return null;
+                return false;
+            }
+        }
+
+        /**
+         * checks if the connection to the database works
+         *
+         * @return boolean true if the connection works, false otherwise
+         */
+        public function dbCheckConnection() {
+            if (is_null($this->dbLink)) {
+                return false;
+            } else if (!$this->dbLink) {
+                return false;
+            } else {
+                return true;
             }
         }
 

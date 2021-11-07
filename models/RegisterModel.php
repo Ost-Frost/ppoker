@@ -14,8 +14,9 @@
             $password = $_POST["password"];
             $userName = $_POST["userName"];
             $date = date("Y-m-d");
-            $sqlQuery = "INSERT INTO `user` (`UserID`, `Vorname`, `Nachname`, `Mail`, `Passwort`, `Registrierungsdatum`) ";
-            $sqlQuery .= "VALUES ('126', '$preName', '$lastName', '$email', '$password', '$date')";
+            $userid = uniqid();
+            $sqlQuery = "INSERT INTO `user` (`UserID`, `Username`, `Vorname`, `Nachname`, `Mail`, `Passwort`, `Registrierungsdatum`) ";
+            $sqlQuery .= "VALUES ('$userid', '$userName', '$preName', '$lastName', '$email', '$password', '$date')";
             $this->dbConnect();
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
