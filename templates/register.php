@@ -35,4 +35,5 @@
 
     <p class="my-1 text-start text-danger" id="invalidFeedbackField"></p>
     <button id="submitButton" class="w-100 btn btn-lg btn-primary my-2" type="submit">Registrieren</button>
+    <p><a href="Login">oder hier einloggen</a></p>
 </form>
