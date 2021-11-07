@@ -13,7 +13,6 @@ function validateAll(event) {
 }
 
 function validateNotEmpty(fields) {
-    let errorFields = [];
     let error = false;
 
     for (let curField of fields) {
@@ -55,6 +54,13 @@ function showErrorMessages(errorMessages) {
     }
 
     return error;
+}
+
+function errorHighlightAll() {
+    let userNameField = document.getElementById("floatingUserName");
+    let passwordField = document.getElementById("floatingPassword");
+    userNameField.classList.add("is-invalid");
+    passwordField.classList.add("is-invalid");
 }
 
 document.addEventListener("DOMContentLoaded", () => {

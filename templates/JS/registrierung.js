@@ -15,7 +15,6 @@ function validateAll(event) {
 }
 
 function validateNotEmpty(fields) {
-    let errorFields = [];
     let error = false;
 
     for (let curField of fields) {

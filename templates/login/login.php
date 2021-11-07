@@ -5,11 +5,11 @@
     <h1 class="h3 mb-3 fw-normal">Login zum Planning Poker</h1>
 
     <div class="form-floating">
-        <input type="text" class="form-control" id="floatingUserName">
+        <input type="text" class="form-control" id="floatingUserName" name="userName" value='<?= $templateProperties["userName"] ?>'>
         <label for="floatingUserName">Username</label>
     </div>
     <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword">
+        <input type="password" class="form-control" id="floatingPassword" name="password">
         <label for="floatingPassword">Passwort</label>
     </div>
 

@@ -6,7 +6,7 @@
      * a list of all available pages. every new page has to be added here in the form:
      * urlName => needsValidation
      *
-     * urlName string: the name of the URL to access this page. The corresponding Controller, Model and View have to be named the exact same way:
+     * urlName string:  the name of the URL to access this page. The corresponding Controller, Model and View have to be named the exact same way:
      *                  Controller: urlNameController
      *                  Model: urlNameModel
      *                  View: urlName
@@ -37,21 +37,10 @@
      * @return boolean true if the user is logged in, false otherwise
      */
     function validateUser() {
-        if (!isset($_SESSION["username"]) || !isset($_SESSION["password"])) {
+        if (!isset($_SESSION["userID"])) {
             return false;
-        }
-        $userName = $_SESSION["username"];
-        $password = $_SESSION["password"];
-
-        $dbLink = mysqli_connect("localhost", "root", "", "ppoker") or die("database connection failed");
-        $sql = "SELECT Passwort FROM user WHERE Benutzername=$userName";
-        $query = mysqli_query($dbLink, $sql);
-        $dbPassword = mysqli_fetch_assoc($sql);
-        $dbPassword = password_verify($dbPassword, PASSWORD_DEFAULT);
-        if ($dbPassword === $password) {
-            return true;
         } else {
-            return false;
+            return true;
         }
     }
 
