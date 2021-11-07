@@ -2,8 +2,14 @@
 
     require("ControllerBasis.php");
 
+    /**
+     * controller for the register page
+     */
     class RegisterController extends ControllerBasis {
 
+        /**
+         * a list of fields that are needed to register a new user
+         */
         private $fields = [
             "userName",
             "preName",
@@ -14,6 +20,11 @@
             "passwordRepeat"
         ];
 
+        /**
+         * validates the user request data.
+         *
+         * @return boolean true if all given data is correct, false otherwise
+         */
         public function validateData() : bool {
 
             foreach ($this->fields as $key => $field) {
@@ -25,6 +36,11 @@
             return true;
         }
 
+        /**
+         * validates if a given field has a value
+         *
+         * @return boolean true if it has a value and that value is not the empty string, false otherwise.
+         */
         private function validateFieldNotEmpty($name) : bool {
             if (isset($_POST[$name]) && $_POST[$name] != "") {
                 return true;
@@ -33,6 +49,11 @@
             }
         }
 
+        /**
+         * generates the template Properties to render the register template by filling in the request data
+         *
+         * @return array the template properties for the register page
+         */
         public function getRegisterTemplateProperties() : array {
 
             $templateProperties = [];

@@ -3,8 +3,17 @@
     require("ViewBasis.php");
     require("ViewInterface.php");
 
+    /**
+     * the view for the register page
+     */
     class Register extends ViewBasis implements ViewInterface {
 
+        /**
+         * render method for the register page. a GET request returns the register page, while a POST request tries to register a new user.
+         * if the user data is invalid the register page is returned with a script that shows the user the wrong data
+         *
+         * @return string rendered html string
+         */
         public function render() : string {
 
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -26,7 +35,6 @@
                     $templateProperties["script"] .= "        validateAll();";
                     $templateProperties["script"] .= "    });";
                     $templateProperties["script"] .= "</script>";
-                    echo "hi";
                     return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
                 }
             } else if ($_SERVER["REQUEST_METHOD"] === "GET") {
