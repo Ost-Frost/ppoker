@@ -26,7 +26,7 @@
          *
          * @return string the rendered html string
          */
-        public function openTemplate($fileLink, $templateProperties) : string {
+        public function openTemplate($fileLink, $templateProperties = []) : string {
             ob_start();
             require ($fileLink);
             $html=ob_get_contents();
