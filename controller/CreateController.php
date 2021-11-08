@@ -2,13 +2,11 @@
 
     require("APIControllerBasis.php");
 
-    class GameController extends APIControllerBasis {
+    class CreateController extends APIControllerBasis {
 
         public function apiCall($action, $model) : mixed {
-            if ($action == "Create") {
-                return $this->createGame($model);
-            } else if ($action == "Delete") {
-                return $this->deleteGame($model);
+            if ($action == "Search") {
+                return $this->search($model);
             }
             return false;
         }
@@ -40,27 +38,25 @@
             }
         }
 
-        public function createGame($model) {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+        public function search($model) {
+            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateData(["task", "description"])) {
+            if (!(isset($_GET["userName"]) && $_GET["userName"] != "")) {
                 return $this->rejectAPICall(400); // Bad Request
             }
-            $dbResponse = $model->createGame();
-            foreach ($dbResponse as $response) {
-                if (!$response) {
-                    return $this->rejectAPICall(500); // Internal Server Error
-                }
+            $dbResponse = $model->search();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
             }
-            return $this->resolveAPICall(201); // Created
+            return $this->resolveAPICall(201, json_encode($dbResponse)); // Created
         }
 
         public function deleteGame($model) {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+            if (!$_SERVER["REQUEST_METHOD"] === "DELETE") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!(isset($_POST["gameid"]) && $_POST["gameid"] != "")) {
+            if (!(isset($_DELETE["gameid"]) && $_DELETE["gameid"] != "")) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->deleteGame();

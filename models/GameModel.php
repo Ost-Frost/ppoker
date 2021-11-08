@@ -29,7 +29,7 @@
         }
 
         public function deleteGame() {
-            $gameID = $_DELETE["gameid"];
+            $gameID = $_POST["gameid"];
 
             $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
 

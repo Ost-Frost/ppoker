@@ -17,6 +17,7 @@
         "Logout" => true,
         "Home" => true,
         "Game" => true,
+        "Create" => true,
         "Register" => false
     ];
 
@@ -97,6 +98,9 @@
     // remove special chars in POST requests to prevent cross side scripting and sql injection
     foreach ($_POST as $key => $value) {
         $_POST[$key] = htmlspecialchars($value, ENT_QUOTES);
+    }
+    foreach ($_GET as $key => $value) {
+        $_GET[$key] = htmlspecialchars($value, ENT_QUOTES);
     }
 
     // check if the requested page is valid.
