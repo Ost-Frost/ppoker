@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 07. Nov 2021 um 16:29
+-- Erstellungszeit: 08. Nov 2021 um 11:09
 -- Server-Version: 10.4.21-MariaDB
 -- PHP-Version: 8.0.11
 
@@ -26,6 +26,38 @@ USE `ppoker`;
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `epic`
+--
+
+CREATE TABLE `epic` (
+  `EpicID` varchar(500) NOT NULL,
+  `Name` text NOT NULL,
+  `Beschreibung` text NOT NULL,
+  `Aufwand` int(11) NOT NULL,
+  `Einrichtungsdatum` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `epic`
+--
+
+INSERT INTO `epic` (`EpicID`, `Name`, `Beschreibung`, `Aufwand`, `Einrichtungsdatum`) VALUES
+('35', '123', '456', 45, '2021-11-09');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `epicspiel`
+--
+
+CREATE TABLE `epicspiel` (
+  `EpicID` varchar(500) NOT NULL,
+  `SpielID` varchar(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `spiele`
 --
 
@@ -41,9 +73,7 @@ CREATE TABLE `spiele` (
 --
 
 INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`) VALUES
-('12', '2021-11-02', 'Fett einen durchziehen', 'Mehr Gras für Deutschland!!'),
-('14', '2021-11-07', '123', 'Hosenbrei'),
-('15', '2021-11-02', 'Hau mich tot', 'Hilfe Netztechnik stinkt massivst nach Arsch');
+('111', '2021-11-01', 'ertz', 'qwertz');
 
 -- --------------------------------------------------------
 
@@ -54,15 +84,9 @@ INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`) VA
 CREATE TABLE `spielkarte` (
   `SpielID` varchar(11) NOT NULL,
   `UserID` varchar(11) NOT NULL,
-  `Karte` int(11) NOT NULL DEFAULT 0
+  `Karte` int(11) NOT NULL DEFAULT 0,
+  `Akzeptiert` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Daten für Tabelle `spielkarte`
---
-
-INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`) VALUES
-('12', '123', 8);
 
 -- --------------------------------------------------------
 
@@ -86,11 +110,26 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`UserID`, `Username`, `Vorname`, `Nachname`, `Mail`, `Passwort`, `Registrierungsdatum`) VALUES
 ('123', 'PetersPopel69', 'Peter', 'Popelkopf', 'Peter.Popel@gmail.com', '123', '2021-11-01'),
-('3456', 'tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt', 'Ole \"fucking\"', 'Reimers', 'ole.reimers@fujitsu.com', 'ole123', '2021-11-07');
+('3456', 'tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt', 'Ole \"fucking\"', 'Reimers', 'ole.reimers@fujitsu.com', 'ole123', '2021-11-07'),
+('6188125006f', 'PeterPenis420', 'Peter', 'Penis', 'peter.penis@steif.com', '$2y$10$bECr4eHy6MqXxZxkw.plUeZoSeOoR.JWLklqfIxEvg4Agm0TEf/Ea', '2021-11-07');
 
 --
 -- Indizes der exportierten Tabellen
 --
+
+--
+-- Indizes für die Tabelle `epic`
+--
+ALTER TABLE `epic`
+  ADD PRIMARY KEY (`EpicID`);
+
+--
+-- Indizes für die Tabelle `epicspiel`
+--
+ALTER TABLE `epicspiel`
+  ADD PRIMARY KEY (`EpicID`),
+  ADD UNIQUE KEY `EpicID` (`EpicID`),
+  ADD UNIQUE KEY `SpielID` (`SpielID`);
 
 --
 -- Indizes für die Tabelle `spiele`
@@ -114,6 +153,13 @@ ALTER TABLE `user`
 --
 -- Constraints der exportierten Tabellen
 --
+
+--
+-- Constraints der Tabelle `epicspiel`
+--
+ALTER TABLE `epicspiel`
+  ADD CONSTRAINT `epicspiel_ibfk_1` FOREIGN KEY (`EpicID`) REFERENCES `epic` (`EpicID`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `epicspiel_ibfk_2` FOREIGN KEY (`SpielID`) REFERENCES `spiele` (`SpielID`) ON DELETE SET NULL;
 
 --
 -- Constraints der Tabelle `spielkarte`
