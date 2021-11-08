@@ -7,6 +7,14 @@
      */
     class GameModel extends ModelBasis {
 
+        /**
+         * initalizes a new game in the database, by adding a new game to the spiele table
+         * and adding a relation to the user that created the game in the spielkarte tabe.
+         *
+         * @return array returns an array with the SQL responses.
+         *               Index 0: the response of the new entry in spiele table
+         *               Index 1: the response of the new entry in spielkarte table
+         */
         public function createGame() : array {
 
             $task = $_POST["task"];
@@ -28,7 +36,12 @@
             return $response;
         }
 
-        public function deleteGame() {
+        /**
+         * deletes the game with the requested gameID
+         *
+         * @return mixed SQL query response
+         */
+        public function deleteGame() : mixed {
             $gameID = $_POST["gameid"];
 
             $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
