@@ -6,7 +6,7 @@
 
     <div class="form-floating">
         <input type="text" class="form-control" id="floatingUserName" name="userName" value='<?= $templateProperties["userName"] ?>'>
-        <label for="floatingUserName">Username</label>
+        <label for="floatingUserName">Username oder E-Mail Adresse</label>
     </div>
     <div class="form-floating">
         <input type="password" class="form-control" id="floatingPassword" name="password">
