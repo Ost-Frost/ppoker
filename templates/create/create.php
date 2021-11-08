@@ -25,14 +25,18 @@
 
       <form>
         <h4 class="mb-3" style="margin-top: 5%;">Spieler einladen</h4>
+        <ul class="list-group" id="antwort"></ul>
         <div class="row">
           <div class="col-md-6 mb-3">
             <label>Benutzername oder Email</label>
-            <input type="text" class="form-control mb-3" placeholder="" id="suche" name="userName" autocomplete="none">
-            <button class="btn btn-primary btn-lg btn-block type mb-3">Einladen</button>
-            <ul class="list-group" id="antwort"></ul>
+            <input type="text" class="form-control" placeholder="" id="suche" name="userName" autocomplete="off">
+            <div class="list-group" id="suggestions"></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <button class="btn btn-primary btn-lg btn-block type mt-3">Einladen</button>
           </div>
         </div>
+        <div style="height: 300px;">
       </form>
 
     </div>

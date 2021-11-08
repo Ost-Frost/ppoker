@@ -4,7 +4,7 @@
 
     class GameController extends APIControllerBasis {
 
-        public function apiCall($action, $model) : mixed {
+        public function apiCall($action, $model) : string {
             if ($action == "Create") {
                 return $this->createGame($model);
             } else if ($action == "Delete") {
