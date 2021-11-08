@@ -14,6 +14,16 @@
                 return false;
             }
         }
+
+        public function rejectAPICall($error) : string {
+            http_response_code($error);
+            return "{}";
+        }
+
+        public function resolveAPICall($status, $response="{}") : string {
+            http_response_code($status);
+            return $response;
+        }
     }
 
 ?>

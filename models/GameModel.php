@@ -5,7 +5,7 @@
     /**
      * model for the register page
      */
-    class CreateGameModel extends ModelBasis {
+    class GameModel extends ModelBasis {
 
         public function createGame() : array {
 
@@ -29,7 +29,7 @@
         }
 
         public function deleteGame() {
-            $gameID = $_GET["gameid"];
+            $gameID = $_DELETE["gameid"];
 
             $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
 

@@ -7,7 +7,7 @@
       Teammitgleid teilnehemen.
     </h4>
     </br>
-    <p><a class="btn btn-lg btn-primary" href="#">Spiel erstellen</a><a class="btn btn-lg btn-primary" href="#"
+    <p><a class="btn btn-lg btn-primary" href="Create">Spiel erstellen</a><a class="btn btn-lg btn-primary" href="Join"
         style="margin-left: 10px;">Spiel beitreten</a></p>
   </div>
 </div>
@@ -21,14 +21,4 @@
     Das wiederholt sich so oft bis es zu einem klaren Ergebniss kommt.
   </h4>
   </br>
-</div>
-
-
-<hr class="featurette-divider">
-
-<div class="container featurette" style="padding-top: 5%;padding-bottom:5%;">
-  <div class="col-md-7">
-    <h2 class="featurette-heading">Letztes Spiel </h2>
-    <p class="lead">Bespiel Fläche zum Anzeigen des letztes Spiels</p>
-  </div>
 </div>

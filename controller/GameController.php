@@ -4,19 +4,21 @@
 
     class CreateGameController extends ControllerBasis {
 
-        private $data = [
-            "task",
-            "description"
-        ];
+        public function __construct() {
+            $this->apiActions = [
+                "CreateNewGame" => $this->createGame,
+                "DeleteGame" => $this->deleteGame
+            ]
+        }
 
         /**
          * validates the user request data.
          *
          * @return boolean true if all given data is correct, false otherwise
          */
-        public function validateData() : bool {
-            foreach ($this->data as $key => $ndata) {
-                if (!$this->validateFieldNotEmpty($ndata)) {
+        public function validateData($data) : bool {
+            foreach ($data as $key => $field) {
+                if (!$this->validateFieldNotEmpty($field)) {
                     return false;
                 }
             }
@@ -34,6 +36,36 @@
             } else {
                 return false;
             }
+        }
+
+        public function createGame($model) {
+            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+                return $this->rejectAPICall(405) // Method not allowed
+            }
+            if (!$this->validateData(["task", "description"])) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->createGame();
+            foreach ($dbResponse as $response) {
+                if (!$response) {
+                    return $this->rejectAPICall(500); // Internal Server Error
+                }
+            }
+            return $this->resolveAPICall(201); // Created
+        }
+
+        public function deleteGame($model) {
+            if (!$_SERVER["REQUEST_METHOD"] === "DELETE") {
+                return $this->rejectAPICall(405) // Method not allowed
+            }
+            if (!(isset($_DELETE["gameid"]) && $_DELETE["gameid"] != "")) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->deleteGame();
+            if (!$response) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(200); // OK
         }
     }
 ?>
