@@ -9,42 +9,45 @@
                 return $this->createGame($model);
             } else if ($action == "Delete") {
                 return $this->deleteGame($model);
+            } else if ($action == "Search") {
+                return $this->search($model);
             }
             return false;
         }
 
         /**
-         * validates the user request data.
+         * searches the database for userNames that start with requested username string or email string
          *
-         * @return boolean true if all given data is correct, false otherwise
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
          */
-        public function validateData($data) : bool {
-            foreach ($data as $key => $field) {
-                if (!$this->validateFieldNotEmpty($field)) {
-                    return false;
-                }
+        public function search($model) : string {
+            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
+                return $this->rejectAPICall(405); // Method not allowed
             }
-            return true;
+            if ($this->validateFieldNotEmpty("userName", "GET")) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->search();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
         }
 
         /**
-         * validates if a given field has a value
+         * creates a new game with the requst data
          *
-         * @return boolean true if it has a value and that value is not the empty string, false otherwise.
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
          */
-        private function validateFieldNotEmpty($name) : bool {
-            if (isset($_POST[$name]) && $_POST[$name] != "") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public function createGame($model) {
+        public function createGame($model) : string {
             if (!$_SERVER["REQUEST_METHOD"] === "POST") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateData(["task", "description"])) {
+            if ($this->validateFieldGroupNotEmpty(["task", "description"])) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->createGame();
@@ -53,21 +56,28 @@
                     return $this->rejectAPICall(500); // Internal Server Error
                 }
             }
-            return $this->resolveAPICall(201); // Created
+            return $this->resolveAPICall("{}", 201); // Created
         }
 
-        public function deleteGame($model) {
+        /**
+         * deletes the game with the requested game idea
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        public function deleteGame($model) : string {
             if (!$_SERVER["REQUEST_METHOD"] === "POST") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!(isset($_POST["gameid"]) && $_POST["gameid"] != "")) {
+            if ($this->validateFieldNotEmpty("gameid")) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->deleteGame();
             if (!$response) {
                 return $this->rejectAPICall(500); // Internal Server Error
             }
-            return $this->resolveAPICall(200); // OK
+            return $this->resolveAPICall(); // OK
         }
     }
 ?>

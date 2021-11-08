@@ -4,7 +4,7 @@
     require("ViewInterface.php");
 
     /**
-     * the view for the Home page
+     * the view for the Create page
      */
     class Create extends ViewBasis implements ViewInterface {
         public function render() : string {

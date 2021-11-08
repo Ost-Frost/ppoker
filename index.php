@@ -139,6 +139,12 @@
         $controller = new ($renderPage . "Controller");
         $model = new ($renderPage . "Model");
 
+        if (!is_a($controller, "APIControllerBasis")) {
+            http_response_code(404);
+            echo "{}";
+            exit;
+        }
+
         $response = $controller->apiCall($_REQUEST["action"], $model);
         if ($response) {
             echo $response;
