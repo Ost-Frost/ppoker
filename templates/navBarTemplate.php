@@ -40,7 +40,7 @@
               <a class="nav-link " aria-current="page" href="#">Meine Spiele</a>
             </li>
           </ul>
-
+          <a class="justify-content-right"  style="color:grey; text-decoration: none;" href="#">Logout</a>
         </div>
       </div>
     </nav>

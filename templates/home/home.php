@@ -14,7 +14,7 @@
 
 
 
-<div class="container align-center" style=" padding-bottom: 5%; margin-left: -6px;">
+<div class="container align-center" style=" padding-bottom: 5%;">
   <h2>Wie Spielt man?</h2>
   <h4>Anhand von Karten wird der Aufwand eines Aspektes bewertete.<br>
     Die Personen die am höchsten und niedrigsten schätzten argumentieren für die jeweilige Siete.<br>
