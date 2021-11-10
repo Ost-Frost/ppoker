@@ -17,7 +17,8 @@
         "Logout" => true,
         "Home" => true,
         "Game" => true,
-        "Register" => false
+        "Register" => false,
+        "Gameoverview" => true
     ];
 
     /**
