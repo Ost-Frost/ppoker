@@ -12,7 +12,7 @@
          *
          * @return mixed if at least one user was found the method returns an array with all users, otherwise it returns false
          */
-        public function search() : mixed {
+        public function searchUser() : mixed {
 
             $userName = $_GET["userName"];
             $response = [];
@@ -22,6 +22,23 @@
             while ($row = mysqli_fetch_assoc($result)) {
                 $foundUserName = $row["Username"];
                 array_push($response, $foundUserName);
+            }
+            $this->dbClose();
+            if (count($response) === 0) {
+                return false;
+            }
+            return $response;
+        }
+
+        public function searchEpic() : mixed {
+            $epicName = $_GET["epicName"];
+            $response = [];
+            $sqlQuery = "SELECT Name FROM user WHERE (Name LIKE '$epicID%')";
+            $this->dbConnect();
+            $result = $this->dbSQLQuery($sqlQuery);
+            while ($row = mysqli_fetch_assoc($result)) {
+                $foundEpicName = $row["Name"];
+                array_push($response, $foundEpicName);
             }
             $this->dbClose();
             if (count($response) === 0) {
