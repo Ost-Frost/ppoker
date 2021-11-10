@@ -25,7 +25,11 @@
          * @return boolean true if it has a value and that value is not the empty string, false otherwise.
          */
         public function validateFieldNotEmpty($name, $method="POST") : bool {
-            $checkArray = "$" . "_$method";
+            if ($method === "POST") {
+                $checkArray = $_POST;
+            } else if ($method === "GET") {
+                $checkArray = $_GET;
+            }
             if (isset($checkArray[$name]) && $checkArray[$name] != "") {
                 return true;
             } else {

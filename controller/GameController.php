@@ -26,7 +26,7 @@
             if (!$_SERVER["REQUEST_METHOD"] === "GET") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if ($this->validateFieldNotEmpty("userName", "GET")) {
+            if (!$this->validateFieldNotEmpty("userName", "GET")) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->search();
@@ -47,7 +47,7 @@
             if (!$_SERVER["REQUEST_METHOD"] === "POST") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if ($this->validateFieldGroupNotEmpty(["task", "description"])) {
+            if (!$this->validateFieldGroupNotEmpty(["task", "description"])) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->createGame();
@@ -70,7 +70,7 @@
             if (!$_SERVER["REQUEST_METHOD"] === "POST") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if ($this->validateFieldNotEmpty("gameid")) {
+            if (!$this->validateFieldNotEmpty("gameid")) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->deleteGame();

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de">
     <head>
-        <link href="./bootstrap//bootstrap.css" rel="stylesheet">
+        <link href="./bootstrap/bootstrap.css" rel="stylesheet">
         <link href="./CSS/centralLayout.css" rel="stylesheet">
         <?= $templateProperties["header"] ?>
     </head>
