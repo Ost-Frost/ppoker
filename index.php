@@ -17,8 +17,8 @@
         "Logout" => true,
         "Home" => true,
         "Game" => true,
-        "Register" => false,
-        "Gameoverview" => true
+        "Create" => true,
+        "Register" => false
     ];
 
     /**
@@ -99,6 +99,9 @@
     foreach ($_POST as $key => $value) {
         $_POST[$key] = htmlspecialchars($value, ENT_QUOTES);
     }
+    foreach ($_GET as $key => $value) {
+        $_GET[$key] = htmlspecialchars($value, ENT_QUOTES);
+    }
 
     // check if the requested page is valid.
     // If not redirect the user to the corresponding standard page or send 404 if the request is an apiCall.
@@ -135,6 +138,12 @@
 
         $controller = new ($renderPage . "Controller");
         $model = new ($renderPage . "Model");
+
+        if (!is_a($controller, "APIControllerBasis")) {
+            http_response_code(404);
+            echo "{}";
+            exit;
+        }
 
         $response = $controller->apiCall($_REQUEST["action"], $model);
         if ($response) {

@@ -21,8 +21,8 @@
   <header>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <h2>Planing Poker</h2>
+        <a class="navbar-brand" href="Home">
+          <h2 > Planing Poker</h2>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
           aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,16 +31,16 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="#">Spiel erstellen</a>
+              <a class="nav-link " aria-current="page" href="Create">Spiel erstellen</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="#">Spiel beitreten</a>
+              <a class="nav-link " aria-current="page" href="Join">Spiel beitreten</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="#">Meine Spiele</a>
+              <a class="nav-link " aria-current="page" href="Collection">Meine Spiele</a>
             </li>
           </ul>
-          <a class="justify-content-right"  style="color:grey; text-decoration: none;" href="#">Logout</a>
+          <a class="justify-content-right"  style="color:grey; text-decoration: none;" href="Logout">Logout</a>
         </div>
       </div>
     </nav>
@@ -50,9 +50,6 @@
     <?= $templateProperties["content"] ?>
   </main>
 
-  <script src="bootstrap/bootstrap.bundle.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous">
-  </script>
+  <script src="bootstrap/bootstrap.bundle.js">
 
 </html>

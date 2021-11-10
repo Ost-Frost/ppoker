@@ -1,39 +1,83 @@
 <?php
 
-    require("ControllerBasis.php");
+    require("APIControllerBasis.php");
 
-    class CreateGameController extends ControllerBasis {
+    class GameController extends APIControllerBasis {
 
-        private $data = [
-            "task",
-            "description"
-        ];
-
-        /**
-         * validates the user request data.
-         *
-         * @return boolean true if all given data is correct, false otherwise
-         */
-        public function validateData() : bool {
-            foreach ($this->data as $key => $ndata) {
-                if (!$this->validateFieldNotEmpty($ndata)) {
-                    return false;
-                }
+        public function apiCall($action, $model) : string {
+            if ($action == "Create") {
+                return $this->createGame($model);
+            } else if ($action == "Delete") {
+                return $this->deleteGame($model);
+            } else if ($action == "Search") {
+                return $this->search($model);
             }
-            return true;
+            return false;
         }
 
         /**
-         * validates if a given field has a value
+         * searches the database for userNames that start with requested username string or email string
          *
-         * @return boolean true if it has a value and that value is not the empty string, false otherwise.
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
          */
-        private function validateFieldNotEmpty($name) : bool {
-            if (isset($_POST[$name]) && $_POST[$name] != "") {
-                return true;
-            } else {
-                return false;
+        public function search($model) : string {
+            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
+                return $this->rejectAPICall(405); // Method not allowed
             }
+            if ($this->validateFieldNotEmpty("userName", "GET")) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->search();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
+        }
+
+        /**
+         * creates a new game with the requst data
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        public function createGame($model) : string {
+            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if ($this->validateFieldGroupNotEmpty(["task", "description"])) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->createGame();
+            foreach ($dbResponse as $response) {
+                if (!$response) {
+                    return $this->rejectAPICall(500); // Internal Server Error
+                }
+            }
+            return $this->resolveAPICall("{}", 201); // Created
+        }
+
+        /**
+         * deletes the game with the requested game idea
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        public function deleteGame($model) : string {
+            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if ($this->validateFieldNotEmpty("gameid")) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->deleteGame();
+            if (!$response) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(); // OK
         }
     }
 ?>

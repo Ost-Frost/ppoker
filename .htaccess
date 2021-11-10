@@ -4,5 +4,5 @@ RewriteRule ^img/(.*)$ templates/img/$1
 RewriteRule ^JS/(.*)$ templates/JS/$1
 RewriteRule ^bootstrap/(.*)$ templates/bootstrap/$1
 RewriteRule ^CSS/(.*)$ templates/CSS/$1
-RewriteRule ^([^\?.]+)/([^\?.]+)?$ /ppoker/index.php?page=$1&action=$2 [QSA]
+RewriteRule ^([^\?.]+)/([^\?.]+)$ /ppoker/index.php?page=$1&action=$2 [QSA]
 RewriteRule ^([^\?.]+)/?$ /ppoker/index.php?page=$1 [QSA]
