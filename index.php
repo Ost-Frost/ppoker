@@ -18,7 +18,9 @@
         "Home" => true,
         "Game" => true,
         "Create" => true,
-        "Register" => false
+        "Gameoverview" => true,
+        "Register" => false,
+        "Join" => true
     ];
 
     /**

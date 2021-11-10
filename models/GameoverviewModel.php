@@ -20,43 +20,45 @@
         public function buildData() {
 
             $userID = $_SESSION['userID'];
-            $sqlQuery = "SELECT SpielID FROM `spielkarte` WHERE UserID='$userID'";
+            $sqlQuery = "SELECT SpielID, UserStatus FROM `spielkarte` WHERE UserID='$userID'";
             $this->dbConnect();
             $result = $this->dbSQLQuery($sqlQuery);
             $epicTemp = [];
             $gamesTemp = [];
 
             while($row=$result->fetch_assoc()) {
-                $searchRow = $row["SpielID"];
-                $sqlQuery = "SELECT Task, Beschreibung FROM `spiele` WHERE SpielID='$searchRow'";
-                $resultGameID = $this->dbSQLQuery($sqlQuery);
-                $sqlQuery = "SELECT EpicID FROM `epicspiel` WHERE SpielID='$searchRow'";
-                $resultEpicID = $this->dbSQLQuery($sqlQuery);
-                if($rowGame = $resultGameID->fetch_assoc()) {
-                    $gameDB["SpielID"] = $searchRow;
-                    $gameDB["Task"] = $rowGame["Task"];
-                    $gameDB["Beschreibung"] = $rowGame["Beschreibung"];
-                    if($egTemp = $resultEpicID->fetch_assoc()) {
-                        if($egTemp["EpicID"] !== "") {
-                            $gameDB["EpicID"] = $egTemp["EpicID"];
+                if($row["UserStatus"] === 1) {
+                    $searchRow = $row["SpielID"];
+                    $sqlQuery = "SELECT Task, Beschreibung FROM `spiele` WHERE SpielID='$searchRow'";
+                    $resultGameID = $this->dbSQLQuery($sqlQuery);
+                    $sqlQuery = "SELECT EpicID FROM `epicspiel` WHERE SpielID='$searchRow'";
+                    $resultEpicID = $this->dbSQLQuery($sqlQuery);
+                    if($rowGame = $resultGameID->fetch_assoc()) {
+                        $gameDB["SpielID"] = $searchRow;
+                        $gameDB["Task"] = $rowGame["Task"];
+                        $gameDB["Beschreibung"] = $rowGame["Beschreibung"];
+                        if($egTemp = $resultEpicID->fetch_assoc()) {
+                            if($egTemp["EpicID"] !== "") {
+                                $gameDB["EpicID"] = $egTemp["EpicID"];
+                            }
+                        } else {
+                            $gameDB["EpicID"] = "";
                         }
-                    } else {
-                        $gameDB["EpicID"] = "";
+                        array_push($gamesTemp, $gameDB);
                     }
-                    array_push($gamesTemp, $gameDB);
-                }
-                foreach ($resultEpicID as $rEID) {
-                    $epicSearch = $rEID["EpicID"];
-                    $sqlQuery = "SELECT Name, Beschreibung, Aufwand FROM `epic` WHERE EpicID='$epicSearch'";
-                    $resultEpic = $this->dbSQLQuery($sqlQuery);
-                    $rowEpic = $resultEpic->fetch_assoc();
-                    if(!$this->checkID($epicTemp, $epicSearch)) {
-                        $epicData["EpicID"] = $epicSearch;
-                        $epicData["Name"] = $rowEpic["Name"];
-                        $epicData["Beschreibung"] = $rowEpic["Beschreibung"];
-                        $epicData["Aufwand"] = $rowEpic["Aufwand"];
-                        $epicData["games"] = [];
-                        array_push($epicTemp, $epicData);
+                    foreach ($resultEpicID as $rEID) {
+                        $epicSearch = $rEID["EpicID"];
+                        $sqlQuery = "SELECT Name, Beschreibung, Aufwand FROM `epic` WHERE EpicID='$epicSearch'";
+                        $resultEpic = $this->dbSQLQuery($sqlQuery);
+                        $rowEpic = $resultEpic->fetch_assoc();
+                        if(!$this->checkID($epicTemp, $epicSearch)) {
+                            $epicData["EpicID"] = $epicSearch;
+                            $epicData["Name"] = $rowEpic["Name"];
+                            $epicData["Beschreibung"] = $rowEpic["Beschreibung"];
+                            $epicData["Aufwand"] = $rowEpic["Aufwand"];
+                            $epicData["games"] = [];
+                            array_push($epicTemp, $epicData);
+                        }
                     }
                 }
             }
@@ -82,7 +84,6 @@
             }
             $this->gameStructure["gamesWOEpic"] = $gamesWOEpic;
             $this->gameStructure["allEpic"] = $epicTemp;
-            $this->gameStructure = json_encode($this->gameStructure);
         }
 
         private function checkID($array, $id) : bool {
