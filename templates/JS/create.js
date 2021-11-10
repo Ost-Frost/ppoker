@@ -15,13 +15,18 @@ async function autoComplete() {
 function createSuggestions(list) {
   let suggestions = document.getElementById("suggestions");
   let input = document.getElementById("suche");
+  list.splice(5);
   for (let curSuggestion of list) {
     if (input.value == curSuggestion) {
       continue;
     }
+    if (curSuggestion.length > 20) {
+      curSuggestion = curSuggestion.substring(0, 20) + "...";
+    }
     let newElement = document.createElement("button");
     newElement.classList.add("list-group-item");
-    newElement.addEventListener("click", acceptSuggestion)
+    newElement.addEventListener("click", acceptSuggestion);
+    newElement.setAttribute("type", "button");
     newElement.innerHTML=curSuggestion;
     suggestions.appendChild(newElement);
   }
@@ -35,5 +40,4 @@ function acceptSuggestion(event) {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("suche").addEventListener("input", autoComplete);
-  document.getElementById("suche").addEventListener("change", autoComplete);
 });

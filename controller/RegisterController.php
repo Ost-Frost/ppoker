@@ -27,22 +27,7 @@
          */
         public function validateData() : bool {
 
-            foreach ($this->fields as $key => $field) {
-                if (!$this->validateFieldNotEmpty($field)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /**
-         * validates if a given field has a value
-         *
-         * @return boolean true if it has a value and that value is not the empty string, false otherwise.
-         */
-        private function validateFieldNotEmpty($name) : bool {
-            if (isset($_POST[$name]) && $_POST[$name] != "") {
+            if ($this->validateFieldGroupNotEmpty($this->fields, "POST")) {
                 return true;
             } else {
                 return false;
