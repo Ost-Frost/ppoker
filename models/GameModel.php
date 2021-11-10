@@ -30,16 +30,41 @@
             return $response;
         }
 
+        /**
+         * gets data for the search API and returns it as an array by searching for every epicName that starts with the requested string
+         *
+         * @return mixed if at least one user was found the method returns an array with all epics, otherwise it returns false
+         */
         public function searchEpic() : mixed {
             $epicName = $_GET["epicName"];
+            $userID = $_SESSION["userID"];
             $response = [];
-            $sqlQuery = "SELECT Name FROM user WHERE (Name LIKE '$epicID%')";
+            $allEpics = [];
+            $foundEpicName = [];
+            $sqlQueryGameID = "SELECT SpielID FROM spielkarte WHERE UserID='$userID'";
             $this->dbConnect();
-            $result = $this->dbSQLQuery($sqlQuery);
+            $result = $this->dbSQLQuery($sqlQueryGameID);
             while ($row = mysqli_fetch_assoc($result)) {
-                $foundEpicName = $row["Name"];
-                array_push($response, $foundEpicName);
+                $gameID = $row["SpielID"];
+                $sqlQueryEpics = "SELECT EpicID FROM epicspiel WHERE SpielID='$gameID'";
+                $resultEpic = $this->dbSQLQuery($sqlQueryEpics);
+                if($epics=$resultEpic->fetch_asssoc()) {
+                    array_push($allEpics, $epics["EpicID"]);
+                } else {
+                    continue;
+                }
             }
+            array_unique($allEpics);
+            foreach($allEpics as $row) {
+                $sqlQuerySearch = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$row'";
+                $resultSearch = $this->dbSQLQuery($sqlQuerySearch);
+                if($search=$resultSearch->fetch_asssoc()) {
+                    array_push($foundEpicName, $search["Name"]);
+                } else {
+                    continue;
+                }
+            }
+            $response = $foundEpicName;
             $this->dbClose();
             if (count($response) === 0) {
                 return false;
