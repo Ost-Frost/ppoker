@@ -30,7 +30,7 @@ async function autoComplete(event) {
   if (event.target.id === "suche") {
     foundData = await searchUsers(input);
   } else if (event.target.id === "sucheEpic") {
-    foundData = await searchUsers(input);
+    foundData = await searchEpics(input);
   } else {
     return;
   }
@@ -89,7 +89,7 @@ function createSuggestions(list, searchFieldID) {
         }
       }
       return true;
-    })
+    });
   }
 
   // limit suggestion number
@@ -97,6 +97,10 @@ function createSuggestions(list, searchFieldID) {
 
   // build suggestion elements
   for (let curSuggestion of list) {
+    if (curSuggestion == input.value) {
+      continue;
+    }
+
     let newElement = document.createElement("button");
     newElement.classList.add("list-group-item");
     newElement.addEventListener("click", clickFunction);
@@ -118,7 +122,7 @@ async function searchUsers(input) {
   if (input !== "") {
     let antwort = await fetch("Game/Search?userName=" + input);
     foundUsernames = await antwort.json();
-    if (foundUsernames === {}) {
+    if (foundUsernames === {} || !foundUsernames) {
       foundUsernames = [];
     }
   }
@@ -134,8 +138,9 @@ async function acceptSuggestion(event) {
   event.preventDefault();
   document.getElementById("suche").value = event.target.innerHTML;
   await addUser();
-  event.target = document.getElementById("suche");
-  autoComplete(event);
+  let tempEvent = {};
+  tempEvent.target = document.getElementById("suche");
+  autoComplete(tempEvent);
   document.getElementById("suche").focus();
 }
 
@@ -260,8 +265,9 @@ async function acceptSuggestionEpic(event) {
   event.preventDefault();
   document.getElementById("sucheEpic").value = event.target.innerHTML;
   await addEpic();
-  event.target = document.getElementById("sucheEpic");
-  autoComplete(event);
+  let tempEvent = {};
+  tempEvent.target = document.getElementById("sucheEpic");
+  autoComplete(tempEvent);
   document.getElementById("sucheEpic").focus();
 }
 
