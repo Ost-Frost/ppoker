@@ -26,8 +26,8 @@
             if (!$_SERVER["REQUEST_METHOD"] === "GET") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateFieldNotEmpty("userName", "GET") || !$this->validateFieldEmpty("epicName", "GET")) {
-                if(!$this->validateFieldNotEmpty("userName", "GET") && !$this->validateFieldEmpty("epicName", "GET")){
+            if (!$this->validateFieldNotEmpty("userName", "GET") || !$this->validateFieldNotEmpty("epicName", "GET")) {
+                if(!$this->validateFieldNotEmpty("userName", "GET") && !$this->validateFieldNotEmpty("epicName", "GET")){
                     return $this->rejectAPICall(400); // Bad Request, no Parameter initialized
                 } else if($this->validateFieldNotEmpty("userName", "GET")) {
                     $dbResponse = $model->searchUser();

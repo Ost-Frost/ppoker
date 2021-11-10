@@ -48,17 +48,17 @@
                 $gameID = $row["SpielID"];
                 $sqlQueryEpics = "SELECT EpicID FROM epicspiel WHERE SpielID='$gameID'";
                 $resultEpic = $this->dbSQLQuery($sqlQueryEpics);
-                if($epics=$resultEpic->fetch_asssoc()) {
+                if($epics=$resultEpic->fetch_assoc()) {
                     array_push($allEpics, $epics["EpicID"]);
                 } else {
                     continue;
                 }
             }
-            array_unique($allEpics);
+            $allEpics = $this->checkDouble($allEpics);
             foreach($allEpics as $row) {
                 $sqlQuerySearch = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$row'";
                 $resultSearch = $this->dbSQLQuery($sqlQuerySearch);
-                if($search=$resultSearch->fetch_asssoc()) {
+                if($search=$resultSearch->fetch_assoc()) {
                     array_push($foundEpicName, $search["Name"]);
                 } else {
                     continue;
@@ -70,6 +70,28 @@
                 return false;
             }
             return $response;
+        }
+
+        /**
+         * checks array for double values
+         *
+         * @return array with all doubled values removed
+         */
+        private function checkDouble($array) : array {
+            $addV = true;
+            $uniqueArray = [];
+            foreach($array as $field => $value) {
+                foreach($uniqueArray as $doubleField => $doubleValue) {
+                    if($value == $doubleValue) {
+                        $addV = false;
+                        break;
+                    }
+                }
+                if($addV) {
+                    array_push($uniqueArray, $value);
+                }
+            }
+            return $uniqueArray;
         }
 
         /**
