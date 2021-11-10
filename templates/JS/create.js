@@ -1,14 +1,47 @@
+/**
+ * list of invited users
+ */
 const userList = [];
+
+/**
+ * true if a new epic should be created
+ */
 let newEpic = false;
+
+/**
+ * currently selected epic
+ */
 let epicSelected = "";
 
+/**
+ * max number of suggestions to be shown while searching
+ */
+const MAX_SUGGESTIONS = 5;
+
+/**
+ * asynchronous function
+ * the autoComplete function for the search bars
+ *
+ * @param {Event} event
+ */
 async function autoComplete(event) {
   let input = event.target.value;
-  let foundData = (event.target.id === "suche") ? await searchUsers(input) : await searchEpics(input);
-  document.getElementById("suggestions").innerHTML = "";
+  let foundData = false;
+  if (event.target.id === "suche") {
+    foundData = await searchUsers(input);
+  } else if (event.target.id === "sucheEpic") {
+    foundData = await searchUsers(input);
+  } else {
+    return;
+  }
   createSuggestions(foundData, event.target.id);
 }
 
+/**
+ * keyPress event function for the search bars. changes enter press from default behaviour to add searched user/epic
+ *
+ * @param {Event} event
+ */
 function keyPressSearch(event) {
   if (event.key !== "Enter") {
     return;
@@ -16,16 +49,38 @@ function keyPressSearch(event) {
   event.preventDefault();
   if (event.target.id === "suche") {
     addUser();
-  } else {
+  } else if (event.target.id === "sucheEpic"){
     addEpic();
   }
 }
 
+/**
+ * creates suggestions for a searchField
+ *
+ * @param {Array} list list of suggestions
+ * @param {String} searchFieldID id of the search field
+ */
 function createSuggestions(list, searchFieldID) {
-  let suggestionsID = (searchFieldID === "suche") ? "suggestions" : "suggestionsEpic";
+
+  // get parameters
+  let suggestionsID;
+  let clickFunction;
+  if (searchFieldID === "suche") {
+    suggestionsID = "suggestions";
+    clickFunction = acceptSuggestion;
+  } else if (searchFieldID === "sucheEpic") {
+    suggestionsID = "suggestionsEpic";
+    clickFunction = acceptSuggestionEpic;
+  } else {
+    return;
+  }
+  let input = document.getElementById(searchFieldID);
+
+  // clear previous suggestions
   let suggestions = document.getElementById(suggestionsID);
   suggestions.innerHTML = "";
-  let input = document.getElementById(searchFieldID);
+
+  // clear already added users from userSuggestions
   if (searchFieldID === "suche") {
     list = list.filter((element) => {
       for (let curUser of userList) {
@@ -36,17 +91,14 @@ function createSuggestions(list, searchFieldID) {
       return true;
     })
   }
-  list.splice(5);
+
+  // limit suggestion number
+  list.splice(MAX_SUGGESTIONS);
+
+  // build suggestion elements
   for (let curSuggestion of list) {
-    if (input.value == curSuggestion) {
-      continue;
-    }
-    if (curSuggestion.length > 20) {
-      curSuggestion = curSuggestion.substring(0, 20) + "...";
-    }
     let newElement = document.createElement("button");
     newElement.classList.add("list-group-item");
-    let clickFunction = (searchFieldID === "suche") ? acceptSuggestion : acceptSuggestionEpic;
     newElement.addEventListener("click", clickFunction);
     newElement.setAttribute("type", "button");
     newElement.innerHTML=curSuggestion;
@@ -55,6 +107,12 @@ function createSuggestions(list, searchFieldID) {
 }
 
 // --------- User functions -----------------------------------------
+
+/**
+ * search for users on the server whose userName or Email start with given input
+ *
+ * @param {String} input userName or email to search for
+ */
 async function searchUsers(input) {
   let foundUsernames = [];
   if (input !== "") {
@@ -67,6 +125,11 @@ async function searchUsers(input) {
   return foundUsernames;
 }
 
+/**
+ * event when a suggestion in the userName search bar is accepted
+ *
+ * @param {Event} event
+ */
 async function acceptSuggestion(event) {
   event.preventDefault();
   document.getElementById("suche").value = event.target.innerHTML;
@@ -76,6 +139,9 @@ async function acceptSuggestion(event) {
   document.getElementById("suche").focus();
 }
 
+/**
+ * adds a user to the invitation selection
+ */
 async function addUser() {
   let input = document.getElementById("suche").value;
   let foundUsernames = await searchUsers(input);
@@ -101,14 +167,25 @@ async function addUser() {
   document.getElementById("suche").value = "";
 }
 
+/**
+ * builds the list of users that are currently invited
+ */
 function buildUserList() {
+
+  // clear previous selection
   document.getElementById("antwort").innerHTML = "";
+
+  // create elements for every user that is currently in the selection
   for (let curUser of userList) {
+
+    // build container
     let newUserElement = document.createElement("div");
     newUserElement.classList.add("list-group-item");
     newUserElement.classList.add("flex");
     newUserElement.classList.add("align-items-center");
     newUserElement.setAttribute("id", "User" + curUser);
+
+    // build remove button
     let deleteButton = document.createElement("button");
     deleteButton.classList.add("btn-close");
     deleteButton.classList.add("btn-sm")
@@ -116,13 +193,22 @@ function buildUserList() {
     deleteButton.setAttribute("type", "button");
     deleteButton.setAttribute("id", "btnUser" + curUser);
     deleteButton.setAttribute("aria-label", "Close");
+
+    // build text node
     let userTextNode = document.createTextNode(" " + curUser);
+
+    // add elements to document
     newUserElement.appendChild(deleteButton);
     newUserElement.appendChild(userTextNode);
     document.getElementById("antwort").appendChild(newUserElement);
   }
 }
 
+/**
+ * removes a user form the invitation selection
+ *
+ * @param {Event} event
+ */
 function removeUser(event) {
   userName = event.target.id.substring(7);
   userIndex = userList.indexOf(userName);
@@ -132,10 +218,20 @@ function removeUser(event) {
 };
 
 // --------- Epic functions -----------------------------------------
+
+/**
+ * switches between selecting or creating an epic
+ *
+ * @param {Event} event
+ */
 function switchEpic(event) {
-  let switchTo = "Select";
+  let switchTo;
   if (event.target.id === "btnSwitchEpicCreate") {
     switchTo = "Create";
+  } else if (event.target.id === "btnSwitchEpicSelect") {
+    switchTo = "Select";
+  } else {
+    return;
   }
 
   let selectElement = document.getElementById("epicSelect");
@@ -155,6 +251,11 @@ function switchEpic(event) {
   }
 }
 
+/**
+ * event when a suggestion in the epicName search bar is accepted
+ *
+ * @param {Event} event
+ */
 async function acceptSuggestionEpic(event) {
   event.preventDefault();
   document.getElementById("sucheEpic").value = event.target.innerHTML;
@@ -164,6 +265,11 @@ async function acceptSuggestionEpic(event) {
   document.getElementById("sucheEpic").focus();
 }
 
+/**
+ * search for epics on the server whose name start with given input
+ *
+ * @param {String} input epicName to search for
+ */
 async function searchEpics(input) {
   let foundEpics = [];
   if (input !== "") {
@@ -176,10 +282,15 @@ async function searchEpics(input) {
   return foundEpics;
 }
 
+/**
+ * selects an epic
+ */
 async function addEpic() {
   let input = document.getElementById("sucheEpic").value;
   let foundEpics = await searchEpics(input);
   let epicExists = false;
+
+  // check if epic with searched name exists
   for (let curEpic of foundEpics) {
     if (curEpic == input) {
       epicExists = true;
@@ -195,30 +306,49 @@ async function addEpic() {
   buildEpic(epicSelected);
 }
 
+/**
+ * builds the element of the selected epic
+ *
+ * @param {String} epicName name of the selected epic
+ */
 function buildEpic(epicName) {
+
+  // clear previous selections
   document.getElementById("epicSelected").innerHTML = "";
+
+  // create container
   let epicElement = document.createElement("div");
   epicElement.classList.add("list-group-item");
   epicElement.classList.add("flex");
   epicElement.classList.add("align-items-center");
+
+  // create remove button
   let deleteButton = document.createElement("button");
   deleteButton.classList.add("btn-close");
   deleteButton.classList.add("btn-sm")
   deleteButton.addEventListener("click", removeEpic);
   deleteButton.setAttribute("type", "button");
   deleteButton.setAttribute("aria-label", "Close");
+
+  // create text node
   let epicTextNode = document.createTextNode(" " + epicName);
+
+  // add element to selection
   epicElement.appendChild(deleteButton);
   epicElement.appendChild(epicTextNode);
   document.getElementById("epicSelected").appendChild(epicElement);
 }
 
+/**
+ * removes previously selected epic
+ */
 function removeEpic() {
   epicName = "";
   document.getElementById("epicSelected").innerHTML = "";
   document.getElementById("epicSelect").classList.remove("d-none");
 }
 
+// add event listeners
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("suche").addEventListener("input", autoComplete);
   document.getElementById("suche").addEventListener("keypress", keyPressSearch);
