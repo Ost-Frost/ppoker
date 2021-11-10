@@ -8,6 +8,43 @@
 
     <div class="container">
       <form class="needs-validation">
+
+        <h4 class="mb-3" style="margin-top: 5%;" id="epicHeader">Epic auswählen</h4>
+        <div class="list-group" id="epicSelected"></div>
+        <div class="row" id="epicSelect">
+          <div class="col-md-6 mb-3">
+            <div class="form-floating">
+              <input type="search" class="form-control" id="sucheEpic" autocomplete="off">
+              <label for="sucheEpic">Epic-Name</label>
+            </div>
+            <div class="list-group" id="suggestionsEpic"></div>
+          </div>
+          <div class="col-md-6 mb-3 mt-1">
+            <button class="btn btn-primary btn-lg btn-block type" type="button" id="btnEpicSelect">Auswählen</button>
+            <button class="btn btn-primary btn-lg btn-block type" type="button" id="btnSwitchEpicCreate">Neue Epic Erstellen</button>
+          </div>
+        </div>
+
+        <div class="row d-none" id="epicCreate" >
+          <div class="col-md-8 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="floating-story">
+              <label for="floating-story">Epic</label>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3 mt-1">
+              <button class="btn btn-primary btn-lg btn-block type" type="button" id="btnSwitchEpicSelect">Bestehende Epic Auswählen</button>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <div class="form-floating">
+              <textarea class="form-control" id="floating-remark" style="height: 150px; width: 100%;"></textarea>
+              <label for="floating-remark">Beschreibung</label>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="mb-3" style="margin-top: 5%;">User Story erstellen</h4>
         <div class="row">
           <div class="col-md-12 mb-3">
             <div class="form-floating">
@@ -25,7 +62,11 @@
         </div>
 
         <h4 class="mb-3" style="margin-top: 5%;">Spieler einladen</h4>
-        <ul class="list-group" id="antwort"></ul>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="list-group" id="antwort"></div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-6 mb-3">
             <div class="form-floating">
@@ -35,7 +76,7 @@
             <div class="list-group" id="suggestions"></div>
           </div>
           <div class="col-md-6 mb-3 mt-1">
-            <button class="btn btn-primary btn-lg btn-block type" type="button">Einladen</button>
+            <button class="btn btn-primary btn-lg btn-block type" type="button" id="inviteBtn">Einladen</button>
           </div>
         </div>
         <button class="btn btn-primary btn-lg btn-block" type="submit">Spiel erstellen</button>
