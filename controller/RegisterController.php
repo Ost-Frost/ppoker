@@ -20,6 +20,14 @@
             "passwordRepeat"
         ];
 
+        private $fieldMaxLength = [
+            "userName" => 20,
+            "preName" => 50,
+            "lastName" => 50,
+            "email" => 100,
+            "password" => 50
+        ];
+
         /**
          * validates the user request data.
          *
@@ -27,11 +35,20 @@
          */
         public function validateData() : bool {
 
-            if ($this->validateFieldGroupNotEmpty($this->fields, "POST")) {
-                return true;
-            } else {
+            if (!$this->validateFieldGroupNotEmpty($this->fields, "POST")) {
                 return false;
             }
+            if (!$this->validateFieldGroupLength($this->fieldMaxLength)) {
+                return false;
+            }
+            if (!$this->validateEmail()) {
+                return false;
+            }
+            return true;
+        }
+
+        private function validateEmail() : bool {
+            return filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) !== false;
         }
 
         /**

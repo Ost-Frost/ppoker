@@ -103,6 +103,7 @@ function createSuggestions(list, searchFieldID) {
 
     let newElement = document.createElement("button");
     newElement.classList.add("list-group-item");
+    newElement.classList.add("text-break");
     newElement.addEventListener("click", clickFunction);
     newElement.setAttribute("type", "button");
     newElement.innerHTML=curSuggestion;
@@ -188,6 +189,7 @@ function buildUserList() {
     newUserElement.classList.add("list-group-item");
     newUserElement.classList.add("flex");
     newUserElement.classList.add("align-items-center");
+    newUserElement.classList.add("text-break");
     newUserElement.setAttribute("id", "User" + curUser);
 
     // build remove button
@@ -327,6 +329,7 @@ function buildEpic(epicName) {
   epicElement.classList.add("list-group-item");
   epicElement.classList.add("flex");
   epicElement.classList.add("align-items-center");
+  epicElement.classList.add("text-break");
 
   // create remove button
   let deleteButton = document.createElement("button");
