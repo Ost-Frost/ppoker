@@ -200,6 +200,7 @@ function buildUserList() {
   document.getElementById("antwort").innerHTML = "";
 
   // create elements for every user that is currently in the selection
+  let counter = 0;
   for (let curUser of userList) {
 
     // build container
@@ -222,10 +223,20 @@ function buildUserList() {
     // build text node
     let userTextNode = document.createTextNode(" " + curUser);
 
+
+    // build input for form
+    let hiddenInput = document.createElement("input");
+    hiddenInput.setAttribute("type", "hidden");
+    hiddenInput.setAttribute("value", curUser);
+    hiddenInput.setAttribute("name", "userList[" + counter + "]");
+
     // add elements to document
     newUserElement.appendChild(deleteButton);
     newUserElement.appendChild(userTextNode);
+    newUserElement.appendChild(hiddenInput);
     document.getElementById("antwort").appendChild(newUserElement);
+
+    counter++;
   }
 }
 
@@ -300,7 +311,7 @@ async function searchEpics(input) {
   let foundEpics = [];
   input = encodeURIComponent(input);
   if (input !== "") {
-    let antwort = await fetch("Game/Search?userName=" + input);
+    let antwort = await fetch("Game/Search?epicName=" + input);
     foundEpics = await antwort.json();
     if (foundEpics === {}) {
       foundEpics = [];
@@ -364,9 +375,16 @@ function buildEpic(epicName) {
   // create text node
   let epicTextNode = document.createTextNode(" " + epicName);
 
+  // build input for form
+  let hiddenInput = document.createElement("input");
+  hiddenInput.setAttribute("type", "hidden");
+  hiddenInput.setAttribute("value", epicName);
+  hiddenInput.setAttribute("name", "epicNameSelected");
+
   // add element to selection
   epicElement.appendChild(deleteButton);
   epicElement.appendChild(epicTextNode);
+  epicElement.appendChild(hiddenInput);
   document.getElementById("epicSelected").appendChild(epicElement);
 }
 

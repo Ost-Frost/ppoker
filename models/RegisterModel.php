@@ -30,7 +30,7 @@
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
             $userExists = true;
-            if (is_null(mysqli_fetch_assoc($response))) {
+            if (!$response || is_null(mysqli_fetch_assoc($response))) {
                 $userExists = false;
             }
             return $userExists;
@@ -43,7 +43,7 @@
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
             $userExists = true;
-            if (is_null(mysqli_fetch_assoc($response))) {
+            if (!$response || is_null(mysqli_fetch_assoc($response))) {
                 $userExists = false;
             }
             return $userExists;

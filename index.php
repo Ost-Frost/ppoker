@@ -102,13 +102,26 @@
         }
     }
 
+    /**
+     * recursevly changes all values of given array elements or string to the htmlspecialchar version
+     *
+     * @param mixed input. calls this function on all array elements if input type is array or calls htmlspecialchars if input type is string
+     * @return mixed array / string without html special chars
+     */
+    function removeHtmlSpecialChars($input) {
+        if (is_array($input)) {
+            foreach($input as $key => $value) {
+                $input[$key] = removeHtmlSpecialChars($value);
+            }
+            return $input;
+        } else {
+            return htmlspecialchars($input);
+        }
+    }
+
     // remove special chars in POST requests to prevent cross side scripting and sql injection
-    foreach ($_POST as $key => $value) {
-        $_POST[$key] = htmlspecialchars($value, ENT_QUOTES);
-    }
-    foreach ($_GET as $key => $value) {
-        $_GET[$key] = htmlspecialchars($value, ENT_QUOTES);
-    }
+    $_POST = removeHtmlSpecialChars($_POST);
+    $_GET = removeHtmlSpecialChars($_GET);
 
     // check if the requested page is valid.
     // If not redirect the user to the corresponding standard page or send 404 if the request is an apiCall.

@@ -39,9 +39,11 @@
          */
         public function searchEpic() : mixed {
             $epicName = $_GET["epicName"];
+            $epicName = str_replace("%", "\%", $epicName);
+            $epicName = str_replace("_", "\_", $epicName);
             $userID = $_SESSION["userID"];
             $response = [];
-            $sqlQueryEpicID = "SELECT EpicID FROM epicuser WHERE UserID='$userID'";
+            $sqlQueryEpicID = "SELECT e.EpicID FROM epicspiel e INNER JOIN spiele s ON e.SpielID = s.SpielID INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID WHERE sk.UserID='$userID'";
             $this->dbConnect();
             $resultID = $this->dbSQLQuery($sqlQueryEpicID);
             while ($row = mysqli_fetch_assoc($resultID)) {
@@ -49,7 +51,15 @@
                 $sqlQueryEpics = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$epicID'";
                 $resultEpic = $this->dbSQLQuery($sqlQueryEpics);
                 if($epics=$resultEpic->fetch_assoc()) {
-                    array_push($response, $epics["Name"]);
+                    $alreadyFound = false;
+                    foreach ($response as $foundEpicName) {
+                        if ($foundEpicName === $epics["Name"]) {
+                            $alreadyFound = true;
+                        }
+                    }
+                    if (!$alreadyFound) {
+                        array_push($response, $epics["Name"]);
+                    }
                 } else {
                     continue;
                 }

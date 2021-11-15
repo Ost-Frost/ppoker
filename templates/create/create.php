@@ -7,7 +7,7 @@
 
 
     <div class="container">
-      <form class="needs-validation">
+      <form class="needs-validation" method="POST" action="Create">
 
         <h4 class="mb-3" style="margin-top: 5%;" id="epicHeader">Epic auswählen</h4>
         <div class="list-group" id="epicSelected"></div>
@@ -28,8 +28,8 @@
         <div class="row d-none" id="epicCreate" >
           <div class="col-md-8 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="floating-story">
-              <label for="floating-story">Epic</label>
+              <input type="text" class="form-control" id="floatingEpicName" name="epicName">
+              <label for="floatingEpicName">Epic</label>
             </div>
           </div>
           <div class="col-md-4 mb-3 mt-1">
@@ -38,8 +38,8 @@
 
           <div class="col-md-12 mb-3">
             <div class="form-floating">
-              <textarea class="form-control" id="floating-remark" style="height: 150px; width: 100%;"></textarea>
-              <label for="floating-remark">Beschreibung</label>
+              <textarea class="form-control" id="floatingEpicDescription" style="height: 150px; width: 100%;" name="epicDescription"></textarea>
+              <label for="floatingEpicDescription">Beschreibung</label>
             </div>
           </div>
         </div>
@@ -48,15 +48,15 @@
         <div class="row">
           <div class="col-md-12 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="floating-story">
-              <label for="floating-story">Story</label>
+              <input type="text" class="form-control" id="floatingStory" name="gameTask">
+              <label for="floatingStory">Story</label>
             </div>
           </div>
 
           <div class="col-md-12 mb-3">
             <div class="form-floating">
-              <textarea class="form-control" id="floating-remark" style="height: 150px; width: 100%;"></textarea>
-              <label for="floating-remark">Beschreibung</label>
+              <textarea class="form-control" id="floatingDescription" style="height: 150px; width: 100%;" name="gameDescription"></textarea>
+              <label for="floatingDescription">Beschreibung</label>
             </div>
           </div>
         </div>
