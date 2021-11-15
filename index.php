@@ -36,6 +36,11 @@
     $standardPageLogIn = "Home";
 
     /**
+     * this page will be reached when the user requests a side that does not exist
+     */
+    $missingPage = "MissingPage";
+
+    /**
      * validates if the user is logged in by checking the sessionData
      *
      * @return boolean true if the user is logged in, false otherwise
@@ -126,11 +131,7 @@
         }
     }
     if ($renderPage === "") {
-        if (validateUser()) {
-            redirect($standardPageLogIn);
-        } else {
-            redirect($standardPageLogOut);
-        }
+        $renderPage = $missingPage;
     }
 
     // handle API calls
