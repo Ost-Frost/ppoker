@@ -92,23 +92,83 @@
          *               Index 1: the response of the new entry in spielkarte table
          */
         public function createGame() : array {
-
             $task = $_POST["task"];
             $description = $_POST["description"];
-            $date = date("Y-m-d");
+            $createEpic = false;
+            $epicName = "";
+            $taskEpic = "";
+            $descriptionEpic = "";
+            $invitations = [];
 
+            $date = date("Y-m-d");
             $userID = $_SESSION["userID"];
+            $epicID = "";
             $gameID = uniqid();
 
-            $sqlQuery = "INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`) ";
-            $sqlQuery .= "VALUES ('$gameID', '$date', '$task', '$description')";
-            $sqlQuery2 = "INSERT INTO `spielkarte` (`SpielID`, `UserID`)";
-            $sqlQuery2 .= "VALUE ('$gameID', '$userID') ";
+            if(isset($_POST["epicName"])) {
+                $epicName = $_POST["epicName"];
+                $sqlQueryEpicID = "SELECT EpicID FROM epic WHERE Name='$epicName'";
+                $resultEpicID = $this->dbSQLQuery($sqlQueryUserID);
+                if($id = $resultEpicID->fetch_assoc()) {
+                    $epicID = $id["EpicID"];
+                } else {
+                    return false; // maybe other error return value for case: Epic Task not saved in db yet
+                }
+            } else {
+                $taskEpic = $_POST["taskEpic"];
+                $descriptionEpic = $_POST["descriptionEpic"];
+                $sqlQueryEpicID = "SELECT EpicID FROM epic WHERE Name='$taskEpic'";
+                $resultEpicID = $this->dbSQLQuery($sqlQueryUserID);
+                if($id = $resultEpicID->fetch_assoc()) {
+                    $epicID = $id["EpicID"];
+                    $createEpic = true;
+                    $epicID = uniqid();
+                } else {
+                    return false; // maybe other error return value for case: Epic Task already taken
+                }
+            }
+            if(isset($_POST["invitations"])) {
+                $invitations = $_POST["invitations"];
+            }
+
+            $sqlQueryGame = "INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`) ";
+            $sqlQueryGame .= "VALUES ('$gameID', '$date', '$task', '$description')";
+            $sqlQueryGameUser = "INSERT INTO `spielkarte` (`UserID`, `SpielID`)";
+            $sqlQueryGameUser .= "VALUE ('$userID', '$gameID') ";
+
+            if($createEpic) {
+                $sqlQueryEpic = "INSERT INTO `epic` (`EpicID`, `Name`, `Beschreibung`, `Einrichtungsdatum`)";
+                $sqlQueryEpic .= "VALUE ('$epicID', '$taskEpic', '$descriptionEpic', '$date') ";
+                $sqlQueryEpicUser = "INSERT INTO `epicuser` (`EpicID`, `UserID`)";
+                $sqlQueryEpicUser .= "VALUE ('$epicID', '$userID') ";
+            }
+
+            $sqlQueryEpicGame = "INSERT INTO `epicspiel` (`EpicID`, `SpielID`)";
+            $sqlQueryEpicGame .= "VALUE ('$epicID', '$gameID') ";
+
             $this->dbConnect();
-            $responseGame[0] = $this->dbSQLQuery($sqlQuery);
-            $responseCard[1] = $this->dbSQLQuery($sqlQuery2);
+
+            $result0 = $this->dbSQLQuery($sqlQueryGame);
+            $result1 = $this->dbSQLQuery($sqlQueryEpic);
+            $result2 = $this->dbSQLQuery($sqlQueryEpicGame);
+            $result3 = $this->dbSQLQuery($sqlQueryEpicUser);
+            $result4 = $this->dbSQLQuery($sqlQueryGameUser);
+
+            foreach($invitations as $members => $member) {
+                $sqlQueryUserID = "SELECT UserID FROM user WHERE Username='$member'";
+                $resultID = $this->dbSQLQuery($sqlQueryUserID);
+                if($uID = $resultID->fetch_assoc()) {
+                    $uIDTemp = $uID["UserID"];
+                    $sqlQueryEpicUser = "INSERT INTO `epicuser` (`EpicID`, `UserID`)";
+                    $sqlQueryEpicUser .= "VALUE ('$epicID', '$uIDTemp') ";
+                    $sqlQueryGameUser = "INSERT INTO `spielkarte` (`UserID`, `SpielID`)";
+                    $sqlQueryGameUser .= "VALUE ('$uIDTemp', '$gameID') ";
+                    $result5 = $this->dbSQLQuery($sqlQueryEpicUser);
+                    $result6 = $this->dbSQLQuery($sqlQueryGameUser);
+                }
+            }
             $this->dbClose();
-            $response = [$responseGame, $responseCard];
+            $response = $epicName;
             return $response;
         }
 
