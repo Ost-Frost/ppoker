@@ -18,8 +18,8 @@
             $templateProperties = [];
             $data = $this->model->getJoinStructure();
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $data;
-            $templateProperties["script"] = "";
+            $templateProperties["content"] = $this->openTemplate("templates/join/join.php");
+            $templateProperties["script"] = "<script src='JS/join.js'></script>";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
 
