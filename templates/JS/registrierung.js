@@ -21,6 +21,8 @@ const inputLengthValidationData = {
     },
 }
 
+let customErrorMessages = {};
+
 function validateAll(event) {
     let errorMessages = [];
     removePreviousValidation();
@@ -31,6 +33,7 @@ function validateAll(event) {
     errorMessages.push(validatePasswortRepeat());
     errorMessages.push(validateEmail());
     errorMessages = errorMessages.concat(validateInputLength());
+    errorMessages = errorMessages.concat(validateCustomErrorMessages());
 
     // Error Messages in HTML anzeigen
     error = showErrorMessages(errorMessages);
@@ -125,6 +128,18 @@ function validatePasswortRepeat() {
     }
     input2.classList.add("is-valid");
     return "";
+}
+
+function validateCustomErrorMessages() {
+    let errorMessages = [];
+    let errorFields = Object.keys(customErrorMessages);
+    for (curErrorField of errorFields) {
+        let input = document.getElementById(curErrorField);
+        input.classList.add("is-invalid");
+        errorMessages.push(customErrorMessages[curErrorField]);
+    }
+    customErrorMessages = {};
+    return errorMessages;
 }
 
 function showErrorMessages(errorMessages) {

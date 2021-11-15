@@ -18,6 +18,11 @@
 
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($this->controller->validateData()) {
+                    $checkUserName = $this->model->checkUserName();
+                    $checkEmail = $this->model->checkEmail();
+                    if (!$this->controller->validateUserExists($checkUserName, $checkEmail)) {
+                        return $this->renderPOSTInvalidData();
+                    }
                     $this->controller->hashPassword();
                     if (!isset($_POST["password"])) {
                         return $this->renderPOSTUnknownFailure();
@@ -73,6 +78,7 @@
             $templateProperties["content"] = $this->openTemplate("templates/register/register.php", $registerTemplateProperties);
             $templateProperties["script"] =  "<script src='JS/registrierung.js'></script>";
             $templateProperties["script"] .= "<script>";
+            $templateProperties["script"] .= '    customErrorMessages = {' . $this->controller->getCustomErrorStrings() . '};';
             $templateProperties["script"] .= "    document.addEventListener('DOMContentLoaded', () => {";
             $templateProperties["script"] .= "        validateAll();";
             $templateProperties["script"] .= "    });";

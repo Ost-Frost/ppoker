@@ -15,6 +15,8 @@
         public function searchUser() : mixed {
 
             $userName = $_GET["userName"];
+            $userName = str_replace("%", "\%", $userName);
+            $userName = str_replace("_", "\_", $userName);
             $response = [];
             $sqlQuery = "SELECT Username FROM user WHERE (Username LIKE '$userName%' OR Mail LIKE '$userName%')";
             $this->dbConnect();
