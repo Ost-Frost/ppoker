@@ -1,0 +1,178 @@
+<html lang="en" data-lt-installed="true">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/carousel/">
+    <link href="CSS/join.css" rel="stylesheet">
+
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/bootstrap.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <script>
+        function expand(event) {
+            alert(JSON.stringify(document.getElementsByClassName("secondaryPart")));
+            for (let index = 0; index < document.getElementsByName("secondaryPart").length; index++) {                
+            document.getElementsByClassName("secondaryPart")[index].classList.add("secondaryPartHidden")  ;             
+            }    
+            event.target.children[3].classList.remove("secondaryPartHidden");
+        }
+
+    </script>
+
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <h2>Planing Poker</h2>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="#">Spiel erstellen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="#">Spiel beitreten</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="#">Meine Spiele</a>
+                        </li>
+                    </ul>
+                    <a class="justify-content-right" style="color:grey; text-decoration: none;" href="#">Logout</a>
+
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
+        </a>
+        <h1 style="padding: 1%;">Spiele:</h1>
+        <div class="list-group list-group-flush border-top scrollarea">
+            <a  class="list-group-item list-group-item-action py-3 pe-auto" onclick="expand(event)">
+                <div class="d-flex w-100 align-items-center justify-content-between pe-none">
+                    <strong class="mb-1 pe-none">Spiel von 123</strong>
+                </div>
+                <div class="col-10 mb-1 small pe-none">Storyname</div><br>
+                <div class="pe-none secondaryPartHidden"name="secondaryPart">Beschreibung:<br>
+                    <div class="col-10 mb-1 small pe-none" style="margin-bottom: 1%;">
+                        Die Beschreibung der Story.
+                    </div>
+                    <button class="btn btn-lg btn-success pe-auto" href="#">Beitreten</button>
+                    <button class="btn btn-lg btn-outline-danger pe-auto" href="#"
+                        style="margin-left: 10px;">Ablehnen</button>
+                </div>
+            </a>
+            <a  class="list-group-item list-group-item-action py-3 pe-auto" onclick="expand(event)">
+                <div class="d-flex w-100 align-items-center justify-content-between pe-none">
+                    <strong class="mb-1 pe-none">Spiel von 123</strong>
+                </div>
+                <div class="col-10 mb-1 small pe-none">Storyname</div><br>
+                <div class="pe-none secondaryPartHidden"name=" secondaryPart">Beschreibung:<br>
+                    <div class="col-10 mb-1 small pe-none" style="margin-bottom: 1%;">
+                        Die Beschreibung der Story.
+                    </div>
+                    <button class="btn btn-lg btn-success pe-auto" href="#">Beitreten</button>
+                    <button class="btn btn-lg btn-outline-danger pe-auto" href="#"
+                        style="margin-left: 10px;">Ablehnen</button>
+                </div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 pe-auto" onclick="expand(event)">
+                <div class="d-flex w-100 align-items-center justify-content-between pe-none">
+                    <strong class="mb-1 pe-none">Spiel von 123</strong>
+                </div>
+                <div class="col-10 mb-1 small pe-none">Storyname</div><br>
+                <div class="pe-none secondaryPartHidden"name=" secondaryPart" >Beschreibung:<br>
+                    <div class="col-10 mb-1 small pe-none" style="margin-bottom: 1%;">
+                        Die Beschreibung der Story.
+                    </div>
+                    <button class="btn btn-lg btn-success pe-auto" href="#">Beitreten</button>
+                    <button class="btn btn-lg btn-outline-danger pe-auto" href="#"
+                        style="margin-left: 10px;">Ablehnen</button>
+                </div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Wed</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Tues</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Mon</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Wed</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Tues</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Mon</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Wed</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Tues</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">List group item heading</strong>
+                    <small class="text-muted">Mon</small>
+                </div>
+                <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            </a>
+        </div>
+    </div>
+
+
+
+
+</html>
