@@ -28,6 +28,8 @@
             "password" => 50
         ];
 
+        private $customErrorStrings = [];
+
         /**
          * validates the user request data.
          *
@@ -49,6 +51,19 @@
 
         private function validateEmail() : bool {
             return filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) !== false;
+        }
+
+        public function validateUserExists($checkUserName, $checkEmail) : bool {
+            $valid = true;
+            if ($checkUserName) {
+                $this->customErrorStrings["floatingUserName"] = '"Der gewünschte Benutzername wurde bereits verwendet."';
+                $valid = false;
+            }
+            if ($checkEmail) {
+                $this->customErrorStrings["floatingEmail"] = '"Die gewünschte Email Adresse wurde bereits verwendet."';
+                $valid = false;
+            }
+            return $valid;
         }
 
         /**
@@ -74,6 +89,14 @@
 
         public function hashPassword() {
             $_POST["password"] = password_hash($_POST["password"], PASSWORD_DEFAULT);
+        }
+
+        public function getCustomErrorStrings() {
+            $errorString = "";
+            foreach ($this->customErrorStrings as $field => $errorMessage) {
+                $errorString .= "$field: $errorMessage,";
+            }
+            return $errorString;
         }
     }
 

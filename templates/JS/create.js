@@ -19,6 +19,20 @@ let epicSelected = "";
 const MAX_SUGGESTIONS = 5;
 
 /**
+ * escapes encoded html and returns normal string
+ *
+ * QUELLE: https://stackoverflow.com/questions/5796718/html-entity-decode
+ *
+ * @param {String} text text to escape special html chars
+ * @returns escaped string
+ */
+  function decodeHtml(html) {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+  }
+
+/**
  * asynchronous function
  * the autoComplete function for the search bars
  *
@@ -120,6 +134,7 @@ function createSuggestions(list, searchFieldID) {
  */
 async function searchUsers(input) {
   let foundUsernames = [];
+  input = encodeURIComponent(input);
   if (input !== "") {
     let antwort = await fetch("Game/Search?userName=" + input);
     foundUsernames = await antwort.json();
@@ -137,7 +152,7 @@ async function searchUsers(input) {
  */
 async function acceptSuggestion(event) {
   event.preventDefault();
-  document.getElementById("suche").value = event.target.innerHTML;
+  document.getElementById("suche").value = decodeHtml(event.target.innerHTML);
   await addUser();
   let tempEvent = {};
   tempEvent.target = document.getElementById("suche");
@@ -153,6 +168,9 @@ async function addUser() {
   let foundUsernames = await searchUsers(input);
   let userExists = false;
   let userAlreadyFound = false;
+  foundUsernames = foundUsernames.map((curUser) => {
+    return decodeHtml(curUser);
+  });
   for (let curUser of foundUsernames) {
     if (curUser == input) {
       userExists = true;
@@ -265,7 +283,7 @@ function switchEpic(event) {
  */
 async function acceptSuggestionEpic(event) {
   event.preventDefault();
-  document.getElementById("sucheEpic").value = event.target.innerHTML;
+  document.getElementById("sucheEpic").value = decodeHtml(event.target.innerHTML);
   await addEpic();
   let tempEvent = {};
   tempEvent.target = document.getElementById("sucheEpic");
@@ -280,6 +298,7 @@ async function acceptSuggestionEpic(event) {
  */
 async function searchEpics(input) {
   let foundEpics = [];
+  input = encodeURIComponent(input);
   if (input !== "") {
     let antwort = await fetch("Game/Search?userName=" + input);
     foundEpics = await antwort.json();
@@ -297,6 +316,9 @@ async function addEpic() {
   let input = document.getElementById("sucheEpic").value;
   let foundEpics = await searchEpics(input);
   let epicExists = false;
+  foundEpics = foundEpics.map((curEpic) => {
+    return decodeHtml(curEpic);
+  });
 
   // check if epic with searched name exists
   for (let curEpic of foundEpics) {
