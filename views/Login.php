@@ -34,6 +34,9 @@
                 }
             } else if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 return $this->renderGET();
+            } else {
+                http_response_code(405); // Invalid method
+                return "{}";
             }
         }
 
