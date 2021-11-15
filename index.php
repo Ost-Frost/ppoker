@@ -141,6 +141,11 @@
         $renderPage = $missingPage;
     }
 
+    // if action is empty load normal page
+    if (isset($_REQUEST["action"]) && $_REQUEST["action"] === "") {
+        redirect("../" . $_REQUEST["page"]);
+    }
+
     // handle API calls
     if (isAPICall()) {
         require("controller/" . $renderPage . "Controller.php");
