@@ -113,6 +113,13 @@
     // check if the requested page is valid.
     // If not redirect the user to the corresponding standard page or send 404 if the request is an apiCall.
     $renderPage = "";
+    if (!isset($_REQUEST["page"])) {
+        if (validateUser()) {
+            redirect($standardPageLogIn);
+        } else {
+            redirect($standardPageLogOut);
+        }
+    }
     foreach ($pages as $testpage => $needsValidation) {
         if (strtolower($testpage) == strtolower($_REQUEST["page"])) {
             if ($needsValidation) {
