@@ -41,35 +41,22 @@
             $epicName = $_GET["epicName"];
             $userID = $_SESSION["userID"];
             $response = [];
-            $allEpics = [];
-            $foundEpicName = [];
-            $sqlQueryGameID = "SELECT SpielID FROM spielkarte WHERE UserID='$userID'";
+            $sqlQueryEpicID = "SELECT EpicID FROM epicuser WHERE UserID='$userID'";
             $this->dbConnect();
-            $result = $this->dbSQLQuery($sqlQueryGameID);
-            while ($row = mysqli_fetch_assoc($result)) {
-                $gameID = $row["SpielID"];
-                $sqlQueryEpics = "SELECT EpicID FROM epicspiel WHERE SpielID='$gameID'";
+            $resultID = $this->dbSQLQuery($sqlQueryEpicID);
+            while ($row = mysqli_fetch_assoc($resultID)) {
+                $epicID = $row["EpicID"];
+                $sqlQueryEpics = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$epicID'";
                 $resultEpic = $this->dbSQLQuery($sqlQueryEpics);
                 if($epics=$resultEpic->fetch_assoc()) {
-                    array_push($allEpics, $epics["EpicID"]);
+                    array_push($response, $epics["Name"]);
                 } else {
                     continue;
                 }
             }
-            $allEpics = $this->checkDouble($allEpics);
-            foreach($allEpics as $row) {
-                $sqlQuerySearch = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$row'";
-                $resultSearch = $this->dbSQLQuery($sqlQuerySearch);
-                if($search=$resultSearch->fetch_assoc()) {
-                    array_push($foundEpicName, $search["Name"]);
-                } else {
-                    continue;
-                }
-            }
-            $response = $foundEpicName;
             $this->dbClose();
             if (count($response) === 0) {
-                return false;
+                return [];
             }
             return $response;
         }

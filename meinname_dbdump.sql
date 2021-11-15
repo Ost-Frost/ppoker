@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 09. Nov 2021 um 15:23
+-- Erstellungszeit: 11. Nov 2021 um 01:07
 -- Server-Version: 10.4.21-MariaDB
 -- PHP-Version: 8.0.11
 
@@ -30,7 +30,7 @@ USE `ppoker`;
 --
 
 CREATE TABLE `epic` (
-  `EpicID` varchar(500) NOT NULL,
+  `EpicID` varchar(13) NOT NULL,
   `Name` text NOT NULL,
   `Beschreibung` text NOT NULL,
   `Aufwand` int(11) NOT NULL,
@@ -42,6 +42,7 @@ CREATE TABLE `epic` (
 --
 
 INSERT INTO `epic` (`EpicID`, `Name`, `Beschreibung`, `Aufwand`, `Einrichtungsdatum`) VALUES
+('12345', '12345', 'test search', 457, '2021-11-10'),
 ('35', '123', '456', 45, '2021-11-09'),
 ('36', 'los', 'soos', 0, '2021-11-02');
 
@@ -52,8 +53,8 @@ INSERT INTO `epic` (`EpicID`, `Name`, `Beschreibung`, `Aufwand`, `Einrichtungsda
 --
 
 CREATE TABLE `epicspiel` (
-  `EpicID` varchar(500) NOT NULL,
-  `SpielID` varchar(11) NOT NULL
+  `EpicID` varchar(13) NOT NULL,
+  `SpielID` varchar(13) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -68,25 +69,37 @@ INSERT INTO `epicspiel` (`EpicID`, `SpielID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `epicuser`
+--
+
+CREATE TABLE `epicuser` (
+  `EpicID` varchar(13) NOT NULL,
+  `UserID` varchar(13) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `spiele`
 --
 
 CREATE TABLE `spiele` (
-  `SpielID` varchar(11) NOT NULL,
+  `SpielID` varchar(13) NOT NULL,
   `Einrichtungsdatum` date NOT NULL,
   `Task` text NOT NULL,
-  `Beschreibung` text NOT NULL
+  `Beschreibung` text NOT NULL,
+  `Aufwand` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `spiele`
 --
 
-INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`) VALUES
-('111', '2021-11-01', 'ertz', 'qwertz'),
-('112', '2021-11-07', 'leeel', 'mit lool'),
-('34354', '2021-11-07', '12333', 'lul'),
-('45654', '2021-11-09', 'Mich selbst terminieren', 'Kopfschuss!!');
+INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`, `Aufwand`) VALUES
+('111', '2021-11-01', 'ertz', 'qwertz', 0),
+('112', '2021-11-07', 'leeel', 'mit lool', 0),
+('34354', '2021-11-07', '12333', 'lul', 0),
+('45654', '2021-11-09', 'Mich selbst terminieren', 'Kopfschuss!!', 0);
 
 -- --------------------------------------------------------
 
@@ -95,21 +108,22 @@ INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`) VA
 --
 
 CREATE TABLE `spielkarte` (
-  `SpielID` varchar(11) NOT NULL,
-  `UserID` varchar(11) NOT NULL,
+  `SpielID` varchar(13) NOT NULL,
+  `UserID` varchar(13) NOT NULL,
   `Karte` int(11) NOT NULL DEFAULT 0,
-  `Akzeptiert` tinyint(1) DEFAULT 0
+  `Akzeptiert` tinyint(1) DEFAULT 0,
+  `UserStatus` tinyint(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `spielkarte`
 --
 
-INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `Akzeptiert`) VALUES
-('111', '61891f1637c', 0, 0),
-('112', '61891f1637c', 0, 0),
-('34354', '61891f1637c', 0, 0),
-('45654', '61891f1637c', 0, 0);
+INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `Akzeptiert`, `UserStatus`) VALUES
+('111', '61891f1637c', 0, 0, 0),
+('112', '61891f1637c', 0, 0, 0),
+('34354', '61891f1637c', 0, 0, 0),
+('45654', '61891f1637c', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -118,7 +132,7 @@ INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `Akzeptiert`) VALUES
 --
 
 CREATE TABLE `user` (
-  `UserID` varchar(11) NOT NULL,
+  `UserID` varchar(13) NOT NULL,
   `Username` text NOT NULL,
   `Vorname` text NOT NULL,
   `Nachname` text NOT NULL,
@@ -155,6 +169,13 @@ ALTER TABLE `epicspiel`
   ADD KEY `SpielID` (`SpielID`);
 
 --
+-- Indizes für die Tabelle `epicuser`
+--
+ALTER TABLE `epicuser`
+  ADD PRIMARY KEY (`EpicID`,`UserID`),
+  ADD KEY `UserID` (`UserID`);
+
+--
 -- Indizes für die Tabelle `spiele`
 --
 ALTER TABLE `spiele`
@@ -185,12 +206,18 @@ ALTER TABLE `epicspiel`
   ADD CONSTRAINT `epicspiel_ibfk_2` FOREIGN KEY (`SpielID`) REFERENCES `spiele` (`SpielID`) ON DELETE CASCADE;
 
 --
+-- Constraints der Tabelle `epicuser`
+--
+ALTER TABLE `epicuser`
+  ADD CONSTRAINT `epicuser_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `epicuser_ibfk_2` FOREIGN KEY (`EpicID`) REFERENCES `epic` (`EpicID`) ON DELETE CASCADE;
+
+--
 -- Constraints der Tabelle `spielkarte`
 --
 ALTER TABLE `spielkarte`
-  ADD CONSTRAINT `spielkarte_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `spielkarte_ibfk_4` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
-  ADD CONSTRAINT `spielkarte_ibfk_5` FOREIGN KEY (`SpielID`) REFERENCES `spiele` (`SpielID`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `spielkarte_ibfk_1` FOREIGN KEY (`SpielID`) REFERENCES `spiele` (`SpielID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `spielkarte_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
