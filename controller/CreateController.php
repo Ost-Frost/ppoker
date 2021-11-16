@@ -44,7 +44,7 @@
             return true;
         }
 
-        public function validateGameOrEpicExists($checkTaskName, $checkEpicName) : bool {
+        public function validateDataExists($checkTaskName, $checkEpicName, $checkUserList) : bool {
             $valid = true;
             if ($checkEpicName && $this->creationMode === "create") {
                 $this->customErrorStrings["floatingEpicName"] = '"Die gewünschte Epic existiert bereits"';
@@ -52,6 +52,10 @@
             }
             if ($checkTaskName) {
                 $this->customErrorStrings["floatingStory"] = '"Die gewünschte Story existiert bereits"';
+                $valid = false;
+            }
+            if (!$checkUserList) {
+                $this->customErrorStrings["suche"] = '"Einige der angegebenen Benutzer existieren nicht."';
                 $valid = false;
             }
             return $valid;

@@ -21,11 +21,12 @@
                 if ($this->controller->validateData()) {
                     $checkEpicName = $this->model->checkEpicName();
                     $checkTaskName = $this->model->checkTaskName();
-                    if (!$this->controller->validateGameOrEpicExists($checkTaskName, $checkEpicName)) {
+                    $checkUserList = $this->model->checkUserList($this->controller->getUserList());
+                    if (!$this->controller->validateDataExists($checkTaskName, $checkEpicName, $checkUserList)) {
                         return $this->renderPOSTInvalidData();
                     }
                     $createNewEpic = ($this->controller->determineEpicCreationMode() === "create");
-                    if (!$this->model->createNewGame($createNewEpic)) {
+                    if (!$this->model->createNewGame($createNewEpic, $this->controller->getUserList())) {
                         return $this->renderPOSTUnknownFailure();
                     }
                     return $this->renderPOSTSuccess();

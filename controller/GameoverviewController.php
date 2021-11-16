@@ -12,12 +12,12 @@
          */
         public function apicall($action, $model) : string {
             if($action === "getGames") {
-                return $this->getGames();
+                return $this->getGames($model);
             }
             return false;
         }
 
-        private function getGames() {
+        private function getGames($model) {
             if (!$_SERVER["REQUEST_METHOD"] === "GET") {
                 return $this->rejectAPICall(405); // Method not allowed
             }

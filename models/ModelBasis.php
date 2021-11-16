@@ -59,6 +59,22 @@
             }
         }
 
+        /**
+         * checks if the sql query is valid and returns data
+         *
+         * @return boolean true if the sql query is valid and returns data, false otherwise
+         */
+        public function checkSQLQuery($sqlQuery) {
+            $sqlQueryExists = true;
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            if (!$response || is_null(mysqli_fetch_assoc($response))) {
+                $sqlQueryExists = false;
+            }
+            return $sqlQueryExists;
+        }
+
     }
 
 ?>
