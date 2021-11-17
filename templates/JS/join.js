@@ -1,8 +1,13 @@
-let c
+let c;
 function expand(event) {
     if (c != null) {
-        c.classList.add("secondaryPartHidden");
+        c.children[5].classList.add("secondaryPartHidden");
+        c.children[2].classList.remove("secondaryPartHidden");
+        c.children[3].classList.add("secondaryPartHidden");
     }
-    event.target.children[3].classList.remove("secondaryPartHidden");
-    c = event.target.children[3];
+    c = event.target;
+    c.children[5].classList.remove("secondaryPartHidden");
+    c.children[2].classList.add("secondaryPartHidden");
+    c.children[3].classList.remove("secondaryPartHidden");
+    console.log(c.children[5]);
 }
