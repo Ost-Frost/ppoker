@@ -44,7 +44,8 @@
             $templateProperties = [];
             $templateProperties["header"] = "";
             $templateProperties["content"] = $this->openTemplate("templates/login/login.php", ["userName" => ""]);
-            $templateProperties["script"] = "<script src='JS/login.js'></script>";
+            $templateProperties["script"] = "<script src='JS/formValidation.js'></script>";
+            $templateProperties["script"] .= "<script src='JS/login.js'></script>";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
 
@@ -58,7 +59,8 @@
             $loginTemplateProperties = [];
             $loginTemplateProperties["userName"] = $userName;
             $templateProperties["content"] = $this->openTemplate("templates/login/login.php", $loginTemplateProperties);
-            $templateProperties["script"] =  "<script src='JS/login.js'></script>";
+            $templateProperties["script"] = "<script src='JS/formValidation.js'></script>";
+            $templateProperties["script"] .= "<script src='JS/login.js'></script>";
             $templateProperties["script"] .= "<script>";
             $templateProperties["script"] .= "    document.addEventListener('DOMContentLoaded', () => {";
             $templateProperties["script"] .= "        showErrorMessages(['Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.']);";
@@ -77,7 +79,8 @@
             $loginTemplateProperties = [];
             $loginTemplateProperties["userName"] = $userName;
             $templateProperties["content"] = $this->openTemplate("templates/login/login.php", $loginTemplateProperties);
-            $templateProperties["script"] =  "<script src='JS/login.js'></script>";
+            $templateProperties["script"] = "<script src='JS/formValidation.js'></script>";
+            $templateProperties["script"] .= "<script src='JS/login.js'></script>";
             $templateProperties["script"] .= "<script>";
             $templateProperties["script"] .= "    document.addEventListener('DOMContentLoaded', () => {";
             $templateProperties["script"] .= "        errorHighlightAll();";

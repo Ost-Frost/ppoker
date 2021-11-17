@@ -49,8 +49,11 @@
         private function renderGET() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $this->openTemplate("templates/create/create.php");
-            $templateProperties["script"] = "<script src='JS/create.js'></script>";
+            $createTemplateProperties = $this->controller->getCreateTemplateProperties();
+            $templateProperties["content"] = $this->openTemplate("templates/create/create.php", $createTemplateProperties);
+            $templateProperties["script"] = "<script src='JS/formValidation.js'></script>";
+            $templateProperties["script"] .= "<script src='JS/create.js'></script>";
+            $templateProperties["script"] .= $this->controller->getGETRequestScript();
             return $this->openTemplate("templates/navBarTemplate.php", $templateProperties);
         }
 
@@ -62,7 +65,8 @@
         private function renderPOSTSuccess() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $this->openTemplate("templates/register/registerSuccess.php", []);
+            $createSuccessTemplateProperties = $this->controller->getCreateSuccessTemplateProperties();
+            $templateProperties["content"] = $this->openTemplate("templates/create/createSuccess.php", $createSuccessTemplateProperties);
             $templateProperties["script"] = "";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
@@ -75,9 +79,24 @@
         private function renderPOSTInvalidData() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $this->openTemplate("templates/register/registerFailure.php", []);
-            $templateProperties["script"] = "";
-            return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
+            $createTemplateProperties = $this->controller->getCreateTemplateProperties();
+            $templateProperties["content"] = $this->openTemplate("templates/create/create.php", $createTemplateProperties);
+            $templateProperties["script"] = "<script src='JS/formValidation.js'></script>";
+            $templateProperties["script"] .= "<script src='JS/create.js'></script>";
+            $templateProperties["script"] .= "<script>";
+            $templateProperties["script"] .= '    customErrorMessages = {' . $this->controller->getCustomErrorStrings() . '};';
+            $templateProperties["script"] .= "    document.addEventListener('DOMContentLoaded', async (event) => {";
+            if ($this->controller->determineEpicCreationMode() === "create") {
+                $templateProperties["script"] .= '    await switchEpic("Create");';
+            } else {
+                $templateProperties["script"] .= '    document.getElementById("sucheEpic").value = decodeHtml("'. $_POST["epicNameSelected"] . '");';
+                $templateProperties["script"] .= '    await addEpic();';
+            }
+            $templateProperties["script"] .= "        validateAll(event);";
+            $templateProperties["script"] .= "        await addMultipleUser(" . json_encode($this->controller->getUserList()) . ");";
+            $templateProperties["script"] .= "    });";
+            $templateProperties["script"] .= "</script>";
+            return $this->openTemplate("templates/navBarTemplate.php", $templateProperties);
         }
 
         /**
@@ -88,7 +107,7 @@
         private function renderPOSTUnknownFailure() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $this->openTemplate("templates/register/registerFailure.php", []);
+            $templateProperties["content"] = $this->openTemplate("templates/create/createFailure.php", []);
             $templateProperties["script"] = "";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }

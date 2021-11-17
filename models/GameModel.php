@@ -18,7 +18,7 @@
             $userName = str_replace("%", "\%", $userName);
             $userName = str_replace("_", "\_", $userName);
             $response = [];
-            $sqlQuery = "SELECT Username FROM user WHERE (Username LIKE '$userName%' OR Mail LIKE '$userName%')";
+            $sqlQuery = "SELECT Username FROM user WHERE (Username LIKE '$userName%' OR Mail LIKE '$userName%') ORDER BY Username ASC";
             $this->dbConnect();
             $result = $this->dbSQLQuery($sqlQuery);
             while ($row = mysqli_fetch_assoc($result)) {
@@ -48,7 +48,7 @@
             $resultID = $this->dbSQLQuery($sqlQueryEpicID);
             while ($row = mysqli_fetch_assoc($resultID)) {
                 $epicID = $row["EpicID"];
-                $sqlQueryEpics = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$epicID'";
+                $sqlQueryEpics = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$epicID' ORDER BY Name ASC";
                 $resultEpic = $this->dbSQLQuery($sqlQueryEpics);
                 if($epics=$resultEpic->fetch_assoc()) {
                     $alreadyFound = false;

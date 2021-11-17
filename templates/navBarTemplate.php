@@ -25,7 +25,7 @@
           <h2 > Planing Poker</h2>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" data-target="#navbarCollapse">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -40,7 +40,6 @@
               <a class="nav-link " aria-current="page" href="Collection">Meine Spiele</a>
             </li>
           </ul>
-          <a class="justify-content-right"  style="color:grey; text-decoration: none;" href="Logout">Logout</a>
         </div>
       </div>
     </nav>

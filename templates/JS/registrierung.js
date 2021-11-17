@@ -1,4 +1,4 @@
-const inputLengthValidationData = {
+inputLengthValidationData = {
     floatingUserName : {
         message : "Der Benutzername",
         maxlength: 20
@@ -21,11 +21,9 @@ const inputLengthValidationData = {
     },
 }
 
-let customErrorMessages = {};
-
 function validateAll(event) {
     let errorMessages = [];
-    removePreviousValidation();
+    removePreviousValidation(["floatingUserName", "floatingFirstName", "floatingLastName", "floatingEmail", "floatingEmailRepeat", "floatingPassword", "floatingPasswordRepeat"]);
 
     // Validierung
     errorMessages.push(validateNotEmpty(["floatingUserName", "floatingFirstName", "floatingLastName", "floatingEmail", "floatingEmailRepeat", "floatingPassword", "floatingPasswordRepeat"]))
@@ -39,53 +37,6 @@ function validateAll(event) {
     error = showErrorMessages(errorMessages);
     if (error) {
         event.preventDefault();
-    }
-}
-
-function validateNotEmpty(fields) {
-    let error = false;
-
-    for (let curField of fields) {
-        let element = document.getElementById(curField);
-        if (element.value === "") {
-            element.classList.add("is-invalid");
-            error = true;
-        } else {
-            element.classList.add("is-valid");
-        }
-    }
-
-    if (error) {
-        return "Bitte füllen sie alle Felder aus.";
-    }
-
-    return "";
-}
-
-function validateInputLength() {
-    let errorList = [];
-    let inputLengthValidationDataFields = Object.keys(inputLengthValidationData);
-    for (let curField of inputLengthValidationDataFields) {
-        let element = document.getElementById(curField);
-        if (element.value.length > inputLengthValidationData[curField].maxlength) {
-            element.classList.add("is-invalid");
-            let message = inputLengthValidationData[curField].message;
-            let maxlength = inputLengthValidationData[curField].maxlength;
-            errorList.push(message + " darf maximal " + maxlength + " Zeichen lang sein.");
-        } else {
-            element.classList.add("is-valid");
-        }
-    }
-
-    return errorList;
-}
-
-function removePreviousValidation() {
-    let elements = ["floatingUserName", "floatingFirstName", "floatingLastName", "floatingEmail", "floatingEmailRepeat", "floatingPassword", "floatingPasswordRepeat"];
-    for (let curElement of elements) {
-        let element = document.getElementById(curElement);
-        element.classList.remove("is-invalid");
-        element.classList.remove("is-valid");
     }
 }
 
@@ -128,33 +79,6 @@ function validatePasswortRepeat() {
     }
     input2.classList.add("is-valid");
     return "";
-}
-
-function validateCustomErrorMessages() {
-    let errorMessages = [];
-    let errorFields = Object.keys(customErrorMessages);
-    for (curErrorField of errorFields) {
-        let input = document.getElementById(curErrorField);
-        input.classList.add("is-invalid");
-        errorMessages.push(customErrorMessages[curErrorField]);
-    }
-    customErrorMessages = {};
-    return errorMessages;
-}
-
-function showErrorMessages(errorMessages) {
-    errorField = document.getElementById("invalidFeedbackField");
-    errorField.innerHTML = "";
-    error = false;
-
-    for (let curErrorMessage of errorMessages) {
-        if (curErrorMessage !== "") {
-            errorField.innerHTML = errorField.innerHTML + curErrorMessage + "<br>";
-            error = true;
-        }
-    }
-
-    return error;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

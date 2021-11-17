@@ -52,7 +52,8 @@
             $templateProperties["header"] = "";
             $registerTemplateProperties = $this->controller->getRegisterTemplateProperties();
             $templateProperties["content"] = $this->openTemplate("templates/register/register.php", $registerTemplateProperties);
-            $templateProperties["script"] = "<script src='JS/registrierung.js'></script>";
+            $templateProperties["script"] = "<script src='JS/formValidation.js'></script>";
+            $templateProperties["script"] .= "<script src='JS/registrierung.js'></script>";
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
 
@@ -79,7 +80,8 @@
             $templateProperties["header"] = "";
             $registerTemplateProperties = $this->controller->getRegisterTemplateProperties();
             $templateProperties["content"] = $this->openTemplate("templates/register/register.php", $registerTemplateProperties);
-            $templateProperties["script"] =  "<script src='JS/registrierung.js'></script>";
+            $templateProperties["script"] = "<script src='JS/formValidation.js'></script>";
+            $templateProperties["script"] .= "<script src='JS/registrierung.js'></script>";
             $templateProperties["script"] .= "<script>";
             $templateProperties["script"] .= '    customErrorMessages = {' . $this->controller->getCustomErrorStrings() . '};';
             $templateProperties["script"] .= "    document.addEventListener('DOMContentLoaded', () => {";

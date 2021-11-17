@@ -47,11 +47,11 @@
         public function validateDataExists($checkTaskName, $checkEpicName, $checkUserList) : bool {
             $valid = true;
             if ($checkEpicName && $this->creationMode === "create") {
-                $this->customErrorStrings["floatingEpicName"] = '"Die gewünschte Epic existiert bereits"';
+                $this->customErrorStrings["floatingEpicName"] = '"Die gewünschte Epic existiert bereits."';
                 $valid = false;
             }
             if ($checkTaskName) {
-                $this->customErrorStrings["floatingStory"] = '"Die gewünschte Story existiert bereits"';
+                $this->customErrorStrings["floatingStory"] = '"Die gewünschte Story existiert bereits."';
                 $valid = false;
             }
             if (!$checkUserList) {
@@ -59,6 +59,14 @@
                 $valid = false;
             }
             return $valid;
+        }
+
+        public function getCustomErrorStrings() {
+            $errorString = "";
+            foreach ($this->customErrorStrings as $field => $errorMessage) {
+                $errorString .= "$field: $errorMessage,";
+            }
+            return $errorString;
         }
 
         public function determineRequestParameters() {
@@ -92,6 +100,79 @@
             } else {
                 return [];
             }
+        }
+
+        /**
+         * generates the template Properties to render the create template by filling in the request data
+         *
+         * @return array the template properties for the create page
+         */
+        public function getCreateTemplateProperties() : array {
+
+            $templateProperties = [];
+
+            $allFields = ["gameTask", "gameDescription", "epicName", "epicDescription"];
+
+            foreach ($allFields as $key => $field) {
+
+                if (isset($_POST[$field]) && $_POST[$field] != "") {
+                    $templateProperties[$field] = $_POST[$field];
+                } else {
+                    $templateProperties[$field] = "";
+                }
+            }
+
+            return $templateProperties;
+        }
+
+        /**
+         * generates the template Properties to render the createSuccess template by filling in the request data
+         *
+         * @return array the template properties for the create page
+         */
+        public function getCreateSuccessTemplateProperties() : array {
+
+            $templateProperties = [];
+
+            $url = "Create?";
+            if ($this->creationMode === "select") {
+                $url .= "epicName=" . $_POST["epicNameSelected"];
+            } else {
+                $url .= "epicName=" . $_POST["epicName"];
+            }
+            $url .= "&userList=" . json_encode($this->getUserList());
+
+            $templateProperties["url"] = $url;
+            return $templateProperties;
+        }
+
+        /**
+         * generates additional JavaScript that requires PHP parameters in the GET request
+         *
+         * @return string script block as an html string
+         */
+        public function getGETRequestScript() : string{
+            $isEpicNameSet = $this->validateFieldNotEmpty("epicName", "GET");
+            $isUserListSet = $this->validateFieldNotEmpty("userList", "GET");
+            $scriptString = "";
+
+            if (!$isEpicNameSet && !$isUserListSet) {
+                return $scriptString;
+            }
+
+            $scriptString .= "<script>";
+            $scriptString .= "    document.addEventListener('DOMContentLoaded', async (event) => {";
+            if ($isEpicNameSet) {
+                $scriptString .= '    document.getElementById("sucheEpic").value = decodeHtml("'. $_GET["epicName"] . '");';
+                $scriptString .= '    await addEpic();';
+            }
+            if ($isUserListSet) {
+                $scriptString .= "    await addMultipleUser(" . htmlspecialchars_decode($_GET["userList"],ENT_QUOTES) . ");";
+            }
+            $scriptString .= "    });";
+            $scriptString .= "</script>";
+
+            return $scriptString;
         }
     }
 ?>

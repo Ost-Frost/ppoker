@@ -28,7 +28,7 @@
         <div class="row d-none" id="epicCreate" >
           <div class="col-md-8 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="floatingEpicName" name="epicName">
+              <input type="text" class="form-control" id="floatingEpicName" name="epicName" value='<?= $templateProperties["epicName"] ?>'>
               <label for="floatingEpicName">Epic</label>
             </div>
           </div>
@@ -38,7 +38,7 @@
 
           <div class="col-md-12 mb-3">
             <div class="form-floating">
-              <textarea class="form-control" id="floatingEpicDescription" style="height: 150px; width: 100%;" name="epicDescription"></textarea>
+              <textarea class="form-control" id="floatingEpicDescription" style="height: 150px; width: 100%;" name="epicDescription" value='<?= $templateProperties["epicDescription"] ?>'></textarea>
               <label for="floatingEpicDescription">Beschreibung</label>
             </div>
           </div>
@@ -48,14 +48,14 @@
         <div class="row">
           <div class="col-md-12 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="floatingStory" name="gameTask">
+              <input type="text" class="form-control" id="floatingStory" name="gameTask" value='<?= $templateProperties["gameTask"] ?>'>
               <label for="floatingStory">Story</label>
             </div>
           </div>
 
           <div class="col-md-12 mb-3">
             <div class="form-floating">
-              <textarea class="form-control" id="floatingDescription" style="height: 150px; width: 100%;" name="gameDescription"></textarea>
+              <textarea class="form-control" id="floatingDescription" style="height: 150px; width: 100%;" name="gameDescription" value='<?= $templateProperties["gameDescription"] ?>'></textarea>
               <label for="floatingDescription">Beschreibung</label>
             </div>
           </div>
@@ -79,7 +79,9 @@
             <button class="btn btn-primary btn-lg btn-block type" type="button" id="inviteBtn">Einladen</button>
           </div>
         </div>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Spiel erstellen</button>
+        <p class="my-1 text-start text-danger" id="invalidFeedbackField"></p>
+        <br/>
+        <button class="btn btn-primary btn-lg btn-block" type="submit" id="submitButton">Spiel erstellen</button>
         <div style="height: 300px;">
       </form>
 

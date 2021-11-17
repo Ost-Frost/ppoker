@@ -1,3 +1,70 @@
+//###################################################################
+//##### Input validation ############################################
+//###################################################################
+inputLengthValidationData = {
+  floatingEpicName : {
+      message : "Die Epic",
+      maxlength: 100
+  },
+  floatingStory : {
+      message : "Die Story",
+      maxlength: 100
+  },
+  floatingEpicDescription : {
+      message : "Die Beschreibung der Epic",
+      maxlength: 500
+  },
+  floatingDescription : {
+      message : "Die Beschreibung der Story",
+      maxlength: 500
+  }
+}
+
+function validateAll(event) {
+
+  let errorMessages = [];
+  removePreviousValidation(["floatingEpicName", "floatingStory", "floatingEpicDescription", "floatingDescription", "suche", "sucheEpic"]);
+
+  // Validierung
+  let validationFields = ["floatingStory"];
+  if (newEpic) {
+    validationFields.push(["floatingEpicName"]);
+  }
+  errorMessages.push(validateNotEmpty(validationFields));
+  if (!newEpic) {
+    errorMessages.push(validateEpicSelected());
+  }
+  errorMessages = errorMessages.concat(validateInputLength());
+  errorMessages = errorMessages.concat(validateCustomErrorMessages());
+
+  // Error Messages in HTML anzeigen
+  error = showErrorMessages(errorMessages);
+  if (error) {
+      event.preventDefault();
+  }
+}
+
+function validateEpicSelected() {
+  let input = document.getElementById("floatingEpicNameSelected");
+
+  if (input) {
+    document.getElementById("sucheEpic").classList.add("is-valid");
+    return "";
+  } else {
+    document.getElementById("sucheEpic").classList.add("is-invalid");
+    return "Bitte wählen Sie eine Epic aus oder erstellen Sie eine Neue.";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("submitButton").addEventListener("click", validateAll);
+});
+
+//###################################################################
+//##### General functions ###########################################
+//###################################################################
+
+
 /**
  * list of invited users
  */
@@ -161,6 +228,18 @@ async function acceptSuggestion(event) {
 }
 
 /**
+ * adds a list of userNames to the selection
+ *
+ * @param {Array} userList list of userNames
+ */
+async function addMultipleUser(userList) {
+  for (let curUser of userList) {
+    document.getElementById("suche").value = decodeHtml(curUser);
+    await addUser();
+  }
+}
+
+/**
  * adds a user to the invitation selection
  */
 async function addUser() {
@@ -258,18 +337,9 @@ function removeUser(event) {
 /**
  * switches between selecting or creating an epic
  *
- * @param {Event} event
+ * @param {String} switchTo "Create" to switch to creating epics "Select" to switch to selecting epics
  */
-function switchEpic(event) {
-  let switchTo;
-  if (event.target.id === "btnSwitchEpicCreate") {
-    switchTo = "Create";
-  } else if (event.target.id === "btnSwitchEpicSelect") {
-    switchTo = "Select";
-  } else {
-    return;
-  }
-
+function switchEpic(switchTo) {
   let selectElement = document.getElementById("epicSelect");
   let createElement = document.getElementById("epicCreate");
   let epicHeaderElement = document.getElementById("epicHeader");
@@ -284,6 +354,21 @@ function switchEpic(event) {
     createElement.classList.remove("d-none");
     newEpic = true;
     epicHeaderElement.innerHTML = "Epic erstellen";
+  }
+}
+
+/**
+ * handles the button Events to switch between selecting or creating epics
+ *
+ * @param {Event} event
+ */
+function switchEpicEventHandler(event) {
+  if (event.target.id === "btnSwitchEpicCreate") {
+    switchEpic("Create");
+  } else if (event.target.id === "btnSwitchEpicSelect") {
+    switchEpic("Select");
+  } else {
+    return;
   }
 }
 
@@ -380,6 +465,7 @@ function buildEpic(epicName) {
   hiddenInput.setAttribute("type", "hidden");
   hiddenInput.setAttribute("value", epicName);
   hiddenInput.setAttribute("name", "epicNameSelected");
+  hiddenInput.setAttribute("id", "floatingEpicNameSelected");
 
   // add element to selection
   epicElement.appendChild(deleteButton);
@@ -406,6 +492,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("sucheEpic").addEventListener("input", autoComplete);
   document.getElementById("sucheEpic").addEventListener("keypress", keyPressSearch);
   document.getElementById("btnEpicSelect").addEventListener("click", addEpic);
-  document.getElementById("btnSwitchEpicCreate").addEventListener("click", switchEpic);
-  document.getElementById("btnSwitchEpicSelect").addEventListener("click", switchEpic);
+  document.getElementById("btnSwitchEpicCreate").addEventListener("click", switchEpicEventHandler);
+  document.getElementById("btnSwitchEpicSelect").addEventListener("click", switchEpicEventHandler);
 });
