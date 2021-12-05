@@ -18,11 +18,14 @@
             $userName = str_replace("%", "\%", $userName);
             $userName = str_replace("_", "\_", $userName);
             $response = [];
-            $sqlQuery = "SELECT Username FROM user WHERE (Username LIKE '$userName%' OR Mail LIKE '$userName%') ORDER BY Username ASC";
+            $sqlQuery = "SELECT Username, UserID FROM user WHERE (Username LIKE '$userName%' OR Mail LIKE '$userName%') ORDER BY Username ASC";
             $this->dbConnect();
             $result = $this->dbSQLQuery($sqlQuery);
             while ($row = mysqli_fetch_assoc($result)) {
                 $foundUserName = $row["Username"];
+                if ($row["UserID"] === $_SESSION["userID"]) {
+                    continue;
+                }
                 array_push($response, $foundUserName);
             }
             $this->dbClose();
