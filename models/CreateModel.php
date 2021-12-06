@@ -44,13 +44,10 @@
             $sqlQuery = "INSERT INTO `epicspiel` (`SpielID`, `EpicID`) ";
             $sqlQuery .= "VALUES ('$gameID', '$epicID')";
             $response = $this->dbSQLQuery($sqlQuery);
-            if (!$response) {
-                echo $sqlQuery;
-            }
             array_push($responses, $response);
 
             $userID = $_SESSION["userID"];
-            $sqlQuery = "INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `Akzeptiert`) ";
+            $sqlQuery = "INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `UserStatus`) ";
             $sqlQuery .= "VALUES ('$gameID', '$userID', '0', '1')";
             $response = $this->dbSQLQuery($sqlQuery);
             array_push($responses, $response);
@@ -67,7 +64,7 @@
                     if ($uID === $_SESSION["userID"]) {
                         continue;
                     }
-                    $sqlQueryGameUser = "INSERT INTO `spielkarte` (`UserID`, `SpielID`, `Karte`, `Akzeptiert`)";
+                    $sqlQueryGameUser = "INSERT INTO `spielkarte` (`UserID`, `SpielID`, `Karte`, `UserStatus`)";
                     $sqlQueryGameUser .= "VALUE ('$uID', '$gameID', '0', '0') ";
                     $response = $this->dbSQLQuery($sqlQueryGameUser);
                     array_push($responses, $response);
@@ -99,9 +96,15 @@
             return $this->checkSqlQuery($sqlQuery);
         }
 
-        public function checkTaskName() {
+        public function checkTaskName($creationMode) {
+            if ($creationMode === "create") {
+                $epicName = $_POST["epicName"];
+            } else {
+                $epicName = $_POST["epicNameSelected"];
+            }
             $taskName = $_POST["gameTask"];
-            $sqlQuery = "SELECT Task FROM spiele WHERE Task='$taskName'";
+            $sqlQuery = "SELECT s.Task FROM epic e INNER JOIN epicspiel es ON e.EpicID = es.EpicID INNER JOIN spiele s ON es.SpielID = s.SpielID ";
+            $sqlQuery .= " WHERE Task='$taskName' AND e.Name='$epicName'";
             return $this->checkSqlQuery($sqlQuery);
         }
 

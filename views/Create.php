@@ -20,7 +20,7 @@
                 $this->controller->determineRequestParameters();
                 if ($this->controller->validateData()) {
                     $checkEpicName = $this->model->checkEpicName();
-                    $checkTaskName = $this->model->checkTaskName();
+                    $checkTaskName = $this->model->checkTaskName($this->controller->determineEpicCreationMode());
                     $checkUserList = $this->model->checkUserList($this->controller->getUserList());
                     if (!$this->controller->validateDataExists($checkTaskName, $checkEpicName, $checkUserList)) {
                         return $this->renderPOSTInvalidData();

@@ -1,7 +1,11 @@
 <?php
     require("ControllerBasis.php");
+
     /**
-     * base controller. All controllers have to extend this class
+     * API base controller. All APIcontrollers have to extend this class
+     *
+     * By extending a page controller from an API Controller it also becomes an API
+     * and defined API actions can be requested.
      */
     abstract class APIControllerBasis extends ControllerBasis {
 
@@ -11,7 +15,7 @@
          * @param string action string
          * @param ModelBasis corresponding data model for database actions
          *
-         * @return string response strin of the API call
+         * @return string response string of the API call
          */
         abstract public function apiCall($action, $model) : string;
 

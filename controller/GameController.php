@@ -17,6 +17,7 @@
 
         /**
          * searches the database for userNames that start with requested username string or email string
+         * or for epicNames that start with requested epicName string
          *
          * @param ModelBasis corresponding model
          *
@@ -41,29 +42,6 @@
                 return $this->rejectAPICall(500); // Internal Server Error
             }
             return $this->resolveAPICall(json_encode($dbResponse)); // OK
-        }
-
-        /**
-         * creates a new game with the requst data
-         *
-         * @param ModelBasis corresponding model
-         *
-         * @return string response string
-         */
-        public function createGame($model) : string {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
-                return $this->rejectAPICall(405); // Method not allowed
-            }
-            if (!$this->validateFieldGroupNotEmpty(["task", "description"])) {
-                return $this->rejectAPICall(400); // Bad Request
-            }
-            $dbResponse = $model->createGame();
-            foreach ($dbResponse as $response) {
-                if (!$response) {
-                    return $this->rejectAPICall(500); // Internal Server Error
-                }
-            }
-            return $this->resolveAPICall("{}", 201); // Created
         }
 
         /**

@@ -58,7 +58,6 @@
                     }
                 }
             }
-            echo sizeof($allUserGame);
             foreach($allUserEpic as $epicID => $epic) {
                 $epicIDTemp = $epic["EpicID"];
                 $sqlQueryEpic = "SELECT SpielID FROM `epicspiel` WHERE EpicID='$epicIDTemp'";
@@ -87,7 +86,7 @@
             }
             $this->gameStructure["gamesWOEpic"] = $gamesWOEpic;
             $this->gameStructure["allEpic"] = $allUserEpic;
-            $this->gameStructure = json_encode($this->gameStructure);
+            $this->gameStructure = $this->gameStructure;
         }
     }
 
