@@ -1,7 +1,16 @@
-let s;
+let s; //Game 
+let e;
 function epic(event) {
+    let parent = event.target.parentNode;
+    if (e != null) {
+        e.children[0].classList.remove("hidden");
+        e.children[1].classList.add("hidden");
+        parent.children[2].classList.add("hidden");
+    }
     e = event.target;
-    alert(e);
+    e.children[0].classList.add("hidden");
+    e.children[1].classList.remove("hidden");
+    parent.children[2].classList.remove("hidden");
 }
 function expand(event) {
     if (s != null) {
