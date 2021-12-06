@@ -54,6 +54,10 @@
             $sqlQuery .= "VALUES ('$gameID', '$userID', '0', '1')";
             $response = $this->dbSQLQuery($sqlQuery);
             array_push($responses, $response);
+            $sqlQuery = "INSERT INTO `epicuser` (`EpicID`, `UserID`) ";
+            $sqlQuery .= "VALUES ('$epicID', '$userID')";
+            $response = $this->dbSQLQuery($sqlQuery);
+            array_push($responses, $response);
 
             foreach($invitations as $userName) {
                 $sqlQueryUserID = "SELECT UserID FROM user WHERE Username='$userName'";
@@ -66,6 +70,10 @@
                     $sqlQueryGameUser = "INSERT INTO `spielkarte` (`UserID`, `SpielID`, `Karte`, `Akzeptiert`)";
                     $sqlQueryGameUser .= "VALUE ('$uID', '$gameID', '0', '0') ";
                     $response = $this->dbSQLQuery($sqlQueryGameUser);
+                    array_push($responses, $response);
+                    $sqlQueryEpicUser = "INSERT INTO `epicuser` (`EpicID`, `UserID`) ";
+                    $sqlQueryEpicUser .= "VALUES ('$epicID', '$uID')";
+                    $response = $this->dbSQLQuery($sqlQueryEpicUser);
                     array_push($responses, $response);
                 }
             }
