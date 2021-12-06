@@ -16,7 +16,7 @@
             $gameID = $_REQUEST["gameID"]
             $userID = $_SESSION['userID'];
 
-            $sqlQuery = "UPDATE `spielkarte` SET KARTE='$value' AKZEPTIERT='1' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $sqlQuery = "UPDATE `spielkarte` SET Karte='$value' UserStatus='2' WHERE UserID='$userID' AND SpielID='$gameID'";
             $this->dbConnect();
             $result = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
