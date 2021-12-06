@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 11. Nov 2021 um 01:07
+-- Erstellungszeit: 06. Dez 2021 um 18:56
 -- Server-Version: 10.4.21-MariaDB
 -- PHP-Version: 8.0.11
 
@@ -44,7 +44,8 @@ CREATE TABLE `epic` (
 INSERT INTO `epic` (`EpicID`, `Name`, `Beschreibung`, `Aufwand`, `Einrichtungsdatum`) VALUES
 ('12345', '12345', 'test search', 457, '2021-11-10'),
 ('35', '123', '456', 45, '2021-11-09'),
-('36', 'los', 'soos', 0, '2021-11-02');
+('36', 'los', 'soos', 0, '2021-11-02'),
+('61add35d63d9f', '1234556', 'Ich bin lööölig', 0, '2021-12-06');
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,8 @@ CREATE TABLE `epicspiel` (
 INSERT INTO `epicspiel` (`EpicID`, `SpielID`) VALUES
 ('35', '111'),
 ('35', '34354'),
-('36', '112');
+('36', '112'),
+('61add35d63d9f', '61add35d6493c');
 
 -- --------------------------------------------------------
 
@@ -74,8 +76,16 @@ INSERT INTO `epicspiel` (`EpicID`, `SpielID`) VALUES
 
 CREATE TABLE `epicuser` (
   `EpicID` varchar(13) NOT NULL,
-  `UserID` varchar(13) NOT NULL
+  `UserID` varchar(13) NOT NULL,
+  `UserStatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `epicuser`
+--
+
+INSERT INTO `epicuser` (`EpicID`, `UserID`, `UserStatus`) VALUES
+('35', '61891f1637c', 0);
 
 -- --------------------------------------------------------
 
@@ -99,7 +109,8 @@ INSERT INTO `spiele` (`SpielID`, `Einrichtungsdatum`, `Task`, `Beschreibung`, `A
 ('111', '2021-11-01', 'ertz', 'qwertz', 0),
 ('112', '2021-11-07', 'leeel', 'mit lool', 0),
 ('34354', '2021-11-07', '12333', 'lul', 0),
-('45654', '2021-11-09', 'Mich selbst terminieren', 'Kopfschuss!!', 0);
+('45654', '2021-11-09', 'Mich selbst terminieren', 'Kopfschuss!!', 0),
+('61add35d6493c', '2021-12-06', '42', '123 Hosenbrei', 0);
 
 -- --------------------------------------------------------
 
@@ -112,7 +123,7 @@ CREATE TABLE `spielkarte` (
   `UserID` varchar(13) NOT NULL,
   `Karte` int(11) NOT NULL DEFAULT 0,
   `Akzeptiert` tinyint(1) DEFAULT 0,
-  `UserStatus` tinyint(3) NOT NULL
+  `UserStatus` tinyint(3) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -120,10 +131,12 @@ CREATE TABLE `spielkarte` (
 --
 
 INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `Akzeptiert`, `UserStatus`) VALUES
-('111', '61891f1637c', 0, 0, 0),
+('111', '61891f1637c', 0, 0, 1),
 ('112', '61891f1637c', 0, 0, 0),
 ('34354', '61891f1637c', 0, 0, 0),
-('45654', '61891f1637c', 0, 0, 0);
+('45654', '61891f1637c', 0, 0, 0),
+('61add35d6493c', '61891f1637c', 0, 0, 0),
+('61add35d6493c', '61adc4107b418', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -149,7 +162,8 @@ INSERT INTO `user` (`UserID`, `Username`, `Vorname`, `Nachname`, `Mail`, `Passwo
 ('123', 'PetersPopel69', 'Peter', 'Popelkopf', 'Peter.Popel@gmail.com', '123', '2021-11-01'),
 ('3456', 'tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt', 'Ole \"fucking\"', 'Reimers', 'ole.reimers@fujitsu.com', 'ole123', '2021-11-07'),
 ('6188125006f', 'PeterPenis420', 'Peter', 'Penis', 'peter.penis@steif.com', '$2y$10$bECr4eHy6MqXxZxkw.plUeZoSeOoR.JWLklqfIxEvg4Agm0TEf/Ea', '2021-11-07'),
-('61891f1637c', 'FLX', 'Felix', 'Schmeißer', 'felixmichael.schmeisser@fujitsu.com', '$2y$10$oDpVTE54FyQeHlnXKIoA7O6b2.KD249Y8iuHWZET.rPTszEacASJe', '2021-11-08');
+('61891f1637c', 'FLX', 'Felix', 'Schmeißer', 'felixmichael.schmeisser@fujitsu.com', '$2y$10$oDpVTE54FyQeHlnXKIoA7O6b2.KD249Y8iuHWZET.rPTszEacASJe', '2021-11-08'),
+('61adc4107b418', 'PeterPenis69', 'Felix', 'Schmeißer', 'felix.schmeisser@fujitsu.com', '$2y$10$8r1ZX7KD/neXbynlh2Vnl.lhHVpstDXloa7vT2Eshu5Mx.HzxyJzG', '2021-12-06');
 
 --
 -- Indizes der exportierten Tabellen
