@@ -15,12 +15,46 @@
          * @return string rendered html string
          */
         public function render() : string {
+
+            $gameStructure = $this->model->getGameStructure()["allEpic"];
+            $gamesContent = "";
+
+            // create Epics
+            foreach ($gameStructure as $curEpic) {
+                $gamesContent .= $this->renderEpic($curEpic);
+            }
+
+            $joinTemplateProperties = [];
+            $joinTemplateProperties["content"] = $gamesContent;
+
             $templateProperties = [];
-            $data = $this->model->getJoinStructure();
             $templateProperties["header"] = "";
-            $templateProperties["content"] = $this->openTemplate("templates/join/join.php");
+            $templateProperties["content"] = $this->openTemplate("templates/join/join.php", $joinTemplateProperties);
             $templateProperties["script"] = "<script src='JS/join.js'></script>";
-            return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
+            return $this->openTemplate("templates/navBarTemplate.php", $templateProperties);
+        }
+
+        private function renderEpic($epicData) {
+
+            $games = $epicData["games"];
+            $renderedGames = "";
+
+            // create Games
+            foreach ($games as $curGame) {
+                $renderedGames .= $this->renderGame($curGame);
+            }
+            $templateProperties = [];
+            $templateProperties["epicName"] = $epicData["Name"];
+            $templateProperties["epicSpiele"] = $renderedGames;
+            return $this->openTemplate("templates/join/epicTemplate.php", $templateProperties);
+        }
+
+        private function renderGame($gameData) {
+            $templateProperties = [];
+            $templateProperties["hostName"] = "";//$gameData["HostName"];
+            $templateProperties["gameTask"] = $gameData["Task"];
+            $templateProperties["gameDescription"] = ($gameData["Beschreibung"] !== "") ? $gameData["Beschreibung"] : "-";
+            return $this->openTemplate("templates/join/gameTemplate.php", $templateProperties);
         }
 
     }
