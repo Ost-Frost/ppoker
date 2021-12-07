@@ -90,7 +90,7 @@
             } else if ($this->validateFieldNotEmpty("epicName")) {
                 return "create";
             } else {
-                return false;
+                return "none";
             }
         }
 

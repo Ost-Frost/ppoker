@@ -20,13 +20,12 @@
                 $this->controller->determineRequestParameters();
                 if ($this->controller->validateData()) {
                     $checkEpicName = $this->model->checkEpicName();
-                    $checkTaskName = $this->model->checkTaskName();
+                    $checkTaskName = $this->model->checkTaskName($this->controller->determineEpicCreationMode());
                     $checkUserList = $this->model->checkUserList($this->controller->getUserList());
                     if (!$this->controller->validateDataExists($checkTaskName, $checkEpicName, $checkUserList)) {
                         return $this->renderPOSTInvalidData();
                     }
-                    $createNewEpic = ($this->controller->determineEpicCreationMode() === "create");
-                    if (!$this->model->createNewGame($createNewEpic, $this->controller->getUserList())) {
+                    if (!$this->model->createNewGame($this->controller->determineEpicCreationMode(), $this->controller->getUserList())) {
                         return $this->renderPOSTUnknownFailure();
                     }
                     return $this->renderPOSTSuccess();
@@ -88,7 +87,7 @@
             $templateProperties["script"] .= "    document.addEventListener('DOMContentLoaded', async (event) => {";
             if ($this->controller->determineEpicCreationMode() === "create") {
                 $templateProperties["script"] .= '    await switchEpic("Create");';
-            } else {
+            } else if ($this->controller->determineEpicCreationMode() === "select") {
                 $templateProperties["script"] .= '    document.getElementById("sucheEpic").value = decodeHtml("'. $_POST["epicNameSelected"] . '");';
                 $templateProperties["script"] .= '    await addEpic();';
             }
