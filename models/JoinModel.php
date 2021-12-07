@@ -88,6 +88,37 @@
             $this->gameStructure["allEpic"] = $allUserEpic;
             $this->gameStructure = $this->gameStructure;
         }
+
+        public function checkGameID() {
+            if (!isset($_POST["gameID"]) || $_POST["gameID"] === "") {
+                return false;
+            }
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "SELECT s.SpielID FROM spiele s INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID ";
+            $sqlQuery .= "WHERE sk.UserID='$userID' AND s.SpielID='$gameID' AND sk.UserStatus='0'";
+            return $this->checkSqlQuery($sqlQuery);
+        }
+
+        public function acceptGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='2' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbOpen();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
+
+        public function declineGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='4' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbOpen();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
     }
 
 ?>

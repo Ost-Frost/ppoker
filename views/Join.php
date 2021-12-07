@@ -51,7 +51,7 @@
 
         private function renderGame($gameData) {
             $templateProperties = [];
-            $templateProperties["hostName"] = "";//$gameData["HostName"];
+            $templateProperties["hostName"] = "Test";//$gameData["HostName"];
             $templateProperties["gameTask"] = $gameData["Task"];
             $templateProperties["gameDescription"] = ($gameData["Beschreibung"] !== "") ? $gameData["Beschreibung"] : "-";
             return $this->openTemplate("templates/join/gameTemplate.php", $templateProperties);

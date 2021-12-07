@@ -9,7 +9,7 @@
     <div class="container">
       <form class="needs-validation" method="POST" action="Create">
 
-        <h4 class="mb-3" style="margin-top: 5%;" id="epicHeader">Epic auswählen</h4>
+        <h4 class="mb-3" style="margin-top: 5%;" id="epicHeader">Epic auswählen (optional)</h4>
         <div class="list-group" id="epicSelected"></div>
         <div class="row" id="epicSelect">
           <div class="col-md-6 mb-3">
