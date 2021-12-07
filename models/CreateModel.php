@@ -49,8 +49,8 @@
             }
 
             $userID = $_SESSION["userID"];
-            $sqlQuery = "INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `UserStatus`) ";
-            $sqlQuery .= "VALUES ('$gameID', '$userID', '0', '1')";
+            $sqlQuery = "INSERT INTO `spielkarte` (`SpielID`, `UserID`, `Karte`, `UserStatus`, `Akzeptiert`) ";
+            $sqlQuery .= "VALUES ('$gameID', '$userID', '0', '1', '0')";
             $response = $this->dbSQLQuery($sqlQuery);
             array_push($responses, $response);
 
@@ -69,8 +69,8 @@
                     if ($uID === $_SESSION["userID"]) {
                         continue;
                     }
-                    $sqlQueryGameUser = "INSERT INTO `spielkarte` (`UserID`, `SpielID`, `Karte`, `UserStatus`)";
-                    $sqlQueryGameUser .= "VALUE ('$uID', '$gameID', '0', '0') ";
+                    $sqlQueryGameUser = "INSERT INTO `spielkarte` (`UserID`, `SpielID`, `Karte`, `UserStatus`, `Akzeptiert`)";
+                    $sqlQueryGameUser .= "VALUE ('$uID', '$gameID', '0', '0', '0') ";
                     $response = $this->dbSQLQuery($sqlQueryGameUser);
                     array_push($responses, $response);
 

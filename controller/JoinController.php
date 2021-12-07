@@ -20,6 +20,9 @@
             if (!$_SERVER["REQUEST_METHOD"] === "POST") {
                 return $this->rejectAPICall(405); // Method not allowed
             }
+            if (!$this->validateFieldNotEmpty("gameID")) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
             if (!$model->checkGameID()) {
                 return $this->rejectAPICall(400); // Bad Request
             }
@@ -33,6 +36,9 @@
         private function declineGame($model) {
             if (!$_SERVER["REQUEST_METHOD"] === "POST") {
                 return $this->rejectAPICall(405); // Method not allowed
+            }
+            if (!$this->validateFieldNotEmpty("gameID")) {
+                return $this->rejectAPICall(400); // Bad Request
             }
             if (!$model->checkGameID()) {
                 return $this->rejectAPICall(400); // Bad Request

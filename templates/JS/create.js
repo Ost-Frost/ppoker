@@ -433,7 +433,7 @@ function buildEpic(epicName) {
   // create container
   let epicElement = document.createElement("div");
   epicElement.classList.add("list-group-item");
-  epicElement.classList.add("flex");
+  epicElement.classList.add("d-flex");
   epicElement.classList.add("align-items-center");
   epicElement.classList.add("text-break");
 

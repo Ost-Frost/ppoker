@@ -16,12 +16,29 @@
          */
         public function render() : string {
 
-            $gameStructure = $this->model->getGameStructure()["allEpic"];
+            $gameStructure = $this->model->getGameStructure();
+            $allEpics = $gameStructure["allEpic"];
+            $gamesWOEpic = $gameStructure["gamesWOEpic"];
             $gamesContent = "";
 
             // create Epics
-            foreach ($gameStructure as $curEpic) {
+            foreach ($allEpics as $curEpic) {
                 $gamesContent .= $this->renderEpic($curEpic);
+            }
+
+            // create Dropdown for games without epics
+            if (count($gamesWOEpic) > 0) {
+                $renderedGames = "";
+
+                // create Games
+                foreach ($gamesWOEpic as $curGame) {
+                    $renderedGames .= $this->renderGame($curGame);
+                }
+                $templateProperties = [];
+                $templateProperties["epicID"] = "gamesWOEpic";
+                $templateProperties["epicName"] = "Spiele ohne Epic";
+                $templateProperties["epicSpiele"] = $renderedGames;
+                $gamesContent .= $this->openTemplate("templates/join/epicTemplate.php", $templateProperties);
             }
 
             $joinTemplateProperties = [];
@@ -44,6 +61,7 @@
                 $renderedGames .= $this->renderGame($curGame);
             }
             $templateProperties = [];
+            $templateProperties["epicID"] = $epicData["EpicID"];
             $templateProperties["epicName"] = $epicData["Name"];
             $templateProperties["epicSpiele"] = $renderedGames;
             return $this->openTemplate("templates/join/epicTemplate.php", $templateProperties);
@@ -53,6 +71,7 @@
             $templateProperties = [];
             $templateProperties["hostName"] = "Test";//$gameData["HostName"];
             $templateProperties["gameTask"] = $gameData["Task"];
+            $templateProperties["gameID"] = $gameData["gameID"];
             $templateProperties["gameDescription"] = ($gameData["Beschreibung"] !== "") ? $gameData["Beschreibung"] : "-";
             return $this->openTemplate("templates/join/gameTemplate.php", $templateProperties);
         }

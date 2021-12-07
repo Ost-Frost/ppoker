@@ -74,7 +74,6 @@
                     }
                 }
                 $allUserEpic[$epicID]["games"] = $gamesInEpic;
-                unset($allUserEpic[$epicID]["EpicID"]);
             }
             $this->dbClose();
             $gamesWOEpic = [];
