@@ -2,12 +2,21 @@
 
     require("APIControllerBasis.php");
 
+    /**
+     * controller for the game api
+     */
     class GameController extends APIControllerBasis {
 
+        /**
+         * redirects an api action to the corresponding method
+         *
+         * @param string action string
+         * @param ModelBasis corresponding data model for database actions
+         *
+         * @return string response string of the API call
+         */
         public function apiCall($action, $model) : string {
-            if ($action == "Create") {
-                return $this->createGame($model);
-            } else if ($action == "Delete") {
+            if ($action == "Delete") {
                 return $this->deleteGame($model);
             } else if ($action == "Search") {
                 return $this->search($model);

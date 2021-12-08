@@ -7,6 +7,14 @@
      */
     class JoinController extends APIControllerBasis {
 
+        /**
+         * redirects an api action to the corresponding method
+         *
+         * @param string action string
+         * @param ModelBasis corresponding data model for database actions
+         *
+         * @return string response string of the API call
+         */
         public function apicall($action, $model) : string {
             if ($action === "Accept") {
                 return $this->acceptGame($model);
@@ -16,7 +24,14 @@
             return false;
         }
 
-        private function acceptGame($model) {
+        /**
+         * accepts the invitation to the game with given gameID
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        private function acceptGame($model) : string {
             if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
@@ -33,6 +48,13 @@
             return $this->resolveAPICall(json_encode($dbResponse)); // OK
         }
 
+        /**
+         * declines the invitation to the game with given gameID
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
         private function declineGame($model) {
             if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed

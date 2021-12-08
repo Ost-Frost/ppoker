@@ -2,12 +2,23 @@
 
     require("ControllerBasis.php");
 
+    /**
+     * controller for the create page
+     */
     class CreateController extends ControllerBasis {
 
+        /**
+         * stores names of fields that should be validated before rendering the page
+         */
         private $fields = [
             "gameTask"
         ];
 
+        /**
+         * stores the maximum amount of characters that should be in one field
+         *
+         * fieldName => maxLength of the field
+         */
         private $fieldMaxLength = [
             "epicNameSelected" => 100,
             "epicName" => 100,
@@ -16,8 +27,18 @@
             "gameDescription" => 500
         ];
 
+        /**
+         * stores the determined creation mode:
+         *
+         * selected: an existing epic is selected
+         * create: a new epic should be created
+         * none: the to be created game is not in an epic
+         */
         private $creationMode = false;
 
+        /**
+         * stores error messages that should be returned to the user after rendering the page
+         */
         private $customErrorStrings = [];
 
         /**
@@ -44,6 +65,14 @@
             return true;
         }
 
+        /**
+         * validates if the to be created data already exists
+         * @param boolean $checkTastName the result of the database query to check if the taskName already exists
+         * @param boolean $checkEpicName the result of the database query to check if the epicName already exists
+         * @param boolean $checkUserList the result of the database query to check if the users from the userlist exist
+         *
+         * @return boolean true if the data doesn't exist, false otherwise
+         */
         public function validateDataExists($checkTaskName, $checkEpicName, $checkUserList) : bool {
             $valid = true;
             if ($checkEpicName && $this->creationMode === "create") {
@@ -61,6 +90,12 @@
             return $valid;
         }
 
+        /**
+         * returns the stored error strings in the form
+         * "field1: errormessage1, field2: errormessage2, ..."
+         *
+         * @return string string with all errormessages and according field seperated by commatas.
+         */
         public function getCustomErrorStrings() {
             $errorString = "";
             foreach ($this->customErrorStrings as $field => $errorMessage) {
@@ -69,6 +104,9 @@
             return $errorString;
         }
 
+        /**
+         * determines which parameters should be validated and the epic creation mode
+         */
         public function determineRequestParameters() {
             $this->creationMode = $this->determineEpicCreationMode();
             if ($this->creationMode === "select") {
@@ -84,6 +122,14 @@
             }
         }
 
+        /**
+         * determines the epic creation mode
+         *
+         * @return string string with the determined mode:
+         * selected: an existing epic is selected
+         * create: a new epic should be created
+         * none: the to be created game is not in an epic
+         */
         public function determineEpicCreationMode() {
             if ($this->validateFieldNotEmpty("epicNameSelected")) {
                 return "select";
@@ -94,6 +140,11 @@
             }
         }
 
+        /**
+         * returns the list of users that should be invited to the new game
+         *
+         * @return array array of users
+         */
         public function getUserList() {
             if ($this->validateFieldNotEmpty("userList")) {
                 return $_POST["userList"];

@@ -8,7 +8,7 @@
     class RegisterController extends ControllerBasis {
 
         /**
-         * a list of fields that are needed to register a new user
+         * stores names of fields that should be validated before rendering the page
          */
         private $fields = [
             "userName",
@@ -20,6 +20,11 @@
             "passwordRepeat"
         ];
 
+        /**
+         * stores the maximum amount of characters that should be in one field
+         *
+         * fieldName => maxLength of the field
+         */
         private $fieldMaxLength = [
             "userName" => 20,
             "preName" => 50,
@@ -28,6 +33,9 @@
             "password" => 50
         ];
 
+        /**
+         * stores error messages that should be returned to the user after rendering the page
+         */
         private $customErrorStrings = [];
 
         /**
@@ -49,10 +57,23 @@
             return true;
         }
 
+        /**
+         * validates the email adress to be a correct e-mail
+         *
+         * @return boolean true if the email is valid, false otherwise
+         */
         private function validateEmail() : bool {
             return filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) !== false;
         }
 
+        /**
+         * adds the corresponding error messages if the the input parameters are false
+         *
+         * @param boolean $checkUserName the result of the database query to check if the userName already exists
+         * @param boolean $checkEmail the result of the database query to check if the e-mail already exists
+         *
+         * @return boolean true if both input parameters are true, false otherwise
+         */
         public function validateUserExists($checkUserName, $checkEmail) : bool {
             $valid = true;
             if ($checkUserName) {
@@ -87,10 +108,19 @@
             return $templateProperties;
         }
 
+        /**
+         * hashs the password in $_POST["password"]
+         */
         public function hashPassword() {
             $_POST["password"] = password_hash($_POST["password"], PASSWORD_DEFAULT);
         }
 
+        /**
+         * returns the stored error strings in the form
+         * "field1: errormessage1, field2: errormessage2, ..."
+         *
+         * @return string string with all errormessages and according field seperated by commatas.
+         */
         public function getCustomErrorStrings() {
             $errorString = "";
             foreach ($this->customErrorStrings as $field => $errorMessage) {
