@@ -62,12 +62,47 @@ function getIDElements(ID) {
 async function accept(event) {
 
     let gameID = getID(event.currentTarget.id);
-    let antwort = await fetch("Join/Accept?gameID=" + gameID);
+    let postData = new URLSearchParams();
+    postData.append("gameID", gameID);
+    let antwort = await fetch("Join/Accept", {method:"POST", body: postData});
     let status = antwort.status;
     if (status === 200) {
         addNotification("Die Einladung wurde erfolgreich akzeptiert", "success");
+        removeGame(gameID);
+    } else if (status === 400) {
+        addNotification("Die Einladung ist ungültig. Bitte laden Sie die Seite neu. Status Code: " + status, "error");
+        removeGame(gameID);
     } else {
-        addNotification("Ein Fehler ist aufgetreten. Status Code: " + status, "error");
+        addNotification("Ein Fehler unbekannter ist aufgetreten. Bitte versuchen Sie es später erneut. Status Code: " + status, "error");
+    }
+}
+
+async function decline(event) {
+
+    let gameID = getID(event.currentTarget.id);
+    let postData = new URLSearchParams();
+    postData.append("gameID", gameID);
+    let antwort = await fetch("Join/Decline", {method:"POST", body: postData});
+    let status = antwort.status;
+    if (status === 200) {
+        addNotification("Die Einladung wurde erfolgreich abgelehnt", "information");
+        removeGame(gameID);
+    } else if (status === 400) {
+        addNotification("Die Einladung ist ungültig. Bitte laden Sie die Seite neu. Status Code: " + status, "error");
+        removeGame(gameID);
+    } else {
+        addNotification("Ein Fehler unbekannter ist aufgetreten. Bitte versuchen Sie es später erneut. Status Code: " + status, "error");
+    }
+}
+
+function removeGame(gameID) {
+    let gameElement = document.getElementById(gameID);
+    let parentElement = gameElement.parentElement;
+    gameElement.remove();
+    s = null;
+    if (parentElement.children.length === 0) {
+        parentElement.parentElement.remove();
+        e = null;
     }
 }
 

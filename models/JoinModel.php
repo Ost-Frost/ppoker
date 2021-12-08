@@ -43,7 +43,7 @@
                 }
             }
             while($row=$result->fetch_assoc()) {
-                if($row["UserStatus"] == 1) {
+                if($row["UserStatus"] == 0) {
                     $gameIDTemp = $row["SpielID"];
                     $sqlQueryGame = "SELECT Task, Beschreibung, Einrichtungsdatum, Aufwand, SpielID FROM `spiele` WHERE SpielID='$gameIDTemp'";
                     $gameResult = $this->dbSQLQuery($sqlQueryGame);
@@ -103,7 +103,7 @@
             $userID = $_SESSION["userID"];
             $gameID = $_POST["gameID"];
             $sqlQuery = "UPDATE spielkarte SET UserStatus='2' WHERE UserID='$userID' AND SpielID='$gameID'";
-            $this->dbOpen();
+            $this->dbConnect();
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
             return $response;
@@ -113,7 +113,7 @@
             $userID = $_SESSION["userID"];
             $gameID = $_POST["gameID"];
             $sqlQuery = "UPDATE spielkarte SET UserStatus='4' WHERE UserID='$userID' AND SpielID='$gameID'";
-            $this->dbOpen();
+            $this->dbConnect();
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
             return $response;

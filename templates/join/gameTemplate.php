@@ -12,8 +12,7 @@
         <div class="col-10 mb-1 small pe-none" style="margin-bottom: 1%;">
             <?= $templateProperties["gameDescription"] ?>
         </div>
-        <button id="btnAccept_<?= $templateProperties["gameID"] ?>" class="btn btn-lg btn-success pe-auto" onclick="accept(event)">Beitreten</button>
-        <button class="btn btn-lg btn-danger pe-auto" href="#"
-            style="margin-left: 10px;">Ablehnen</button>
+        <button id="btnAccept_<?= $templateProperties["gameID"] ?>" class="mr-1 mb-1 btn btn-lg btn-success pe-auto" onclick="accept(event)">Beitreten</button>
+        <button id="btnDecline_<?= $templateProperties["gameID"] ?>" class="mb-1 btn btn-lg btn-danger pe-auto" onclick="decline(event)">Ablehnen</button>
     </div>
 </a>

@@ -17,7 +17,7 @@
         }
 
         private function acceptGame($model) {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$this->validateFieldNotEmpty("gameID")) {
@@ -34,7 +34,7 @@
         }
 
         private function declineGame($model) {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$this->validateFieldNotEmpty("gameID")) {

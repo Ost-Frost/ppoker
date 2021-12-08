@@ -26,7 +26,7 @@
          * @return string response string
          */
         public function search($model) : string {
-            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
+            if (!($_SERVER["REQUEST_METHOD"] === "GET")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$this->validateFieldNotEmpty("userName", "GET") || !$this->validateFieldNotEmpty("epicName", "GET")) {
@@ -54,7 +54,7 @@
          * @return string response string
          */
         public function deleteGame($model) : string {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$this->validateFieldNotEmpty("gameid")) {
@@ -75,7 +75,7 @@
          * @return string response string
          */
         public function playCard($model) : string {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$this->validateFieldGroupNotEmpty(["card"])) {
