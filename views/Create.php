@@ -9,8 +9,8 @@
     class Create extends ViewBasis implements ViewInterface {
 
         /**
-         * render method for the register page. a GET request returns the register page, while a POST request tries to register a new user.
-         * If the user data is invalid the register page is returned with a script that shows the user the wrong data.
+         * render method for the create page. a GET request returns the create page, while a POST request tries to create a new game.
+         * If the data is invalid the create page is returned with a script that shows the user the wrong data.
          *
          * @return string rendered html string
          */
@@ -57,7 +57,7 @@
         }
 
         /**
-         * renders the page after a POST request and a successful registration of the user
+         * renders the page after a POST request and a successful creation of the new game
          *
          * @return string rendered html string
          */
@@ -99,7 +99,7 @@
         }
 
         /**
-         * renders the page after a POST request and an error occured in the registration process
+         * renders the page after a POST request and an error occured in the creation process
          *
          * @return string rendered html string
          */

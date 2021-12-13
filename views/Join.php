@@ -4,18 +4,21 @@
     require("ViewInterface.php");
 
     /**
-     * the view for the register page
+     * the view for the join page
      */
     class Join extends ViewBasis implements ViewInterface {
 
         /**
-         * render method for the register page. a GET request returns the register page, while a POST request tries to register a new user.
-         * If the user data is invalid the register page is returned with a script that shows the user the wrong data.
+         * render method for the join page. a GET request returns the join page
          *
          * @return string rendered html string
          */
         public function render() : string {
 
+            if ($_SERVER["REQUEST_METHOD"] !== "GET") {
+                http_response_code(405); // Invalid method
+                return "{}";
+            }
             $gameStructure = $this->model->getGameStructure();
             $allEpics = $gameStructure["allEpic"];
             $gamesWOEpic = $gameStructure["gamesWOEpic"];
@@ -51,6 +54,12 @@
             return $this->openTemplate("templates/navBarTemplate.php", $templateProperties);
         }
 
+        /**
+         * renders the dynamic html for the epic data
+         *
+         * @param array $epicData data for the to be rendered epic
+         * @return string rendered html string
+         */
         private function renderEpic($epicData) {
 
             $games = $epicData["games"];
@@ -67,6 +76,12 @@
             return $this->openTemplate("templates/join/epicTemplate.php", $templateProperties);
         }
 
+        /**
+         * renders the dynamic html for the game data
+         *
+         * @param array $gameData data for the to be rendered game
+         * @return string rendered html string
+         */
         private function renderGame($gameData) {
             $templateProperties = [];
             $templateProperties["hostName"] = "Test";//$gameData["HostName"];

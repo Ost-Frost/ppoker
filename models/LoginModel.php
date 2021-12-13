@@ -7,6 +7,11 @@
      */
     class LoginModel extends ModelBasis {
 
+        /**
+         * gets the registered userData of given userName
+         *
+         * @return mixed returns an array with the userID and the password of the user or false if the user does not exist
+         */
         public function getUserData() {
             $userName = $_POST['userName'];
             $sql = "SELECT Passwort, UserID FROM user WHERE Username='$userName' OR Mail='$userName'";

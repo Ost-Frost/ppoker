@@ -109,7 +109,7 @@
         }
 
         /**
-         * hashs the password in $_POST["password"]
+         * hashes the password in $_POST["password"]
          */
         public function hashPassword() {
             $_POST["password"] = password_hash($_POST["password"], PASSWORD_DEFAULT);

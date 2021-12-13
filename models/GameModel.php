@@ -3,7 +3,7 @@
     require("ModelBasis.php");
 
     /**
-     * model for the register page
+     * model for the Game page
      */
     class GameModel extends ModelBasis {
 

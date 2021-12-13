@@ -3,7 +3,7 @@
     require("ModelBasis.php");
 
     /**
-     * model for the Gameoverview page
+     * model for the Join page
      */
     class JoinModel extends ModelBasis {
 
@@ -88,6 +88,11 @@
             $this->gameStructure = $this->gameStructure;
         }
 
+        /**
+         * checks if the given gameID exists
+         *
+         * @return boolean true the gameID exists, false otherwise
+         */
         public function checkGameID() {
             if (!isset($_POST["gameID"]) || $_POST["gameID"] === "") {
                 return false;
@@ -99,6 +104,11 @@
             return $this->checkSqlQuery($sqlQuery);
         }
 
+        /**
+         * writes in the database that the logged in user accepted the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
         public function acceptGame() {
             $userID = $_SESSION["userID"];
             $gameID = $_POST["gameID"];
@@ -109,6 +119,11 @@
             return $response;
         }
 
+        /**
+         * writes in the database that the logged in user declined the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
         public function declineGame() {
             $userID = $_SESSION["userID"];
             $gameID = $_POST["gameID"];

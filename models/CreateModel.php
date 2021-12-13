@@ -3,10 +3,21 @@
     require("ModelBasis.php");
 
     /**
-     * model for the register page
+     * model for the create page
      */
     class CreateModel extends ModelBasis {
 
+        /**
+         * adds new game to the database
+         * invites a list of users
+         *
+         * @param string $epicCreationMode determines if a new epic should be created and if the game should be added to an epic:
+         *                  - "create": creates new epic and adds game to newly created epic
+         *                  - "select": adds game to an existing epic
+         *                  - "none": adds game to no epic
+         * @param array $invitations a list of userName strings that should be invited to the game
+         * @return boolean true if all database operations where successful, false otherwise
+         */
         public function createNewGame($epicCreationMode, $invitations) {
 
             $responses = [];
@@ -93,6 +104,11 @@
             return $successful;
         }
 
+        /**
+         * checks if the epic with given epicName and with currently logged in user already exists in the database
+         *
+         * @return boolean true the epic exists, false otherwise
+         */
         public function checkEpicName() {
             if (!isset($_POST["epicName"]) || $_POST["epicName"] === "") {
                 return false;
@@ -104,6 +120,12 @@
             return $this->checkSqlQuery($sqlQuery);
         }
 
+        /**
+         * checks if the task with given taskName and with currently logged in user already exists in the database
+         *
+         * @param string $creationMode the epic creationMode. used to determine whether to search the game in an epic or not
+         * @return boolean true the task exists, false otherwise
+         */
         public function checkTaskName($creationMode) {
             if ($creationMode === "create") {
                 $epicName = $_POST["epicName"];
@@ -165,6 +187,12 @@
             return $this->checkSqlQuery($sqlQuery);
         }
 
+        /**
+         * checks if the given lists of userNames are registered users in the database
+         *
+         * @param array list of userName strings
+         * @return boolean true all users exists, false otherwise
+         */
         public function checkUserList($userList) {
             foreach ($userList as $user) {
                 $sqlQuery = "SELECT Username FROM user WHERE Username='$user'";
@@ -175,6 +203,13 @@
             return true;
         }
 
+        /**
+         * checks if the user is already added to epic
+         *
+         * @param string $userID id of the user to check
+         * @param string $epicID id of th epic to check
+         * @return boolean true the epic exists, false otherwise
+         */
         private function checkEpicUserExists($userID, $epicID) {
             $sqlQuery = "SELECT UserID FROM epicuser WHERE UserID='$userID' AND EpicID='$epicID'";
             return $this->checkSQLQuery($sqlQuery, false);
