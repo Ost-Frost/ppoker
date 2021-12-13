@@ -22,6 +22,12 @@
                 return $this->search($model);
             } else if ($action == "Play") {
                 return $this->playCard($model);
+            } else if ($action == "Accept") {
+                return $this->acceptGame($model);
+            } else if ($action == "Decline") {
+                return $this->declineGame($model);
+            } else if ($action == "Leave") {
+                return $this->search($model);
             }
             return false;
         }
@@ -100,6 +106,54 @@
                 }
             }
             return $this->resolveAPICall("{}", 201); // Played
+        }
+
+        /**
+         * accepts the invitation to the game with given gameID
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        private function acceptGame($model) : string {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if (!$this->validateFieldNotEmpty("gameID")) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkGameID()) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->acceptGame();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
+        }
+
+        /**
+         * declines the invitation to the game with given gameID
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        private function declineGame($model) {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if (!$this->validateFieldNotEmpty("gameID")) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkGameID()) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->declineGame();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
         }
     }
 ?>

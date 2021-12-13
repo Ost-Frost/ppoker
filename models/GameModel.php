@@ -121,6 +121,51 @@
         }
 
         /**
+         * writes in the database that the logged in user left the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
+        public function leaveGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='4' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
+
+        /**
+         * writes in the database that the logged in user accepted the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
+        public function acceptGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='2' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
+
+        /**
+         * writes in the database that the logged in user declined the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
+        public function declineGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='4' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
+
+        /**
          * checks if the logged in user is the host of the game with given gameID
          *
          * @return boolean true the the user is the host, false otherwise
@@ -156,6 +201,22 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * checks if the given gameID exists
+         *
+         * @return boolean true the gameID exists, false otherwise
+         */
+        public function checkGameID() {
+            if (!isset($_POST["gameID"]) || $_POST["gameID"] === "") {
+                return false;
+            }
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "SELECT s.SpielID FROM spiele s INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID ";
+            $sqlQuery .= "WHERE sk.UserID='$userID' AND s.SpielID='$gameID' AND sk.UserStatus='0'";
+            return $this->checkSqlQuery($sqlQuery);
         }
     }
 

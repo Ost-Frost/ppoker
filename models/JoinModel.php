@@ -88,35 +88,6 @@
             $this->gameStructure = $this->gameStructure;
         }
 
-        /**
-         * writes in the database that the logged in user accepted the given game
-         *
-         * @return boolean true if the database operation was successful, false otherwise
-         */
-        public function acceptGame() {
-            $userID = $_SESSION["userID"];
-            $gameID = $_POST["gameID"];
-            $sqlQuery = "UPDATE spielkarte SET UserStatus='2' WHERE UserID='$userID' AND SpielID='$gameID'";
-            $this->dbConnect();
-            $response = $this->dbSQLQuery($sqlQuery);
-            $this->dbClose();
-            return $response;
-        }
-
-        /**
-         * writes in the database that the logged in user declined the given game
-         *
-         * @return boolean true if the database operation was successful, false otherwise
-         */
-        public function declineGame() {
-            $userID = $_SESSION["userID"];
-            $gameID = $_POST["gameID"];
-            $sqlQuery = "UPDATE spielkarte SET UserStatus='4' WHERE UserID='$userID' AND SpielID='$gameID'";
-            $this->dbConnect();
-            $response = $this->dbSQLQuery($sqlQuery);
-            $this->dbClose();
-            return $response;
-        }
     }
 
 ?>

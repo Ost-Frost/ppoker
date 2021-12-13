@@ -64,7 +64,7 @@ async function accept(event) {
     let gameID = getID(event.currentTarget.id);
     let postData = new URLSearchParams();
     postData.append("gameID", gameID);
-    let antwort = await fetch("Join/Accept", {method:"POST", body: postData});
+    let antwort = await fetch("Game/Accept", {method:"POST", body: postData});
     let status = antwort.status;
     if (status === 200) {
         addNotification("Die Einladung wurde erfolgreich akzeptiert", "success");
@@ -82,7 +82,7 @@ async function decline(event) {
     let gameID = getID(event.currentTarget.id);
     let postData = new URLSearchParams();
     postData.append("gameID", gameID);
-    let antwort = await fetch("Join/Decline", {method:"POST", body: postData});
+    let antwort = await fetch("Game/Decline", {method:"POST", body: postData});
     let status = antwort.status;
     if (status === 200) {
         addNotification("Die Einladung wurde erfolgreich abgelehnt", "information");
