@@ -77,6 +77,22 @@
             return $sqlQueryExists;
         }
 
+        /**
+         * checks if the given gameID exists
+         *
+         * @return boolean true the gameID exists, false otherwise
+         */
+        public function checkGameID() {
+            if (!isset($_POST["gameID"]) || $_POST["gameID"] === "") {
+                return false;
+            }
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "SELECT s.SpielID FROM spiele s INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID ";
+            $sqlQuery .= "WHERE sk.UserID='$userID' AND s.SpielID='$gameID' AND sk.UserStatus='0'";
+            return $this->checkSqlQuery($sqlQuery);
+        }
+
     }
 
 ?>

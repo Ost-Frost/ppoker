@@ -104,13 +104,34 @@
         public function deleteGame() : mixed {
             $gameID = $_POST["gameid"];
 
-            $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
-
             $this->dbConnect();
+            $gameEpic = false;
+            $gameEpicSQLQuery = "SELECT EpicID FROM `epicspiel` WHERE SpielID = '$gameID'";
+            $gameEpicResponse = $this->dbSQLQuery($gameEpicSQLQuery);
+            $gameEpicResponse = $gameEpicResponse->fetch_assoc();
+            if ($gameEpicResponse) {
+                $gameEpic = $gameEpicResponse["EpicID"];
+            }
+
+            $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 
             return $response;
+        }
+
+        /**
+         * checks if the logged in user is the host of the game with given gameID
+         *
+         * @return boolean true the the user is the host, false otherwise
+         */
+        public function checkGameHost() : mixed {
+            $gameID = $_POST["gameid"];
+            $userID = $_SESSION["userID"];
+
+            $sqlQuery = "SELECT * FROM `spielkarte` WHERE SpielID = '$gameID' AND UserID = '$userID' AND UserStatus = '1'";
+
+            return $this->checkSQLQuery($sqlQuery);
         }
 
         /**

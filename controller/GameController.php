@@ -66,8 +66,11 @@
             if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateFieldNotEmpty("gameid")) {
+            if (!$model->checkGameID()) {
                 return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkGameHost()) {
+                return $this->rejectAPICall(401); // Unauthorized
             }
             $dbResponse = $model->deleteGame();
             if (!$response) {
