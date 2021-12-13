@@ -29,7 +29,7 @@
             $allUserGame = [];
 
             while($row=$resultEpic->fetch_assoc()) {
-                $userTemp = $row["UserID"];
+                $epicIDTemp = $row["UserID"];
                 $sqlQueryUserID = "SELECT UserID, UserStatus FROM `epicspiel` WHERE EpicID='$epicIDTemp'";
                 $userIDResult = $this->dbSQLQuery($sqlQueryUserID);
                 $allUsers = [];

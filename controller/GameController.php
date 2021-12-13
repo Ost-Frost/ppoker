@@ -13,6 +13,8 @@
                 return $this->search($model);
             } else if ($action == "Play") {
                 return $this->playCard($model);
+            } else if($action === "getGames") {
+                return $this->getGames($model);
             }
             return false;
         }
@@ -88,6 +90,24 @@
                 }
             }
             return $this->resolveAPICall("{}", 201); // Played
+        }
+
+        /**
+         * plays a card within the game
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        private function getGames($model) {
+            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            $dbResponse = $model->getGameStructure();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
         }
     }
 ?>
