@@ -128,7 +128,7 @@
         public function leaveGame() {
             $userID = $_SESSION["userID"];
             $gameID = $_POST["gameID"];
-            $sqlQuery = "UPDATE spielkarte SET UserStatus='4' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='3' WHERE UserID='$userID' AND SpielID='$gameID'";
             $this->dbConnect();
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
@@ -163,6 +163,19 @@
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
             return $response;
+        }
+
+        /**
+         * checks if logged in user has given userstatus in game with given gameid
+         *
+         * @param int $userStatus user Status to check for
+         * @return boolean true if he has the userstatus, false otherwise
+         */
+        public function checkUserStatus($userStatus) {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "SELECT UserStatus FROM spielkarte WHERE UserID='$userID' AND SpielID='$gameID' AND UserStatus='$userStatus'";
+            return $this->checkSQLQuery($sqlQuery);
         }
 
         /**
@@ -214,8 +227,7 @@
             }
             $userID = $_SESSION["userID"];
             $gameID = $_POST["gameID"];
-            $sqlQuery = "SELECT s.SpielID FROM spiele s INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID ";
-            $sqlQuery .= "WHERE sk.UserID='$userID' AND s.SpielID='$gameID' AND sk.UserStatus='0'";
+            $sqlQuery = "SELECT SpielID FROM spielkarte WHERE SpielID='$gameID' AND UserID='$userID'";
             return $this->checkSqlQuery($sqlQuery);
         }
     }

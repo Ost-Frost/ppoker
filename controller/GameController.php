@@ -27,7 +27,7 @@
             } else if ($action == "Decline") {
                 return $this->declineGame($model);
             } else if ($action == "Leave") {
-                return $this->search($model);
+                return $this->leaveGame($model);
             }
             return false;
         }
@@ -119,10 +119,10 @@
             if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateFieldNotEmpty("gameID")) {
+            if (!$model->checkGameID()) {
                 return $this->rejectAPICall(400); // Bad Request
             }
-            if (!$model->checkGameID()) {
+            if (!$model->checkUserStatus(0)) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->acceptGame();
@@ -143,13 +143,37 @@
             if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateFieldNotEmpty("gameID")) {
+            if (!$model->checkGameID()) {
                 return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkUserStatus(0)) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->declineGame();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
+        }
+
+        /**
+         * leaves the game with given gameID
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        private function leaveGame($model) {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
+                return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$model->checkGameID()) {
                 return $this->rejectAPICall(400); // Bad Request
             }
-            $dbResponse = $model->declineGame();
+            if (!$model->checkUserStatus(2)) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->leaveGame();
             if (!$dbResponse) {
                 return $this->rejectAPICall(500); // Internal Server Error
             }
