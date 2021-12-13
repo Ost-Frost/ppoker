@@ -50,20 +50,10 @@ API Calls haben folgende URL ppoker/_Unterseitenname_/_API-Methode_?_Parameter_
   - GET: rendert die Create Seite
   - POST: versucht das Spiel und ggf. die Epic anzulegen, sowie die Benutzer einzuladen und rendert die entsprechende Antwortseite
 ### Join
-#### Seite
 - Beschreibung: Seite um Spielen zu denen der Benutzer eingeladen wurde anzuzeigen und ihnen beizutreten bzw. die Einladung abzulehnen.
 - Erreichbarkeit: eingeloggte Benutzer
 - Requests:
   - GET: rendert die Join Seite
-#### API
-- Accept
-  - Beschreibung: Akzeptiert eine Einladung an den eingeloggten Benutzer für das Spiel mit der übergebenen GameID.
-  - Parameter: 
-    - GameID|string: Die ID des Games, dessen Einladung akzeptiert werden soll.
-- Decline
-  - Beschreibung: Lehnt eine Einladung an den eingeloggten Benutzer für das Spiel mit der übergebenen GameID ab.
-  - Parameter: 
-    - GameID|string: Die ID des Games, dessen Einladung abgelehnt werden soll.  
 ### Gameoverview
 #### Seite
 - Beschreibung: Seite um Spiele in denen der Benutzer ist anzuzeigen, seine Karte in Spielen auzuspielen und sich die Ergebnisse der Spiele berechnen zu lassen
@@ -85,10 +75,15 @@ API Calls haben folgende URL ppoker/_Unterseitenname_/_API-Methode_?_Parameter_
 #### API
 - search
   - Beschreibung: Sucht entweder nach Benutzern, dessen Nutzername bzw. dessen E-Mail mit dem Übergabeparameter "userName" anfangen und nicht der eingeloggte Benuter sind oder nach Epics, die mit dem Übergabeparameter "epicName" anfangen und gibt diese als Liste zurück. Sind keine oder beide Parameter gesetzt wird ein Fehler ausgegeben.
-  - Parameter: 
+  - Parameter:
     - userName|string: Der String mit dem die gesuchten Benutzernamen bzw. die E-Mail Adressen der Benutzer anfangen
     - epicName|string: Der String mit dem die gesuchten Epicnamen anfangen.
   - Rückgabe: Eine Liste an gefundenen Epicnamen bzw. Nutzernamen
-
-
-
+- Accept
+  - Beschreibung: Akzeptiert eine Einladung an den eingeloggten Benutzer für das Spiel mit der übergebenen GameID.
+  - Parameter:
+    - GameID|string: Die ID des Games, dessen Einladung akzeptiert werden soll.
+- Decline
+  - Beschreibung: Lehnt eine Einladung an den eingeloggten Benutzer für das Spiel mit der übergebenen GameID ab.
+  - Parameter:
+    - GameID|string: Die ID des Games, dessen Einladung abgelehnt werden soll.

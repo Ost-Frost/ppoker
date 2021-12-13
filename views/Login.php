@@ -40,6 +40,11 @@
             }
         }
 
+        /**
+         * renders the page after a GET Request
+         *
+         * @return string rendered html string
+         */
         private function renderGET() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
@@ -49,6 +54,12 @@
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
 
+
+        /**
+         * renders the page after a POST request and an error occured in the login process
+         *
+         * @return string rendered html string
+         */
         private function renderPOSTUnknownError() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
@@ -69,6 +80,12 @@
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
 
+
+        /**
+         * renders the pager after a POST request and the user inserted invalid data
+         *
+         * @return string rendered html string
+         */
         private function renderPOSTInvalidData() : string {
             $templateProperties = [];
             $templateProperties["header"] = "";
@@ -90,6 +107,11 @@
             return $this->openTemplate("templates/pageTemplate.php", $templateProperties);
         }
 
+        /**
+         * renders the page after a POST request and a successful login of the user
+         *
+         * @return string rendered html string
+         */
         private function renderPOSTSuccess() : string {
             $templateProperties = [];
             $templateProperties["header"] = "<meta http-equiv='refresh' content='0; URL=Home'>";

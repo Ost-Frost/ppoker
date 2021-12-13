@@ -31,9 +31,6 @@ function validateAll(event) {
     validationFields.push(["floatingEpicName"]);
   }
   errorMessages.push(validateNotEmpty(validationFields));
-  if (!newEpic) {
-    errorMessages.push(validateEpicSelected());
-  }
   errorMessages = errorMessages.concat(validateInputLength());
   errorMessages = errorMessages.concat(validateCustomErrorMessages());
 
@@ -41,18 +38,6 @@ function validateAll(event) {
   error = showErrorMessages(errorMessages);
   if (error) {
       event.preventDefault();
-  }
-}
-
-function validateEpicSelected() {
-  let input = document.getElementById("floatingEpicNameSelected");
-
-  if (input) {
-    document.getElementById("sucheEpic").classList.add("is-valid");
-    return "";
-  } else {
-    document.getElementById("sucheEpic").classList.add("is-invalid");
-    return "Bitte wählen Sie eine Epic aus oder erstellen Sie eine Neue.";
   }
 }
 
@@ -343,10 +328,13 @@ function switchEpic(switchTo) {
   let selectElement = document.getElementById("epicSelect");
   let createElement = document.getElementById("epicCreate");
   let epicHeaderElement = document.getElementById("epicHeader");
+  let createForm = document.getElementById("floatingEpicName");
 
   if (switchTo === "Select") {
     selectElement.classList.remove("d-none");
     createElement.classList.add("d-none");
+    createForm.innerHTML = "";
+    createForm.value = "";
     newEpic = false;
     epicHeaderElement.innerHTML = "Epic auswählen";
   } else {
@@ -445,7 +433,7 @@ function buildEpic(epicName) {
   // create container
   let epicElement = document.createElement("div");
   epicElement.classList.add("list-group-item");
-  epicElement.classList.add("flex");
+  epicElement.classList.add("d-flex");
   epicElement.classList.add("align-items-center");
   epicElement.classList.add("text-break");
 

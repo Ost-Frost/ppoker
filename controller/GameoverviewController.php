@@ -18,7 +18,7 @@
         }
 
         private function getGames($model) {
-            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
+            if (!($_SERVER["REQUEST_METHOD"] === "GET")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             $dbResponse = $model->getGameStructure();

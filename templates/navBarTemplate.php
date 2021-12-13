@@ -9,6 +9,7 @@
 
   <!-- Bootstrap core CSS -->
   <link href="bootstrap/bootstrap.css" rel="stylesheet">
+  <link href="./CSS/notifications.css" rel="stylesheet">
   <?= $templateProperties["header"] ?>
 
 
@@ -17,6 +18,7 @@
 <body>
 
   <?= $templateProperties["script"] ?>
+  <script src="JS/notifications.js"></script>
 
   <header>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -46,6 +48,12 @@
   </header>
 
   <main>
+    <div id="notification" class="d-flex justify-content-center pe-none fixed-top d-none">
+      <div id="notificationAlert" class="mt-2 alert alert-primary pe-auto align-items-center text-break" role="alert">
+        <span id="notificationText"></span>
+        <button id="notificationClose" class="button btn-sm btn-close" aria-label="Close" type="button"></button>
+      </div>
+    </div>
     <?= $templateProperties["content"] ?>
   </main>
 

@@ -4,7 +4,7 @@
     require("ViewInterface.php");
 
     /**
-     * the view for the register page
+     * the view for the gameoverview page
      */
     class Gameoverview extends ViewBasis implements ViewInterface {
 

@@ -3,7 +3,7 @@
     require("ModelBasis.php");
 
     /**
-     * model for the register page
+     * model for the Game page
      */
     class GameModel extends ModelBasis {
 
@@ -202,13 +202,92 @@
         public function deleteGame() : mixed {
             $gameID = $_POST["gameid"];
 
-            $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
-
             $this->dbConnect();
+            $gameEpic = false;
+            $gameEpicSQLQuery = "SELECT EpicID FROM `epicspiel` WHERE SpielID = '$gameID'";
+            $gameEpicResponse = $this->dbSQLQuery($gameEpicSQLQuery);
+            $gameEpicResponse = $gameEpicResponse->fetch_assoc();
+            if ($gameEpicResponse) {
+                $gameEpic = $gameEpicResponse["EpicID"];
+            }
+
+            $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 
             return $response;
+        }
+
+        /**
+         * writes in the database that the logged in user left the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
+        public function leaveGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='3' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
+
+        /**
+         * writes in the database that the logged in user accepted the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
+        public function acceptGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='2' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
+
+        /**
+         * writes in the database that the logged in user declined the given game
+         *
+         * @return boolean true if the database operation was successful, false otherwise
+         */
+        public function declineGame() {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "UPDATE spielkarte SET UserStatus='4' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+            return $response;
+        }
+
+        /**
+         * checks if logged in user has given userstatus in game with given gameid
+         *
+         * @param int $userStatus user Status to check for
+         * @return boolean true if he has the userstatus, false otherwise
+         */
+        public function checkUserStatus($userStatus) {
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "SELECT UserStatus FROM spielkarte WHERE UserID='$userID' AND SpielID='$gameID' AND UserStatus='$userStatus'";
+            return $this->checkSQLQuery($sqlQuery);
+        }
+
+        /**
+         * checks if the logged in user is the host of the game with given gameID
+         *
+         * @return boolean true the the user is the host, false otherwise
+         */
+        public function checkGameHost() : mixed {
+            $gameID = $_POST["gameid"];
+            $userID = $_SESSION["userID"];
+
+            $sqlQuery = "SELECT * FROM `spielkarte` WHERE SpielID = '$gameID' AND UserID = '$userID' AND UserStatus = '1'";
+
+            return $this->checkSQLQuery($sqlQuery);
         }
 
         /**
@@ -233,6 +312,21 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * checks if the given gameID exists
+         *
+         * @return boolean true the gameID exists, false otherwise
+         */
+        public function checkGameID() {
+            if (!isset($_POST["gameID"]) || $_POST["gameID"] === "") {
+                return false;
+            }
+            $userID = $_SESSION["userID"];
+            $gameID = $_POST["gameID"];
+            $sqlQuery = "SELECT SpielID FROM spielkarte WHERE SpielID='$gameID' AND UserID='$userID'";
+            return $this->checkSqlQuery($sqlQuery);
         }
     }
 

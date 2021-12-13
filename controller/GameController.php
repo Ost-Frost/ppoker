@@ -2,19 +2,32 @@
 
     require("APIControllerBasis.php");
 
+    /**
+     * controller for the game api
+     */
     class GameController extends APIControllerBasis {
 
+        /**
+         * redirects an api action to the corresponding method
+         *
+         * @param string action string
+         * @param ModelBasis corresponding data model for database actions
+         *
+         * @return string response string of the API call
+         */
         public function apiCall($action, $model) : string {
-            if ($action == "Create") {
-                return $this->createGame($model);
-            } else if ($action == "Delete") {
+            if ($action == "Delete") {
                 return $this->deleteGame($model);
             } else if ($action == "Search") {
                 return $this->search($model);
             } else if ($action == "Play") {
                 return $this->playCard($model);
-            } else if($action === "getGames") {
-                return $this->getGames($model);
+            } else if ($action == "Accept") {
+                return $this->acceptGame($model);
+            } else if ($action == "Decline") {
+                return $this->declineGame($model);
+            } else if ($action == "Leave") {
+                return $this->leaveGame($model);
             }
             return false;
         }
@@ -28,7 +41,7 @@
          * @return string response string
          */
         public function search($model) : string {
-            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
+            if (!($_SERVER["REQUEST_METHOD"] === "GET")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$this->validateFieldNotEmpty("userName", "GET") || !$this->validateFieldNotEmpty("epicName", "GET")) {
@@ -56,11 +69,14 @@
          * @return string response string
          */
         public function deleteGame($model) : string {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateFieldNotEmpty("gameid")) {
+            if (!$model->checkGameID()) {
                 return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkGameHost()) {
+                return $this->rejectAPICall(401); // Unauthorized
             }
             $dbResponse = $model->deleteGame();
             if (!$response) {
@@ -77,7 +93,7 @@
          * @return string response string
          */
         public function playCard($model) : string {
-            if (!$_SERVER["REQUEST_METHOD"] === "POST") {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
             if (!$this->validateFieldGroupNotEmpty(["card"])) {
@@ -93,17 +109,71 @@
         }
 
         /**
-         * plays a card within the game
+         * accepts the invitation to the game with given gameID
          *
          * @param ModelBasis corresponding model
          *
          * @return string response string
          */
-        private function getGames($model) {
-            if (!$_SERVER["REQUEST_METHOD"] === "GET") {
+        private function acceptGame($model) : string {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            $dbResponse = $model->getGameStructure();
+            if (!$model->checkGameID()) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkUserStatus(0)) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->acceptGame();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
+        }
+
+        /**
+         * declines the invitation to the game with given gameID
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        private function declineGame($model) {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if (!$model->checkGameID()) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkUserStatus(0)) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->declineGame();
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
+            }
+            return $this->resolveAPICall(json_encode($dbResponse)); // OK
+        }
+
+        /**
+         * leaves the game with given gameID
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        private function leaveGame($model) {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if (!$model->checkGameID()) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            if (!$model->checkUserStatus(2)) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->leaveGame();
             if (!$dbResponse) {
                 return $this->rejectAPICall(500); // Internal Server Error
             }

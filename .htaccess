@@ -1,6 +1,6 @@
 RewriteEngine on
 
-RewriteRule ^img/(.*)$ templates/img/$1
+RewriteRule ^IMG/(.*)$ templates/IMG/$1
 RewriteRule ^JS/(.*)$ templates/JS/$1
 RewriteRule ^bootstrap/(.*)$ templates/bootstrap/$1
 RewriteRule ^CSS/(.*)$ templates/CSS/$1

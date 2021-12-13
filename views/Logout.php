@@ -9,12 +9,15 @@
     class LogOut extends ViewBasis implements ViewInterface {
 
         /**
-         * render method for the register page. a GET request returns the register page, while a POST request tries to register a new user.
-         * If the user data is invalid the register page is returned with a script that shows the user the wrong data.
+         * render method for the logout page. a GET request loggs the user out and returns the logout page
          *
          * @return string rendered html string
          */
         public function render() : string {
+            if ($_SERVER["REQUEST_METHOD"] !== "GET") {
+                http_response_code(405); // Invalid method
+                return "{}";
+            }
             $templateProperties = [];
             $this->controller->logOut();
             $templateProperties["header"] = "<meta http-equiv = 'refresh' content = '5; url = Login' />";
