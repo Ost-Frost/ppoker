@@ -23,7 +23,7 @@
         public function getGameStructure() {
             $userID = $_SESSION['userID'];
             $sqlQueryGame = "SELECT SpielID FROM `spielkarte` WHERE UserID='$userID'";
-            $sqlQueryEpic = "SELECT EpicID FROM `epicuser` WHERE UserID='$userID'";
+            $sqlQueryEpic = "SELECT EpicID, UserStatus FROM `epicuser` WHERE UserID='$userID'";
             $this->dbConnect();
             $resultGame = $this->dbSQLQuery($sqlQueryGame);
             $resultEpic = $this->dbSQLQuery($sqlQueryEpic);
@@ -31,6 +31,12 @@
 
             while($row=$resultEpic->fetch_assoc()) {
                 $epicIDTemp = $row["EpicID"];
+                $sqlQueryHost = "SELECT UserID FROM `epicuser` WHERE EpicID='$epicIDTemp' AND UserStatus='1'";
+                $hostID = $this->dbSQLQuery($sqlQueryHost);
+                $host = "";
+                if($hostName=$hostID->fetch_assoc()) {
+                    $host = $hostName["UserID"];
+                }
                 $sqlQueryEpic = "SELECT EpicID, Name, Beschreibung, Aufwand, Einrichtungsdatum FROM `epic` WHERE EpicID='$epicIDTemp'";
                 $epicgames = $this->dbSQLQuery($sqlQueryEpic);
                 if($allEpicGames=$epicgames->fetch_assoc()) {
@@ -40,6 +46,7 @@
                     $epic["Aufwand"] = $allEpicGames["Aufwand"];
                     $epic["Einrichtungsdatum"] = $allEpicGames["Einrichtungsdatum"];
                     $epic["EpicID"] = $allEpicGames["EpicID"];
+                    $epic["host"] = $host;
                     $epic["games"] = [];
                     array_push($allEpic, $epic);
                 }
@@ -110,6 +117,7 @@
                 }
             }
 
+            $this->dbClose();
             $this->gameStructure["gamesWOEpic"] = $gamesWOEpic;
             $this->gameStructure["allEpic"] = $allEpic;
             $this->gameStructure = $this->gameStructure;

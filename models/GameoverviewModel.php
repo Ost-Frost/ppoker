@@ -38,7 +38,7 @@
                         $gameInfo = [];
                         if($user["UserID"] == $userID) {
                             if($user["Userstatus"] == 1) {
-                                $epicGame["host"] = $user["Username"];
+                                $gameUser["host"] = $user["Username"];
                                 $gameInfo["Username"] = $user["Username"];
                                 $gameInfo["Karte"] = $user["Karte"];
                                 $gameInfo["Userstatus"] = $user["Userstatus"];
@@ -136,6 +136,7 @@
                 }
             }
 
+            $this->dbClose();
             $this->gameStructure["allEpic"] = $epics;
             $this->gameStructure["gamesWOEpic"] = $gWOETemp;
         }
