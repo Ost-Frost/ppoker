@@ -104,6 +104,13 @@ function removeGame(gameID) {
         parentElement.parentElement.remove();
         e = null;
     }
+
+    if (document.getElementById("epicContent").children.length === 0) {
+        let information = document.createElement("h1");
+        information.classList.add("m-4");
+        information.appendChild(document.createTextNode("keine weiteren Einladungen"));
+        document.getElementById("epicContent").appendChild(information);
+    }
 }
 
 function getID(id) {

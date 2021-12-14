@@ -127,7 +127,7 @@
          * builds up a connection to the database
          */
         public function dbConnect() {
-            if (is_null($this->dbLink)) {
+            if (!$this->dbCheckConnection()) {
                 $this->dbLink = mysqli_connect("localhost", "root", "", "ppoker") or die("database connection failed");
             }
         }
@@ -166,6 +166,8 @@
             if (is_null($this->dbLink)) {
                 return false;
             } else if (!$this->dbLink) {
+                return false;
+            } else if ($this->dbLink->connect_errno) {
                 return false;
             } else {
                 return true;
