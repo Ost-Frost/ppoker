@@ -57,9 +57,6 @@
             } else {
                 return $this->rejectAPICall(400); // Bad Request, too many parameters initialized
             }
-            if (!$dbResponse) {
-                return $this->rejectAPICall(500); // Internal Server Error
-            }
             return $this->resolveAPICall(json_encode($dbResponse)); // OK
         }
 

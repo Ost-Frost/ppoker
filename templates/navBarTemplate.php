@@ -58,7 +58,7 @@
             <button id="notificationClose" class="button btn-sm btn-close" aria-label="Close" type="button"></button>
           </div>
         </div>
-        <div class="progress mt-1" style="height: 2px;">
+        <div class="progress mt-2" style="height: 2px;">
           <div id="notificationProgress" class="progress-bar w100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </div>

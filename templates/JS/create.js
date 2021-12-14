@@ -235,6 +235,7 @@ async function addUser() {
   foundUsernames = foundUsernames.map((curUser) => {
     return decodeHtml(curUser);
   });
+
   for (let curUser of foundUsernames) {
     if (curUser == input) {
       userExists = true;
@@ -409,6 +410,7 @@ async function addEpic() {
     return decodeHtml(curEpic);
   });
 
+
   // check if epic with searched name exists
   for (let curEpic of foundEpics) {
     if (curEpic == input) {
@@ -417,6 +419,7 @@ async function addEpic() {
   }
 
   if (!epicExists) {
+    addNotification("Bitte wählen Sie eine gültige Epic aus", "warning");
     return;
   }
 
