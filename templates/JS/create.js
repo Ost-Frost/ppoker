@@ -235,6 +235,7 @@ async function addUser() {
   foundUsernames = foundUsernames.map((curUser) => {
     return decodeHtml(curUser);
   });
+
   for (let curUser of foundUsernames) {
     if (curUser == input) {
       userExists = true;
@@ -246,7 +247,12 @@ async function addUser() {
       userAlreadyFound = true;
     }
   }
-  if (!userExists || userAlreadyFound) {
+  if (!userExists) {
+    addNotification("Bitte wählen Sie einen gültigen Benutzer aus. Falls Sie eine Mail-Adresse zur Suche verwenden, benutzen Sie die Vorschläge", "warning");
+    return;
+  }
+  if (userAlreadyFound) {
+    addNotification("Der Benutzer wurde bereits eingeladen", "warning");
     return;
   }
 
@@ -404,6 +410,7 @@ async function addEpic() {
     return decodeHtml(curEpic);
   });
 
+
   // check if epic with searched name exists
   for (let curEpic of foundEpics) {
     if (curEpic == input) {
@@ -412,6 +419,7 @@ async function addEpic() {
   }
 
   if (!epicExists) {
+    addNotification("Bitte wählen Sie eine gültige Epic aus", "warning");
     return;
   }
 

@@ -20,8 +20,8 @@
             <div class="list-group" id="suggestionsEpic"></div>
           </div>
           <div class="col-md-6 mb-3 mt-1">
-            <button class="btn btn-primary btn-lg btn-block type" type="button" id="btnEpicSelect">Auswählen</button>
-            <button class="btn btn-primary btn-lg btn-block type" type="button" id="btnSwitchEpicCreate">Neue Epic Erstellen</button>
+            <button class="btn btn-primary btn-lg btn-block type mb-2" type="button" id="btnEpicSelect">Auswählen</button>
+            <button class="btn btn-primary btn-lg btn-block type mb-2" type="button" id="btnSwitchEpicCreate">Neue Epic Erstellen</button>
           </div>
         </div>
 
@@ -68,19 +68,18 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 mb-2">
             <div class="form-floating">
               <input type="search" class="form-control" id="suche" name="userName" autocomplete="off">
               <label for="suche">Benutzername oder Email</label>
             </div>
             <div class="list-group" id="suggestions"></div>
           </div>
-          <div class="col-md-6 mb-3 mt-1">
+          <div class="col-md-6 mb-2 mt-1">
             <button class="btn btn-primary btn-lg btn-block type" type="button" id="inviteBtn">Einladen</button>
           </div>
         </div>
         <p class="my-1 text-start text-danger" id="invalidFeedbackField"></p>
-        <br/>
         <button class="btn btn-primary btn-lg btn-block" type="submit" id="submitButton">Spiel erstellen</button>
         <div style="height: 300px;">
       </form>

@@ -1,0 +1,21 @@
+.hidden{
+    display: none;
+}
+.btn-card{
+    padding-top: 22px;
+    padding-bottom:  22px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.btn-card-od{
+    padding-top: 22px;
+    padding-bottom:  22px;
+    padding-left: 13.625px;
+    padding-right: 13.625px;
+}
+.btn-card-td{
+    padding-top: 22px;
+    padding-bottom:  22px;
+    padding-left: 9.315px;
+    padding-right:  9.315px;
+}
