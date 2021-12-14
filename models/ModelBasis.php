@@ -85,9 +85,22 @@
                     array_push($games, $game);
                 }
             }
+
             $gamesWOEpic = [];
             foreach($games as $ga) {
                 $gameID = $ga["SpielID"];
+                $sqlQueryHost = "SELECT UserID FROM `spielkarte` WHERE SpielID='$gameID' AND UserStatus='1'";
+                $hostID = $this->dbSQLQuery($sqlQueryHost);
+                $host = "";
+                $hostname = "";
+                if($hostIDName=$hostID->fetch_assoc()) {
+                    $host = $hostIDName["UserID"];
+                    $sqlQueryHostname = "SELECT Username FROM `user` WHERE UserID='$host'";
+                    $hostnameValue = $this->dbSQLQuery($sqlQueryHostname);
+                    if($hostedBy=$hostnameValue->fetch_assoc()) {
+                        $hostname = $hostedBy["Username"];
+                    }
+                }
                 $sqlQueryWOE = "SELECT EpicID FROM `epicspiel` WHERE SpielID='$gameID'";
                 $gamesWEO = $this->dbSQLQuery($sqlQueryWOE);
                 if($epiC = $gamesWEO->fetch_assoc()) {
@@ -97,6 +110,8 @@
                         }
                     }
                 } else {
+                    $ga["host"] = $hostname;
+                    $ga["hostID"] = $host;
                     array_push($gamesWOEpic, $ga);
                 }
             }

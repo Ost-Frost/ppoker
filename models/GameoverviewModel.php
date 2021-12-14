@@ -128,6 +128,8 @@
                 $gameUser["Beschreibung"] = $game["Beschreibung"];
                 $gameUser["Aufwand"] = $game["Aufwand"];
                 $gameUser["Einrichtungsdatum"] = $game["Einrichtungsdatum"];
+                $gameUser["host"] = $game["host"];
+                $gameUser["hostID"] = $game["hostID"];
                 if(!$delGame){
                     array_push($gWOETemp, $gameUser);
                 }
