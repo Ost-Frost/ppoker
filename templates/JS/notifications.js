@@ -20,7 +20,7 @@ function setNotificationLevel(level) {
     document.getElementById("notificationAlert").classList.remove("alert-warning");
     document.getElementById("notificationAlert").classList.remove("alert-danger");
     document.getElementById("notificationAlert").classList.remove("alert-success");
-    document.getElementById("notificationProgress").classList.remove("bg-info");
+    document.getElementById("notificationProgress").classList.remove("bg-primary");
     document.getElementById("notificationProgress").classList.remove("bg-warning");
     document.getElementById("notificationProgress").classList.remove("bg-danger");
     document.getElementById("notificationProgress").classList.remove("bg-success");
@@ -28,7 +28,7 @@ function setNotificationLevel(level) {
     let newClass = "alert-primary";
     let newProgress="bg-info";
     switch (level) {
-        case "information" : newClass = "alert-primary"; newProgress="bg-info"; break;
+        case "information" : newClass = "alert-primary"; newProgress="bg-primary"; break;
         case "warning": newClass = "alert-warning"; newProgress="bg-warning"; break;
         case "error": newClass = "alert-danger"; newProgress="bg-danger"; break;
         case "success": newClass = "alert-success"; newProgress="bg-success"; break;
