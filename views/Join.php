@@ -42,6 +42,7 @@
                 $templateProperties["epicID"] = "gamesWOEpic";
                 $templateProperties["epicName"] = "Spiele ohne Epic";
                 $templateProperties["epicSpiele"] = $renderedGames;
+                $templateProperties["epicHost"] = "";
                 $gamesContent .= $this->openTemplate("templates/join/epicTemplate.php", $templateProperties);
             }
 
@@ -73,6 +74,7 @@
             $templateProperties = [];
             $templateProperties["epicID"] = $epicData["EpicID"];
             $templateProperties["epicName"] = $epicData["Name"];
+            $templateProperties["epicHost"] = "(" . $epicData["host"] . ")";
             $templateProperties["epicSpiele"] = $renderedGames;
             return $this->openTemplate("templates/join/epicTemplate.php", $templateProperties);
         }
@@ -85,9 +87,9 @@
          */
         private function renderGame($gameData) {
             $templateProperties = [];
-            $templateProperties["hostName"] = "Test";//$gameData["HostName"];
             $templateProperties["gameTask"] = $gameData["Task"];
             $templateProperties["gameID"] = $gameData["SpielID"];
+            $templateProperties["gameHost"] = (isset($gameData["host"])) ? "(" . $gameData["host"] . ")" : "";
             $templateProperties["gameDescription"] = ($gameData["Beschreibung"] !== "") ? $gameData["Beschreibung"] : "-";
             return $this->openTemplate("templates/join/gameTemplate.php", $templateProperties);
         }
