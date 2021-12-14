@@ -138,7 +138,7 @@
                 $taskName = $_POST["gameTask"];
                 $userID = $_SESSION["userID"];
                 $sqlQuery = "SELECT s.SpielID FROM spiele s INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID";
-                $sqlQuery .= " WHERE sk.UserID='$userID' AND s.Task='$taskName'";
+                $sqlQuery .= " WHERE sk.UserID='$userID' AND s.Task='$taskName' AND sk.UserStatus='1'";
                 $this->dbConnect();
                 $result = $this->dbSQLQuery($sqlQuery);
 
