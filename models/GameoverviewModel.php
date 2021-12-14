@@ -9,7 +9,6 @@
 
         public function gameStructure() {
             $gameStructure = $this->getGameStructure();
-            return $gameStructure;
             return $this->buildData($gameStructure);
         }
 
