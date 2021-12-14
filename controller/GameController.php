@@ -28,8 +28,6 @@
                 return $this->declineGame($model);
             } else if ($action == "Leave") {
                 return $this->leaveGame($model);
-            } else if($action === "getGames") {
-                return $this->getGames($model);
             }
             return false;
         }
@@ -173,24 +171,6 @@
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->leaveGame();
-            if (!$dbResponse) {
-                return $this->rejectAPICall(500); // Internal Server Error
-            }
-            return $this->resolveAPICall(json_encode($dbResponse)); // OK
-        }
-
-        /**
-         * gets Games with Session UserID
-         *
-         * @param ModelBasis corresponding model
-         *
-         * @return array
-         */
-        private function getGames($model) {
-            if (!($_SERVER["REQUEST_METHOD"] === "GET")) {
-                return $this->rejectAPICall(405); // Method not allowed
-            }
-            $dbResponse = $model->getGameStructure();
             if (!$dbResponse) {
                 return $this->rejectAPICall(500); // Internal Server Error
             }

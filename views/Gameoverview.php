@@ -16,7 +16,7 @@
          */
         public function render() : string {
             $templateProperties = [];
-            $data = json_encode($this->model->getGameStructure());
+            $data = json_encode($this->model->gameStructure());
             $templateProperties["header"] = "";
             $templateProperties["content"] = $data;
             $templateProperties["script"] = "";
