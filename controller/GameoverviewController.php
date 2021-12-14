@@ -21,7 +21,7 @@
             if (!($_SERVER["REQUEST_METHOD"] === "GET")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            $dbResponse = $model->getGameStructure();
+            $dbResponse = $model->gameStructure();
             if (!$dbResponse) {
                 return $this->rejectAPICall(500); // Internal Server Error
             }
