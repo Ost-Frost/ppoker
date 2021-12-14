@@ -49,9 +49,18 @@
 
   <main>
     <div id="notification" class="d-flex justify-content-center pe-none fixed-top d-none">
-      <div id="notificationAlert" class="mt-2 alert alert-primary pe-auto align-items-center text-break" role="alert">
-        <span id="notificationText"></span>
-        <button id="notificationClose" class="button btn-sm btn-close" aria-label="Close" type="button"></button>
+      <div id="notificationAlert" class="mt-2 alert alert-primary pe-auto align-items-center text-break container" role="alert">
+        <div class="row">
+          <div class="col-10">
+            <span id="notificationText"></span>
+          </div>
+          <div class="col-2 d-flex justify-content-end align-items-center">
+            <button id="notificationClose" class="button btn-sm btn-close" aria-label="Close" type="button"></button>
+          </div>
+        </div>
+        <div class="progress mt-1" style="height: 2px;">
+          <div id="notificationProgress" class="progress-bar w100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
       </div>
     </div>
     <?= $templateProperties["content"] ?>

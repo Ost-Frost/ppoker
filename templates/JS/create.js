@@ -246,7 +246,12 @@ async function addUser() {
       userAlreadyFound = true;
     }
   }
-  if (!userExists || userAlreadyFound) {
+  if (!userExists) {
+    addNotification("Bitte wählen Sie einen gültigen Benutzer aus. Falls Sie eine Mail-Adresse zur Suche verwenden, benutzen Sie die Vorschläge", "warning");
+    return;
+  }
+  if (userAlreadyFound) {
+    addNotification("Der Benutzer wurde bereits eingeladen", "warning");
     return;
   }
 
