@@ -46,26 +46,11 @@
             $epicName = str_replace("_", "\_", $epicName);
             $userID = $_SESSION["userID"];
             $response = [];
-            $sqlQueryEpicID = "SELECT e.EpicID FROM epicspiel e INNER JOIN spiele s ON e.SpielID = s.SpielID INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID WHERE sk.UserID='$userID'";
+            $sqlQueryEpics = "SELECT e.Name FROM epic e INNER JOIN epicuser u ON e.EpicID = u.EpicID WHERE u.UserID='$userID' AND u.UserStatus='1' AND (e.Name LIKE '$epicName%') ORDER BY e.Name ASC";
             $this->dbConnect();
-            $resultID = $this->dbSQLQuery($sqlQueryEpicID);
-            while ($row = mysqli_fetch_assoc($resultID)) {
-                $epicID = $row["EpicID"];
-                $sqlQueryEpics = "SELECT Name FROM epic WHERE (Name LIKE '$epicName%') AND EpicID='$epicID' ORDER BY Name ASC";
-                $resultEpic = $this->dbSQLQuery($sqlQueryEpics);
-                if($epics=$resultEpic->fetch_assoc()) {
-                    $alreadyFound = false;
-                    foreach ($response as $foundEpicName) {
-                        if ($foundEpicName === $epics["Name"]) {
-                            $alreadyFound = true;
-                        }
-                    }
-                    if (!$alreadyFound) {
-                        array_push($response, $epics["Name"]);
-                    }
-                } else {
-                    continue;
-                }
+            $results = $this->dbSQLQuery($sqlQueryEpics);
+            while ($row = mysqli_fetch_assoc($results)) {
+                array_push($response, $row["Name"]);
             }
             $this->dbClose();
             if (count($response) === 0) {

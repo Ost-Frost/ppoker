@@ -7,22 +7,19 @@
      */
     class GameoverviewModel extends ModelBasis {
 
-        private $gameStructure = [];
-
         public function gameStructure() {
-            $this->gameStructure = $this->getGameStructure();
-            // $this->buildData();
-            return $this->gameStructure;
+            $gameStructure = $this->getGameStructure();
+            return $this->buildData($gameStructure);
         }
 
         /**
          * initializes all epics and
          */
-        public function buildData() {
+        public function buildData($gameStructure) {
 
             $userID = $_SESSION["userID"];
-            $gamesWOEpic = $this->gameStructure["gamesWOEpic"];
-            $allEpic = $this->gameStructure["allEpic"];
+            $gamesWOEpic = $gameStructure["gamesWOEpic"];
+            $allEpic = $gameStructure["allEpic"];
 
             $epics = [];
             foreach($allEpic as $epic) {
@@ -137,8 +134,9 @@
             }
 
             $this->dbClose();
-            $this->gameStructure["allEpic"] = $epics;
-            $this->gameStructure["gamesWOEpic"] = $gWOETemp;
+            $gameStructure["allEpic"] = $epics;
+            $gameStructure["gamesWOEpic"] = $gWOETemp;
+            return $gameStructure;
         }
     }
 

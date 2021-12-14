@@ -11,11 +11,6 @@
         protected $dbLink;
 
         /**
-         * Structure for Epics and Games, that you are member of
-         */
-        private $gameStructure = [];
-
-        /**
          * Build up for $gameStructure
          *
          * @return array
@@ -107,10 +102,10 @@
             }
 
             $this->dbClose();
-            $this->gameStructure["gamesWOEpic"] = $gamesWOEpic;
-            $this->gameStructure["allEpic"] = $allEpic;
-            $this->gameStructure = $this->gameStructure;
-            return $this->gameStructure;
+            $gameStructure = [];
+            $gameStructure["gamesWOEpic"] = $gamesWOEpic;
+            $gameStructure["allEpic"] = $allEpic;
+            return $gameStructure;
         }
 
         /**

@@ -20,6 +20,7 @@
                 return "{}";
             }
             $gameStructure = $this->model->getGameStructure();
+            $gameStructure = $this->controller->filterGames($gameStructure);
             $allEpics = $gameStructure["allEpic"];
             $gamesWOEpic = $gameStructure["gamesWOEpic"];
             $gamesContent = "";
@@ -86,7 +87,7 @@
             $templateProperties = [];
             $templateProperties["hostName"] = "Test";//$gameData["HostName"];
             $templateProperties["gameTask"] = $gameData["Task"];
-            $templateProperties["gameID"] = $gameData["gameID"];
+            $templateProperties["gameID"] = $gameData["SpielID"];
             $templateProperties["gameDescription"] = ($gameData["Beschreibung"] !== "") ? $gameData["Beschreibung"] : "-";
             return $this->openTemplate("templates/join/gameTemplate.php", $templateProperties);
         }

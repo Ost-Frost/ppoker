@@ -66,8 +66,8 @@
             array_push($responses, $response);
 
             if (!$this->checkEpicUserExists($userID, $epicID) && $epicID) {
-                $sqlQuery = "INSERT INTO `epicuser` (`EpicID`, `UserID`) ";
-                $sqlQuery .= "VALUES ('$epicID', '$userID')";
+                $sqlQuery = "INSERT INTO `epicuser` (`EpicID`, `UserID`, `UserStatus`) ";
+                $sqlQuery .= "VALUES ('$epicID', '$userID', '1')";
                 $response = $this->dbSQLQuery($sqlQuery);
                 array_push($responses, $response);
             }
@@ -86,8 +86,8 @@
                     array_push($responses, $response);
 
                     if (!$this->checkEpicUserExists($uID, $epicID) && $epicID) {
-                        $sqlQueryEpicUser = "INSERT INTO `epicuser` (`EpicID`, `UserID`) ";
-                        $sqlQueryEpicUser .= "VALUES ('$epicID', '$uID')";
+                        $sqlQueryEpicUser = "INSERT INTO `epicuser` (`EpicID`, `UserID`, `UserStatus`) ";
+                        $sqlQueryEpicUser .= "VALUES ('$epicID', '$uID', '0')";
                         $response = $this->dbSQLQuery($sqlQueryEpicUser);
                         array_push($responses, $response);
                     }
@@ -115,8 +115,7 @@
             }
             $userID = $_SESSION["userID"];
             $epicName = $_POST["epicName"];
-            $sqlQuery = "SELECT e.EpicID FROM epic e INNER JOIN epicspiel es ON e.EpicID = es.EpicID INNER JOIN spiele s ON es.SpielID = s.SpielID ";
-            $sqlQuery .= "INNER JOIN spielkarte sk ON s.SpielID = sk.SpielID WHERE sk.UserID='$userID' AND e.Name='$epicName'";
+            $sqlQuery = "SELECT e.EpicID FROM epic e INNER JOIN epicuser u ON e.EpicID = u.EpicID WHERE u.UserID='$userID' AND e.Name='$epicName' AND u.UserStatus='1'";
             return $this->checkSqlQuery($sqlQuery);
         }
 
@@ -182,8 +181,9 @@
 
             // Query for Game with Epic
             $taskName = $_POST["gameTask"];
-            $sqlQuery = "SELECT s.Task FROM epic e INNER JOIN epicspiel es ON e.EpicID = es.EpicID INNER JOIN spiele s ON es.SpielID = s.SpielID ";
-            $sqlQuery .= " WHERE Task='$taskName' AND e.Name='$epicName'";
+            $userID = $_SESSION["userID"];
+            $sqlQuery = "SELECT s.Task FROM epic e INNER JOIN epicspiel es ON e.EpicID = es.EpicID INNER JOIN spiele s ON es.SpielID = s.SpielID INNER JOIN epicuser u ON e.EpicID = u.EpicID";
+            $sqlQuery .= " WHERE Task='$taskName' AND e.Name='$epicName' AND u.UserID='$userID' AND u.UserStatus='1'";
             return $this->checkSqlQuery($sqlQuery);
         }
 
