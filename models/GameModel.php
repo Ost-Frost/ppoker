@@ -207,7 +207,7 @@
             $result = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 
-            if($row = $response->fetch_assoc()) {
+            if($row = $result->fetch_assoc()) {
                 if($row == 0) {
                     return false;
                 }
@@ -229,6 +229,71 @@
             $gameID = $_POST["gameID"];
             $sqlQuery = "SELECT SpielID FROM spielkarte WHERE SpielID='$gameID' AND UserID='$userID'";
             return $this->checkSqlQuery($sqlQuery);
+        }
+
+        /**
+         * Updates value of all cards for a games
+         *
+         * @return boolean in case of successful update true, otherwise false
+         */
+        public function valueUpdateGame() {
+
+            $gameID = $_REQUEST["gameID"];
+            $this->dbConnect();
+
+            $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID'";
+            $allCards = $this->dbSQLQuery($sqlQueryCardValue);
+
+            $valueAll = 0;
+            while($card = $allcards->fetch_assoc()) {
+                $valueAll = $valueAll + $card["Karte"];
+            }
+            $sqlQuery = "UPDATE `spiele` SET Aufwand='$value' WHERE SpielID='$gameID'";
+            $result = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+
+            if($row = $result->fetch_assoc()) {
+                if($row == 0) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Updates value of all cards for an Epic
+         *
+         * @return boolean in case of successful update true, otherwise false
+         */
+        public function valueUpdateEpic() {
+
+            $epicID = $_REQUEST["epicID"];
+            $this->dbConnect();
+
+            $sqlQueryGameID = "SELECT SpielID FROM `epicspiel` WHERE EpicID='$epicID'";
+            $allGames = $this->dbSQLQuery($sqlQueryGameID);
+
+            $value = 0;
+            while($game = $allGames->fetch_assoc()) {
+                $gameID = $game["SpielID"];
+                $sqlQueryValue = "SELECT Aufwand FROM `spiele` WHERE SpielID='$gameID'";
+                $allValues = $this->dbSQLQuery($sqlQueryValue);
+                if($values = $allValues->fetch_assoc()) {
+                    $value = $value + $values["Aufwand"];
+                }
+            }
+            $sqlQuery = "UPDATE `epic` SET Aufwand='$value' WHERE EpicID='$epicID'";
+            $result = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+
+            if($row = $result->fetch_assoc()) {
+                if($row == 0) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
         }
     }
 

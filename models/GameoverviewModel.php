@@ -11,7 +11,7 @@
 
         public function gameStructure() {
             $this->gameStructure = $this->getGameStructure();
-            $this->buildData();
+            // $this->buildData();
             return $this->gameStructure;
         }
 
@@ -132,7 +132,7 @@
                 $gameUser["Aufwand"] = $game["Aufwand"];
                 $gameUser["Einrichtungsdatum"] = $game["Einrichtungsdatum"];
                 if(!$delGame){
-                    array_push($gamesWOEpic, $gameUser);
+                    array_push($gWOETemp, $gameUser);
                 }
             }
 

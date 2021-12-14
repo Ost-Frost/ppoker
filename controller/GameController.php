@@ -28,6 +28,10 @@
                 return $this->declineGame($model);
             } else if ($action == "Leave") {
                 return $this->leaveGame($model);
+            } else if ($action == "updateGame") {
+                return $this->valueUpdateGame($model);
+            } else if ($action == "updateEpic") {
+                return $this->valueUpdateEpic($model);
             }
             return false;
         }
@@ -175,6 +179,52 @@
                 return $this->rejectAPICall(500); // Internal Server Error
             }
             return $this->resolveAPICall(json_encode($dbResponse)); // OK
+        }
+
+        /**
+         * updates values of games
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        public function valueUpdateGame($model) : string {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if (!$this->validateFieldGroupNotEmpty(["gameID"])) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->valueUpdateGame();
+            foreach ($dbResponse as $response) {
+                if (!$response) {
+                    return $this->rejectAPICall(500); // Internal Server Error
+                }
+            }
+            return $this->resolveAPICall("{}", 201); // Updated
+        }
+
+        /**
+         * updates values of epics
+         *
+         * @param ModelBasis corresponding model
+         *
+         * @return string response string
+         */
+        public function valueUpdateEpic($model) : string {
+            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
+                return $this->rejectAPICall(405); // Method not allowed
+            }
+            if (!$this->validateFieldGroupNotEmpty(["epicID"])) {
+                return $this->rejectAPICall(400); // Bad Request
+            }
+            $dbResponse = $model->valueUpdateEpic();
+            foreach ($dbResponse as $response) {
+                if (!$response) {
+                    return $this->rejectAPICall(500); // Internal Server Error
+                }
+            }
+            return $this->resolveAPICall("{}", 201); // Updated
         }
     }
 ?>
