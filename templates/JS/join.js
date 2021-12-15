@@ -18,7 +18,9 @@ function epic(event) {
         epicElements.scrollarea.classList.remove("d-none");
     }
 
-    e.scrollIntoView();
+    if (e) {
+        e.scrollIntoView();
+    }
     collapse();
 }
 function expand(event) {
@@ -103,6 +105,13 @@ function removeGame(gameID) {
     if (parentElement.children.length === 0) {
         parentElement.parentElement.remove();
         e = null;
+    }
+
+    if (document.getElementById("epicContent").children.length === 0) {
+        let information = document.createElement("h1");
+        information.classList.add("m-4");
+        information.appendChild(document.createTextNode("keine weiteren Einladungen"));
+        document.getElementById("epicContent").appendChild(information);
     }
 }
 
