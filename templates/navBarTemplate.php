@@ -39,9 +39,10 @@
               <a class="nav-link " aria-current="page" href="Join">Spiel beitreten</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="Collection">Meine Spiele</a>
+              <a class="nav-link " aria-current="page" href="Gameoverview">Meine Spiele</a>
             </li>
           </ul>
+          <a class="justify-content-right" style="color:grey; text-decoration: none;" href="Logout">Logout</a>
         </div>
       </div>
     </nav>
