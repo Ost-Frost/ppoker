@@ -76,7 +76,7 @@
             <div class="list-group" id="suggestions"></div>
           </div>
           <div class="col-md-6 mb-2 mt-1">
-            <button class="btn btn-primary btn-lg btn-block type" type="button" id="inviteBtn">Einladen</button>
+            <button class="btn btn-primary btn-lg btn-block type" type="button" id="inviteBtn">Hinzufügen</button>
           </div>
         </div>
         <p class="my-1 text-start text-danger" id="invalidFeedbackField"></p>

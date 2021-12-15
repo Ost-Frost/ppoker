@@ -27,6 +27,7 @@ function epic(event) {
     }
     collapse();
 }
+
 function expand(event) {
 
     if (event.currentTarget !== event.target) {
@@ -100,7 +101,7 @@ async function updateGameData() {
     gameData["allEpic"].forEach((epic) => {
         let epicID = epic["EpicID"];
         let totalAufwand = epic["Aufwand"];
-        let userAufwand = epic["Aufwand"];
+        let userAufwand = epic["currentUserValue"];
         let gameList = epic["games"];
         updateEpicValue(epicID, totalAufwand, userAufwand);
         updateGameList(gameList);
@@ -122,6 +123,9 @@ function updateGameList(gameData) {
 
 function updateEpicValue(epicID, totalValue, userValue) {
     let epicValue = document.getElementById("storyPoints_" + epicID);
+    if (!epicValue) {
+        return false;
+    }
     epicValue.innerHTML = "";
     let valueText = totalValue;
     if (totalValue != userValue) {
@@ -170,6 +174,7 @@ async function playCard(event) {
     } catch (e) {
         addNotification("Beim spielen der Karte ist ein Fehler aufgetreten: " + e, "error");
     }
+    alert(await antwort.text());
     let status = antwort.status;
     if (status === 200) {
         addNotification("Die Karte wurde erfolgreich gespielt", "success");
@@ -240,7 +245,7 @@ function removeGame(gameID) {
     if (document.getElementById("epicContent").children.length === 0) {
         let information = document.createElement("h1");
         information.classList.add("m-4");
-        information.appendChild(document.createTextNode("keine weiteren Einladungen"));
+        information.appendChild(document.createTextNode("Sie haben aktuell keine Spiele."));
         document.getElementById("epicContent").appendChild(information);
     }
 }
