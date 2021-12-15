@@ -68,5 +68,6 @@
   </main>
 
   <script src="bootstrap/bootstrap.bundle.js">
+  </script>
 
 </html>
