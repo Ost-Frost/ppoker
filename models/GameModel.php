@@ -186,16 +186,25 @@
             $value = $_REQUEST["value"];
             $gameID = $_REQUEST["gameID"];
             $userID = $_SESSION['userID'];
+            $epicID = "";
 
             $sqlQuery = "UPDATE `spielkarte` SET Karte='$value' Akzeptiert='2' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $sqlQueryEpicID = "SELECT EpicID FROM `epicspiel` WHERE SpielID='$gameID'";
             $this->dbConnect();
             $result = $this->dbSQLQuery($sqlQuery);
+            $epicIDResult = $this->dbSQLQuery($sqlQueryEpicID);
             $this->dbClose();
+
+            if($epicResult = $epicIDResult->fetch_assoc()) {
+                $epicID = $epicResult["EpicID"];
+            }
 
             if($row = $result->fetch_assoc()) {
                 if($row == 0) {
                     return false;
                 }
+                $gameUpdated = $this->valueUpdateGame($gameID);
+                $epicUpdated = $this->valueUpdateEpic($epicID);
                 return true;
             }
             return false;
@@ -221,9 +230,8 @@
          *
          * @return boolean in case of successful update true, otherwise false
          */
-        public function valueUpdateGame() {
+        public function valueUpdateGame($gameID) {
 
-            $gameID = $_REQUEST["gameID"];
             $this->dbConnect();
 
             $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID'";
@@ -238,9 +246,6 @@
             $this->dbClose();
 
             if($row = $result->fetch_assoc()) {
-                if($row == 0) {
-                    return false;
-                }
                 return true;
             }
             return false;
@@ -251,9 +256,8 @@
          *
          * @return boolean in case of successful update true, otherwise false
          */
-        public function valueUpdateEpic() {
+        public function valueUpdateEpic($epicID) {
 
-            $epicID = $_REQUEST["epicID"];
             $this->dbConnect();
 
             $sqlQueryGameID = "SELECT SpielID FROM `epicspiel` WHERE EpicID='$epicID'";
