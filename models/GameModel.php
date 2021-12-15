@@ -188,7 +188,7 @@
             $userID = $_SESSION['userID'];
             $epicID = "";
 
-            $sqlQuery = "UPDATE `spielkarte` SET Karte='$value' Akzeptiert='2' WHERE UserID='$userID' AND SpielID='$gameID'";
+            $sqlQuery = "UPDATE `spielkarte` SET `Karte`='$value', `Akzeptiert`=2 WHERE UserID='$userID' AND SpielID='$gameID'";
             $sqlQueryEpicID = "SELECT EpicID FROM `epicspiel` WHERE SpielID='$gameID'";
             $this->dbConnect();
             $result = $this->dbSQLQuery($sqlQuery);
