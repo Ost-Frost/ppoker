@@ -183,8 +183,8 @@
          * @return mixed if at least one user was found the method returns an array with all users, otherwise it returns false
          */
         public function playCard() {
-            $value = $_REQUEST["value"];
-            $gameID = $_REQUEST["gameID"];
+            $value = $_GET["value"];
+            $gameID = $_GET["gameID"];
             $userID = $_SESSION['userID'];
             $epicID = "";
 
@@ -283,6 +283,58 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * returns all specific user values of epics
+         *
+         * @return mixed in case of success array with all needed data, otherwise boolean value false
+         */
+        public function userEpicValues() {
+
+            $userID = $_SESSION["userID"];
+            $allEpicData = [];
+
+            $sqlQueryEpicIDs = "SELECT EpicID FROM `epicuser` WHERE UserID='$userID'";
+            $this->dbConnect();
+            $epicIDs = $this->dbSQLQuery($sqlQueryEpicIDs);
+
+            while($eID = $epicIDs->fetch_assoc()) {
+                $epicID = $eID["EpicID"];
+                $sqlQueryGameIDs = "SELECT SpielID FROM `epicspiel` WHERE EpicID='$epicID'";
+                $gameIDs = $this->dbSQLQuery($sqlQueryGameIDs);
+                $epicData = [];
+                $userValue = 0;
+                $name = "";
+
+                while($gID = $gameIDs = $this->fetch_assoc()) {
+                    $gameID = $gID["SpielID"];
+                    $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID' AND UserID='$userID'";
+                    $cardValues = $this->dbSQLQuery($sqlQueryCardValue);
+
+                    if($card = $cardValues->fetch_assoc()) {
+                        $userValue += $card["Karte"];
+                    }
+                }
+
+                $sqlQueryEpicName = "SELECT Name FROM `epic` WHERE EpicID='$epicID'";
+                $epicName = $this->dbSQLQuery($sqlQueryEpicName);
+
+                if($eName = $epicName->fetch_assoc()) {
+                    $name = $eName["Name"];
+                }
+
+                $epicData["Name"] = $name;
+                $epicData["ID"] = $epicID;
+                $epicData["userValue"] = $userValue;
+
+                array_push($allEpicData, $epicData);
+            }
+
+            if(sizeof($allEpicData) == 0) {
+                return false;
+            }
+            return $allEpicData;
         }
     }
 
