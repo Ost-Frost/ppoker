@@ -87,7 +87,7 @@
          * @return mixed SQL query response
          */
         public function deleteGame() : mixed {
-            $gameID = $_POST["gameid"];
+            $gameID = $_POST["gameID"];
 
             $this->dbConnect();
             $gameEpic = false;
@@ -98,7 +98,7 @@
                 $gameEpic = $gameEpicResponse["EpicID"];
             }
 
-            $sqlQuery = "DELETE FROM `spiele` WHERE `spiele`.`SpielID` = $gameID";
+            $sqlQuery = "DELETE FROM `spiele` WHERE SpielID = '$gameID'";
             $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 
@@ -169,7 +169,7 @@
          * @return boolean true the the user is the host, false otherwise
          */
         public function checkGameHost() : mixed {
-            $gameID = $_POST["gameid"];
+            $gameID = $_POST["gameID"];
             $userID = $_SESSION["userID"];
 
             $sqlQuery = "SELECT * FROM `spielkarte` WHERE SpielID = '$gameID' AND UserID = '$userID' AND UserStatus = '1'";

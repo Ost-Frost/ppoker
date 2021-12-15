@@ -154,7 +154,7 @@
                 $userName = $row["Username"];
             }
             $this->dbClose();
-            return $result;
+            return $userName;
         }
     }
 
