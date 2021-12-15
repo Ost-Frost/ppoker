@@ -56,13 +56,11 @@
                                 $gameInfo["Karte"] = $user["Karte"];
                                 $gameInfo["Userstatus"] = $user["Userstatus"];
                                 array_push($gameUser["user"], $gameInfo);
-                            } else if($user["Userstatus"] == 2) {
+                            } else {
                                 $gameInfo["Username"] = $user["Username"];
                                 $gameInfo["Karte"] = $user["Karte"];
                                 $gameInfo["Userstatus"] = $user["Userstatus"];
                                 array_push($gameUser["user"], $gameInfo);
-                            } else {
-                                continue;
                             }
                         }
                     }
@@ -80,6 +78,7 @@
                 $epicGame["Aufwand"] = $epic["Aufwand"];
                 $epicGame["Einrichtungsdatum"] = $epic["Einrichtungsdatum"];
                 $epicGame["EpicID"] = $epic["EpicID"];
+                $epicGame["currentUserValue"] = $this->userEpicValues($epic["EpicID"]);
                 if(sizeof($epicGame["games"]) != 0) {
                     array_push($epics, $epicGame);
                 }
@@ -116,13 +115,11 @@
                             $gameInfo["Karte"] = $user["Karte"];
                             $gameInfo["Userstatus"] = $user["Userstatus"];
                             array_push($gameUser["user"], $gameInfo);
-                        } else if($user["Userstatus"] == 2) {
+                        } else {
                             $gameInfo["Username"] = $user["Username"];
                             $gameInfo["Karte"] = $user["Karte"];
                             $gameInfo["Userstatus"] = $user["Userstatus"];
                             array_push($gameUser["user"], $gameInfo);
-                        } else {
-                            continue;
                         }
                     }
                 }
@@ -137,7 +134,6 @@
                 }
             }
 
-            $this->dbClose();
             $gameStructure["allEpic"] = $epics;
             $gameStructure["gamesWOEpic"] = $gWOETemp;
             return $gameStructure;
@@ -155,6 +151,34 @@
             }
             $this->dbClose();
             return $userName;
+        }
+
+        /**
+         * returns all specific user values of epics
+         *
+         * @return mixed in case of success array with all needed data, otherwise boolean value false
+         */
+        public function userEpicValues($epicID) {
+
+            $userID = $_SESSION["userID"];
+            $userValue = 0;
+
+            $sqlQueryGameIDs = "SELECT SpielID FROM `epicspiel` WHERE EpicID='$epicID'";
+            $this->dbConnect();
+            $gameIDs = $this->dbSQLQuery($sqlQueryGameIDs);
+
+            while($gID = $gameIDs->fetch_assoc()) {
+                $gameID = $gID["SpielID"];
+                $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID' AND UserID='$userID'";
+                $cardValues = $this->dbSQLQuery($sqlQueryCardValue);
+
+                if($card = $cardValues->fetch_assoc()) {
+                    $userValue += $card["Karte"];
+                }
+            }
+
+            $this->dbClose();
+                return $userValue;
         }
     }
 

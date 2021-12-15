@@ -28,8 +28,6 @@
                 return $this->declineGame($model);
             } else if ($action == "Leave") {
                 return $this->leaveGame($model);
-            } else if ($action == "userEpic") {
-                return $this->userEpicValues($model);
             }
             return false;
         }
@@ -173,24 +171,6 @@
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->leaveGame();
-            if (!$dbResponse) {
-                return $this->rejectAPICall(500); // Internal Server Error
-            }
-            return $this->resolveAPICall(json_encode($dbResponse)); // OK
-        }
-
-        /**
-         * gets information about current players value share of epics
-         *
-         * @param ModelBasis corresponding Model
-         *
-         * @return array of previously described values
-         */
-        private function userEpicValues($model) {
-            if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
-                return $this->rejectAPICall(405); // Method not allowed
-            }
-            $dbResponse = $model->userEpicValues();
             if (!$dbResponse) {
                 return $this->rejectAPICall(500); // Internal Server Error
             }
