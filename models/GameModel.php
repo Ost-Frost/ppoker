@@ -183,8 +183,8 @@
          * @return mixed if at least one user was found the method returns an array with all users, otherwise it returns false
          */
         public function playCard() {
-            $value = $_REQUEST["value"];
-            $gameID = $_REQUEST["gameID"];
+            $value = $_POST["value"];
+            $gameID = $_POST["gameID"];
             $userID = $_SESSION['userID'];
             $epicID = "";
 
