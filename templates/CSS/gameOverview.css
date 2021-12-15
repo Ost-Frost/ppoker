@@ -19,3 +19,11 @@
     padding-left: 9.315px;
     padding-right:  9.315px;
 }
+
+.list-group-item-action.active, .list-group-item-action:active {
+    background-color: #f8f9fa!important;
+}
+
+.list-group-item.active, .list-group-item:active {
+    background-color: #f8f9fa!important;
+}

@@ -97,7 +97,7 @@
             if (!($_SERVER["REQUEST_METHOD"] === "POST")) {
                 return $this->rejectAPICall(405); // Method not allowed
             }
-            if (!$this->validateFieldGroupNotEmpty(["card"])) {
+            if (!$this->validateFieldGroupNotEmpty(["value", "gameID"])) {
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->playCard();
