@@ -53,7 +53,7 @@
             $joinTemplateProperties["content"] = $gamesContent;
 
             $templateProperties = [];
-            $templateProperties["header"] = "";
+            $templateProperties["header"] = "<link href='./CSS/join.css' rel='stylesheet'>";
             $templateProperties["content"] = $this->openTemplate("templates/join/join.php", $joinTemplateProperties);
             $templateProperties["script"] = "<script src='JS/join.js'></script>";
             return $this->openTemplate("templates/navBarTemplate.php", $templateProperties);

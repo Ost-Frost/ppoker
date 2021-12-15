@@ -53,9 +53,9 @@
         </div>
         <?php
             if ($templateProperties["isHost"]) {
-                echo '<button class="btn btn-lg btn-danger pe-auto mb-2" type="button" onClick="deleteGame(event);" style="margin-left: 10px;">Löschen</button>';
+                echo '<button id="cancleBtn_' . $templateProperties["gameID"] . '" class="btn btn-lg btn-danger pe-auto mb-2" type="button" onClick="deleteGame(event);" style="margin-left: 10px;">Löschen</button>';
             } else {
-                echo '<button class="btn btn-lg btn-danger pe-auto mb-2" type="button" onClick="leave(event);" style="margin-left: 10px;">Verlassen</button>';
+                echo '<button id="cancleBtn_' . $templateProperties["gameID"] . '" class="btn btn-lg btn-danger pe-auto mb-2" type="button" onClick="leave(event);" style="margin-left: 10px;">Verlassen</button>';
             }
         ?>
     </div>

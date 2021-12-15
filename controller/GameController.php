@@ -78,7 +78,7 @@
                 return $this->rejectAPICall(401); // Unauthorized
             }
             $dbResponse = $model->deleteGame();
-            if (!$response) {
+            if (!$dbResponse) {
                 return $this->rejectAPICall(500); // Internal Server Error
             }
             return $this->resolveAPICall(); // OK

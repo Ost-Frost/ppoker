@@ -8,6 +8,8 @@
      */
     class Gameoverview extends ViewBasis implements ViewInterface {
 
+        private $userName = false;
+
         /**
          * render method for the gameoverview page. a GET request returns the gameoverview page
          *
@@ -19,7 +21,8 @@
                 http_response_code(405); // Invalid method
                 return "{}";
             }
-            $gameStructure = $this->model->getGameStructure();
+            $gameStructure = $this->model->gameStructure();
+            $this->userName = $this->model->getUserName();
             $allEpics = $gameStructure["allEpic"];
             $gamesWOEpic = $gameStructure["gamesWOEpic"];
             $gamesContent = "";
@@ -95,7 +98,7 @@
             $templateProperties["gameHost"] = (isset($gameData["host"])) ? "(" . $gameData["host"] . ")" : "";
             $isGameHost = false;
             foreach ($gameData["user"] as $curUser) {
-                if ($curUser["Userstatus"] == "1" && $curUser["UserID"] == $_SESSION["userID"]) {
+                if ($curUser["Userstatus"] == "1" && $curUser["Username"] == $this->userName) {
                     $isGameHost = true;
                 }
             }

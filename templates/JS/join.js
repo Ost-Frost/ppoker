@@ -18,7 +18,9 @@ function epic(event) {
         epicElements.scrollarea.classList.remove("d-none");
     }
 
-    e.scrollIntoView();
+    if (e) {
+        e.scrollIntoView();
+    }
     collapse();
 }
 function expand(event) {

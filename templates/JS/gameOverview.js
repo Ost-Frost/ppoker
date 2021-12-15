@@ -22,7 +22,9 @@ function epic(event) {
         }
     }
 
-    e.scrollIntoView();
+    if (e) {
+        e.scrollIntoView();
+    }
     collapse();
 }
 function expand(event) {
@@ -46,12 +48,6 @@ function expand(event) {
         gameElements.scrollarea.classList.remove("d-none");
     }
 
-}
-
-function preventHighlight(event) {
-    if (event.currentTarget !== event.target) {
-        event.preventDefault();
-    }
 }
 
 function collapse() {
@@ -95,6 +91,33 @@ async function updateGameData() {
         return false;
     }
 
+    updateGameList(gameData["gamesWOEpic"]);
+    let totalStoryPointsWOEpic = 0;
+    gameData["gamesWOEpic"].forEach((game) => {
+        totalStoryPointsWOEpic = totalStoryPointsWOEpic + Number(game["Aufwand"]);
+    });
+    updateEpicValue("gamesWOEpic", totalStoryPointsWOEpic, totalStoryPointsWOEpic);
+    gameData["allEpic"].forEach((epic) => {
+        let epicID = epic["EpicID"];
+        let totalAufwand = epic["Aufwand"];
+        let userAufwand = epic["Aufwand"];
+        let gameList = epic["games"];
+        updateEpicValue(epicID, totalAufwand, userAufwand);
+        updateGameList(gameList);
+    });
+}
+
+function updateGameList(gameData) {
+    gameData.forEach((game) => {
+        let gameID = game["SpielID"];
+        let value = game["Aufwand"];
+        let userlist = game["user"];
+        updateGameValue(gameID, value);
+        document.getElementById("userList_" + gameID).innerHTML = "";
+        userlist.forEach((user) => {
+            renderPlayer(gameID, user["Username"], user["Karte"], user["Userstatus"]);
+        });
+    });
 }
 
 function updateEpicValue(epicID, totalValue, userValue) {
@@ -232,3 +255,7 @@ function getCardValue(id) {
     let endIndex = id.lastIndexOf("_");
     return id.substring(startIndex + 1, endIndex);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateGameData();
+});
