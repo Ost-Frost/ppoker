@@ -25,6 +25,9 @@
             $gamesWOEpic = $gameStructure["gamesWOEpic"];
             $gamesContent = "";
 
+            if (count($allEpics) === 0 && count($gamesWOEpic) === 0) {
+                return $this->renderNoInvitations();
+            }
             // create Epics
             foreach ($allEpics as $curEpic) {
                 $gamesContent .= $this->renderEpic($curEpic);
@@ -92,6 +95,19 @@
             $templateProperties["gameHost"] = (isset($gameData["host"])) ? "(" . $gameData["host"] . ")" : "";
             $templateProperties["gameDescription"] = ($gameData["Beschreibung"] !== "") ? $gameData["Beschreibung"] : "-";
             return $this->openTemplate("templates/join/gameTemplate.php", $templateProperties);
+        }
+
+        /**
+         * renders the join page if there are no invitations for the logged in user
+         *
+         * @return string rendered html string
+         */
+        private function renderNoInvitations() : string {
+            $templateProperties = [];
+            $templateProperties["header"] = "";
+            $templateProperties["content"] = $this->openTemplate("templates/join/noInvitations.php");
+            $templateProperties["script"] = "<script src='JS/join.js'></script>";
+            return $this->openTemplate("templates/navBarTemplate.php", $templateProperties);
         }
 
     }
