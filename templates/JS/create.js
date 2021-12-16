@@ -79,9 +79,9 @@ const MAX_SUGGESTIONS = 5;
  * @returns escaped string
  */
   function decodeHtml(html) {
-  var txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
   }
 
 /**
@@ -150,7 +150,7 @@ function createSuggestions(list, searchFieldID) {
   if (searchFieldID === "suche") {
     list = list.filter((element) => {
       for (let curUser of userList) {
-        if (element === curUser) {
+        if (decodeHtml(element) === decodeHtml(curUser)) {
           return false;
         }
       }

@@ -126,17 +126,23 @@ function updateEpicValue(epicID, totalValue, userValue) {
     if (!epicValue) {
         return false;
     }
-    epicValue.innerHTML = "";
     let valueText = totalValue;
     if (totalValue != userValue) {
         valueText += " (akuell: " + userValue + ")";
     }
+    if (epicValue.innerHTML === valueText) {
+        return;
+    }
+    epicValue.innerHTML = "";
     let newTextNode = document.createTextNode(valueText);
     epicValue.appendChild(newTextNode);
 }
 
 function updateGameValue(gameID, value) {
     let gameValue = document.getElementById("storyPoints_" + gameID);
+    if (gameValue.innerHTML === value) {
+        return;
+    }
     gameValue.innerHTML = "";
     let newTextNode = document.createTextNode(value);
     gameValue.appendChild(newTextNode);
@@ -155,7 +161,7 @@ function renderPlayer(gameID, userName, cardValue, userStatus) {
     if (userStatus == 3 && cardValue == 0) {
         cardText = "vorzeitig verlassen"
     }
-    let textNode = document.createTextNode(userName + ": " + cardText);
+    let textNode = document.createTextNode(decodeHtml(userName) + ": " + cardText);
     newUserElement.appendChild(textNode);
     userlist.appendChild(newUserElement);
 }
@@ -174,7 +180,6 @@ async function playCard(event) {
     } catch (e) {
         addNotification("Beim spielen der Karte ist ein Fehler aufgetreten: " + e, "error");
     }
-    alert(await antwort.text());
     let status = antwort.status;
     if (status === 200) {
         addNotification("Die Karte wurde erfolgreich gespielt", "success");
@@ -220,7 +225,6 @@ async function deleteGame(event) {
     } catch (e) {
         addNotification("Beim löcshen des Spiels ist ein Fehler aufgetreten: " + e, "error");
     }
-    alert (await antwort.text());
     let status = antwort.status;
     if (status === 200) {
         addNotification("Das Spiel wurde erfolgreich gelöscht.", "information");
@@ -262,6 +266,21 @@ function getCardValue(id) {
     return id.substring(startIndex + 1, endIndex);
 }
 
+/**
+ * escapes encoded html and returns normal string
+ *
+ * QUELLE: https://stackoverflow.com/questions/5796718/html-entity-decode
+ *
+ * @param {String} text text to escape special html chars
+ * @returns escaped string
+ */
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     updateGameData();
+    setInterval(updateGameData, 10000);
 });

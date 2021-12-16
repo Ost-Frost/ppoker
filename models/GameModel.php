@@ -97,27 +97,30 @@
             if ($gameEpicResponse) {
                 $gameEpic = $gameEpicResponse["EpicID"];
             }
-            $this->dbClose();
+
 
             $sqlQuery = "DELETE FROM `spiele` WHERE SpielID = '$gameID'";
+            $response = $this->dbSQLQuery($sqlQuery);
+            $this->dbClose();
+
+
 
             $gameStructure = $this->getGameStructure();
             $sqlQueryEpic = false;
             foreach ($gameStructure["allEpic"] as $epic) {
                 if ($epic["EpicID"] == $gameEpic) {
-                    if (count($epic["games"])) {
+                    if (count($epic["games"]) === 0) {
                         $sqlQueryEpic = "DELETE FROM `epic` WHERE EpicID = '$gameEpic'";
                     }
                 }
             }
 
-            $this->dbConnect();
-            $response = $this->dbSQLQuery($sqlQuery);
             $response2 = true;
             if ($sqlQueryEpic) {
+                $this->dbConnect();
                 $response2 = $this->dbSQLQuery($sqlQueryEpic);
+                $this->dbClose();
             }
-            $this->dbClose();
 
             if ($response) {
                 if ($response2) {
@@ -253,14 +256,17 @@
 
             $this->dbConnect();
 
-            $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID'";
+            $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID' AND Akzeptiert = '2'";
             $allCards = $this->dbSQLQuery($sqlQueryCardValue);
 
             $valueAll = 0;
+            $cardCount = 0;
             while($card = $allCards->fetch_assoc()) {
                 $valueAll = $valueAll + $card["Karte"];
+                $cardCount++;
             }
-            $sqlQuery = "UPDATE `spiele` SET Aufwand='$valueAll' WHERE SpielID='$gameID'";
+            $midValue = round($valueAll/$cardCount, 2);
+            $sqlQuery = "UPDATE `spiele` SET Aufwand='$midValue' WHERE SpielID='$gameID'";
             $result = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 

@@ -169,11 +169,11 @@
 
             while($gID = $gameIDs->fetch_assoc()) {
                 $gameID = $gID["SpielID"];
-                $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID' AND UserID='$userID'";
+                $sqlQueryCardValue = "SELECT s.Aufwand FROM spielkarte sk INNER JOIN spiele s ON s.SpielID = sk.SpielID WHERE sk.SpielID='$gameID' AND sk.UserID='$userID' AND (sk.UserStatus = '1' OR sk.UserStatus = '2')";
                 $cardValues = $this->dbSQLQuery($sqlQueryCardValue);
 
                 if($card = $cardValues->fetch_assoc()) {
-                    $userValue += $card["Karte"];
+                    $userValue += $card["Aufwand"];
                 }
             }
 
