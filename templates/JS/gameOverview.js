@@ -128,7 +128,7 @@ function updateEpicValue(epicID, totalValue, userValue) {
     }
     let valueText = totalValue;
     if (totalValue != userValue) {
-        valueText += " (akuell: " + userValue + ")";
+        valueText += " (eigene Spiele: " + userValue + ")";
     }
     if (epicValue.innerHTML === valueText) {
         return;
