@@ -115,7 +115,7 @@
             }
             return $input;
         } else {
-            return htmlspecialchars($input);
+            return htmlspecialchars($input, ENT_QUOTES);
         }
     }
 

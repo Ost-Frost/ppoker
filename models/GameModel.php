@@ -256,7 +256,7 @@
 
             $this->dbConnect();
 
-            $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID' AND Akzeptiert = '2'";
+            $sqlQueryCardValue = "SELECT Karte FROM `spielkarte` WHERE SpielID='$gameID' AND Akzeptiert = 2";
             $allCards = $this->dbSQLQuery($sqlQueryCardValue);
 
             $valueAll = 0;
@@ -265,7 +265,7 @@
                 $valueAll = $valueAll + $card["Karte"];
                 $cardCount++;
             }
-            $midValue = round($valueAll/$cardCount, 2);
+            $midValue = $valueAll/$cardCount;
             $sqlQuery = "UPDATE `spiele` SET Aufwand='$midValue' WHERE SpielID='$gameID'";
             $result = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
