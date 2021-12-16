@@ -1,4 +1,6 @@
 # PPoker Abgabe
+## GitHub URL
+https://github.com/Ost-Frost/ppoker
 ## Gruppenmitglieder
 1. Ole Reimers
 2. Adam Bretzing
@@ -87,3 +89,16 @@ API Calls haben folgende URL ppoker/_Unterseitenname_/_API-Methode_?_Parameter_
   - Beschreibung: Lehnt eine Einladung an den eingeloggten Benutzer für das Spiel mit der übergebenen GameID ab.
   - Parameter:
     - GameID|string: Die ID des Games, dessen Einladung abgelehnt werden soll.
+- Leave
+  - Beschreibung: Verlässt ein Spiel dem der eingeloggte Nutzer beigetreten ist mit der übergebenen GameID.
+  - Parameter:
+    - GameID|string: Die ID des Games, das verlassen werden soll.
+- Delete
+  - Beschreibung: Löscht ein Spiel dem der eingeloggte Nutzer erstellt hat mit der übergebenen GameID.
+  - Parameter:
+    - GameID|string: Die ID des Games, das gelöscht werden soll.
+- Play
+  - Beschreibung: Spielt eine Karte in einem Spiel dem der eingeloggte Nutzer beigetreten ist bzw. das er erstellt hat. Überprüft nicht, dass der Kartenwert einer der verfügbaren Karten ist.
+  - Parameter:
+    - GameID|string: Die ID des Games, das gelöscht werden soll.
+    - Value|int: Der Kartenwert der gespielten Karte.
