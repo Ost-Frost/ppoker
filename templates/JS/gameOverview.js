@@ -220,6 +220,7 @@ async function deleteGame(event) {
     } catch (e) {
         addNotification("Beim löcshen des Spiels ist ein Fehler aufgetreten: " + e, "error");
     }
+    alert (await antwort.text());
     let status = antwort.status;
     if (status === 200) {
         addNotification("Das Spiel wurde erfolgreich gelöscht.", "information");

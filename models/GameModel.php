@@ -97,12 +97,34 @@
             if ($gameEpicResponse) {
                 $gameEpic = $gameEpicResponse["EpicID"];
             }
-
-            $sqlQuery = "DELETE FROM `spiele` WHERE SpielID = '$gameID'";
-            $response = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 
-            return $response;
+            $sqlQuery = "DELETE FROM `spiele` WHERE SpielID = '$gameID'";
+
+            $gameStructure = $this->getGameStructure();
+            $sqlQueryEpic = false;
+            foreach ($gameStructure["allEpic"] as $epic) {
+                if ($epic["EpicID"] == $gameEpic) {
+                    if (count($epic["games"])) {
+                        $sqlQueryEpic = "DELETE FROM `epic` WHERE EpicID = '$gameEpic'";
+                    }
+                }
+            }
+
+            $this->dbConnect();
+            $response = $this->dbSQLQuery($sqlQuery);
+            $response2 = true;
+            if ($sqlQueryEpic) {
+                $response2 = $this->dbSQLQuery($sqlQueryEpic);
+            }
+            $this->dbClose();
+
+            if ($response) {
+                if ($response2) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /**
