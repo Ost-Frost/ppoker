@@ -215,21 +215,18 @@
             $this->dbConnect();
             $result = $this->dbSQLQuery($sqlQuery);
             $epicIDResult = $this->dbSQLQuery($sqlQueryEpicID);
-            $this->dbClose();
 
             if($epicResult = $epicIDResult->fetch_assoc()) {
                 $epicID = $epicResult["EpicID"];
             }
+            $this->dbClose();
 
-            if($row = $result->fetch_assoc()) {
-                if($row == 0) {
-                    return false;
-                }
-                $gameUpdated = $this->valueUpdateGame($gameID);
-                $epicUpdated = $this->valueUpdateEpic($epicID);
-                return true;
+            if(!$result) {
+                return false;
             }
-            return false;
+            $gameUpdated = $this->valueUpdateGame($gameID);
+            $epicUpdated = $this->valueUpdateEpic($epicID);
+            return true;
         }
 
         /**
@@ -260,14 +257,14 @@
             $allCards = $this->dbSQLQuery($sqlQueryCardValue);
 
             $valueAll = 0;
-            while($card = $allcards->fetch_assoc()) {
+            while($card = $allCards->fetch_assoc()) {
                 $valueAll = $valueAll + $card["Karte"];
             }
-            $sqlQuery = "UPDATE `spiele` SET Aufwand='$value' WHERE SpielID='$gameID'";
+            $sqlQuery = "UPDATE `spiele` SET Aufwand='$valueAll' WHERE SpielID='$gameID'";
             $result = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 
-            if($row = $result->fetch_assoc()) {
+            if($result) {
                 return true;
             }
             return false;
@@ -298,10 +295,7 @@
             $result = $this->dbSQLQuery($sqlQuery);
             $this->dbClose();
 
-            if($row = $result->fetch_assoc()) {
-                if($row == 0) {
-                    return false;
-                }
+            if($result) {
                 return true;
             }
             return false;
