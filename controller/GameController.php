@@ -97,12 +97,10 @@
                 return $this->rejectAPICall(400); // Bad Request
             }
             $dbResponse = $model->playCard();
-            foreach ($dbResponse as $response) {
-                if (!$response) {
-                    return $this->rejectAPICall(500); // Internal Server Error
-                }
+            if (!$dbResponse) {
+                return $this->rejectAPICall(500); // Internal Server Error
             }
-            return $this->resolveAPICall("{}", 201); // Played
+            return $this->resolveAPICall("{}", 200); // Played
         }
 
         /**
